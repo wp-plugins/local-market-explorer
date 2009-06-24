@@ -3,7 +3,7 @@ Contributors: amattie, jmabe
 Tags: zillow, flickr, walk-score
 Requires at least: 2.0
 Tested up to: 2.7
-Stable tag: trunk
+Stable tag: 1.0-b3
 
 This plugin allows WordPress to load data from a number of real estate and neighborhood APIs to be presented all within a single
 page in WordPress.
@@ -20,11 +20,11 @@ This plugin allows for WordPress to load in data from the following APIs:
 
 The data from the different APIs is then presented on a single page that is dynamically created on the server depending on the
 specially-crafted URL that is being accessed. The format of the URL to load the plugin is as follows:
-http://www.example.com/local/<city>,<state>.
+http://www.example.com/local/&lt;city&gt;,&lt;state&gt;.
 
 For example, to load the Local Market Explorer for Seattle, WA, you'd simply need to point your browser to
-<http://www.example.com/local/seattle,wa>. If you have spaces in your city name, you can use hyphens for the spaces in the URL,
-like so: <http://www.example.com/local/rancho-santa-margarita,ca>.
+&gt;http://www.example.com/local/seattle,wa&lt;. If you have spaces in your city name, you can use hyphens for the spaces in the URL,
+like so: &lt;http://www.example.com/local/rancho-santa-margarita,ca&gt;.
 
 At any time, you can link to any city in any state that you'd like. While not all of the APIs have data for every single city in the United
 States, you'll find that most cities are sufficiently covered by nearly all of the APIs.
