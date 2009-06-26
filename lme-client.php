@@ -197,6 +197,7 @@ LME_CONTENT;
 LME_CONTENT;
 		}
 		
+		$home_value_data = $this->get_zillow_home_value_data();
 		$lme_content .= <<<LME_CONTENT
 					</div>
 					<div class="lme_right"></div>
@@ -210,7 +211,7 @@ LME_CONTENT;
 						<h3>Zillow Home Value Index</h3>
 						<div class="lme_container_top_right lme_container_right"></div>
 					</div>
-					<div id="lme_zillow_index" class="lme_container_body">{$this->get_zillow_home_value_data()}</div>
+					<div id="lme_zillow_index" class="lme_container_body">{$home_value_data}</div>
 					<div class="lme_container_bottom lme_container_cap">
 						<div class="lme_container_bottom_left lme_container_left"></div>
 						<div class="lme_container_bottom_right lme_container_right"></div>
@@ -219,6 +220,7 @@ LME_CONTENT;
 LME_CONTENT;
 
 		if ($lme_panels_show_aboutarea) {
+			$about_area_data = $this->get_about_area_data();
 			$lme_content .= <<<LME_CONTENT
 				<!-- "ABOUT {LOCATION}" (CONFIGS + FLICKR) SECTION -->
 				<a name="lme-about-area"></a>
@@ -228,7 +230,7 @@ LME_CONTENT;
 						<h3>About</h3>
 						<div class="lme_container_top_right lme_container_right"></div>
 					</div>
-					<div id="lme_about_area" class="lme_container_body">{$this->get_about_area_data()}</div>
+					<div id="lme_about_area" class="lme_container_body">{$about_area_data}</div>
 					<div class="lme_container_bottom lme_container_cap">
 						<div class="lme_container_bottom_left lme_container_left"></div>
 						<div class="lme_container_bottom_right lme_container_right"></div>
@@ -238,6 +240,7 @@ LME_CONTENT;
 		}
 		
 		if ($lme_panels_show_marketactivity) {
+			$market_activity_data = $this->get_zillow_market_activity_data();
 			$lme_content .= <<<LME_CONTENT
 				<!-- "MARKET ACTIVITY" (ZILLOW) SECTION -->
 				<a name="lme-market-activity"></a>
@@ -247,7 +250,7 @@ LME_CONTENT;
 						<h3>Market Activity</h3>
 						<div class="lme_container_top_right lme_container_right"></div>
 					</div>
-					<div id="lme_market_activity" class="lme_container_body">{$this->get_zillow_market_activity_data()}</div>
+					<div id="lme_market_activity" class="lme_container_body">{$market_activity_data}</div>
 					<div class="lme_container_bottom lme_container_cap">
 						<div class="lme_container_bottom_left lme_container_left"></div>
 						<div class="lme_container_bottom_right lme_container_right"></div>
@@ -255,7 +258,8 @@ LME_CONTENT;
 				</div>
 LME_CONTENT;
 		}
-
+		
+		$educationdotcom_data = $this->get_educationdotcom_data();
 		$lme_content .= <<<LME_CONTENT
 				<!-- "SCHOOLS" (EDUCATION.COM) SECTION -->
 				<a name="lme-schools"></a>
@@ -265,7 +269,7 @@ LME_CONTENT;
 						<h3>Schools</h3>
 						<div class="lme_container_top_right lme_container_right"></div>
 					</div>
-					<div id="lme_schools" class="lme_container_body">{$this->get_educationdotcom_data()}</div>
+					<div id="lme_schools" class="lme_container_body">{$educationdotcom_data}</div>
 					<div class="lme_container_bottom lme_container_cap">
 						<div class="lme_container_bottom_left lme_container_left"></div>
 						<div class="lme_container_bottom_right lme_container_right"></div>
@@ -274,6 +278,7 @@ LME_CONTENT;
 LME_CONTENT;
 		
 		if ($lme_panels_show_walkscore) {
+			$walk_score_data = $this->get_walk_score_data();
 			$lme_content .= <<<LME_CONTENT
 				<!-- WALK SCORE SECTION -->
 				<a name="lme-walk-score"></a>
@@ -283,7 +288,7 @@ LME_CONTENT;
 						<h3>Walk Score</h3>
 						<div class="lme_container_top_right lme_container_right"></div>
 					</div>
-					<div id="lme_walk_score" class="lme_container_body">{$this->get_walk_score_data()}</div>
+					<div id="lme_walk_score" class="lme_container_body">{$walk_score_data}</div>
 					<div class="lme_container_bottom lme_container_cap">
 						<div class="lme_container_bottom_left lme_container_left"></div>
 						<div class="lme_container_bottom_right lme_container_right"></div>
@@ -320,20 +325,27 @@ LME_CONTENT;
 		$city_year_change_percent = $this->get_string_from_xml($one_yr_change->values->city->value);
 		$national_year_change_percent = $this->get_string_from_xml($one_yr_change->values->nation->value);
 		
+		$row1_name = $this->get_string_from_xml($zillow_home_value->name);
 		$formatted_city_home_value = "$" . number_format($city_home_value);
 		$formatted_national_home_value = "$" . number_format($national_home_value);
 		
+		$row2_name = $this->get_string_from_xml($one_yr_change->name);
 		$formatted_city_year_change = "$" . number_format($city_home_value - ($city_home_value * (1 - $city_year_change_percent)));
 		$formatted_national_year_change = "$" . number_format($national_home_value - ($national_home_value * (1 - $national_year_change_percent)));
 		
+		$row3_name = $this->get_string_from_xml($median_condo_value->name);
 		$formatted_city_condo_value = "$" . number_format($this->get_string_from_xml($median_condo_value->values->city->value));
 		$formatted_national_condo_value = "$" . number_format($this->get_string_from_xml($median_condo_value->values->nation->value));
 		
+		$row4_name = $this->get_string_from_xml($median_single_family->name);
 		$formatted_city_sfr_value = "$" . number_format($this->get_string_from_xml($median_single_family->values->city->value));
 		$formatted_national_sfr_value = "$" . number_format($this->get_string_from_xml($median_single_family->values->nation->value));
-
+		
+		$zindex = $this->get_money_from_xml($region_chart->zindex);
+		$affordability_link = $this->get_string_from_xml($affordability_link);
+		
 		return <<<HTML
-			<h3>\${$this->get_money_from_xml($region_chart->zindex)}</h3>
+			<h3>\${$zindex}</h3>
 
 			<h4>Market Value Change</h4>
 			<div id="lme_zillow_region_chart_container">
@@ -369,29 +381,29 @@ LME_CONTENT;
 			<h4>{$this->location_for_display} Affordability Data</h4>
 			<table id="lme_zillow_affordability_data">
 				<tr class="lme_primary">
-					<td>{$this->get_string_from_xml($zillow_home_value->name)}</td>
+					<td>{$row1_name}</td>
 					<td class="lme_number lme_primary_value">{$formatted_city_home_value}</td>
 					<td class="lme_number">{$formatted_national_home_value}</td>
 				</tr>
 				<tr class="lme_secondary">
-					<td>{$this->get_string_from_xml($one_yr_change->name)}</td>
+					<td>{$row2_name}</td>
 					<td class="lme_number lme_primary_value">{$formatted_city_year_change}</td>
 					<td class="lme_number">{$formatted_national_year_change}</td>
 				</tr>
 				<tr class="lme_primary">
-					<td>{$this->get_string_from_xml($median_condo_value->name)}</td>
+					<td>{$row3_name}</td>
 					<td class="lme_number lme_primary_value">{$formatted_city_condo_value}</td>
 					<td class="lme_number">{$formatted_national_condo_value}</td>
 				</tr>
 				<tr class="lme_secondary">
-					<td>{$this->get_string_from_xml($median_single_family->name)}</td>
+					<td>{$row4_name}</td>
 					<td class="lme_number lme_primary_value">{$formatted_city_sfr_value}</td>
 					<td class="lme_number">{$formatted_national_sfr_value}</td>
 				</tr>
 			</table>
 			
 			<div id="lme_zillow_see_more_link" class="lme_float_50">
-				<a href="{$this->get_string_from_xml($affordability_link)}?scid=gen-api-wplugin" target="_blank">See {$this->city} home values at Zillow.com</a>
+				<a href="{$affordability_link}?scid=gen-api-wplugin" target="_blank">See {$this->city} home values at Zillow.com</a>
 			</div>
 			<div id="lme_zillow_logo" class="lme_float_50">
 				<a href="http://www.zillow.com/?scid=gen-api-wplugin"><img src="http://www.zillow.com/static/logos/Zillowlogo_150x40.gif" /></a>
@@ -461,7 +473,7 @@ HTML;
 		if ($related_posts_html) {
 			$related_posts_html = <<<HTML
 				<div id="lme_about_area_recent_posts">
-					<strong>Recent posts about $this->location_for_display</strong>
+					<strong>Recent posts about {$this->location_for_display}</strong>
 					<ul id="lme_about_area_recent_posts_list">
 						$related_posts_html
 					</ul>
@@ -513,6 +525,7 @@ HTML;
 		$zillow_fmr = simplexml_load_file("http://www.zillow.com/webservice/FMRWidget.htm?region=$this->city+$this->state&status=recentlySold&zws-id=$lme_apikey_zillow");
 
 		$recent_sales = $zillow_fmr->xpath("response/results/result");
+		$recently_sold_html = $this->get_recent_sold_html($recent_sales);
 
 		return <<<HTML
 			<div id="lme_market_activity">
@@ -538,7 +551,7 @@ HTML;
 				</div>
 				<div id="lme_recently_sold">
 					<h4>Recently Sold $this->city Homes</h4>
-					{$this->get_recent_sold_html($recent_sales)}
+					{$recently_sold_html}
 				</div>
 				<div id="lme_recently_sold_link">
 					<a href="{$this->zillow_for_sale_link}?scid=gen-api-wplugin" target="_blank">See $this->city real estate and homes for sale</a>
@@ -553,11 +566,12 @@ HTML;
 		
 		for($i=0;$i< (sizeOf($xml) > 4 ? 4 : sizeOf($xml)) ;$i++){
 			$listingImage = str_replace('size=134,98', 'size=82,60', $xml[$i]->largeImageLink);
+			$formatted_last_sold_price = $this->get_money_from_xml($xml[$i]->lastSoldPrice);
 			$html .= "<div class='lme_recently_sold_item'>".					 	
 					 	//"<div></div>".
 					 	"<div><a href='{$xml[$i]->detailPageLink}' target='_blank'><img src='{$listingImage}' class='lme_recently_sold_item_photo' /></a>".
 					 	"<a href='{$xml[$i]->detailPageLink}' target='_blank'>{$xml[$i]->address->street}</a><br />".
-					 	"Recently Sold ({$xml[$i]->lastSoldDate}): \${$this->get_money_from_xml($xml[$i]->lastSoldPrice)}<br />".
+					 	"Recently Sold ({$xml[$i]->lastSoldDate}): \${$formatted_last_sold_price}<br />".
 					 	"{$xml[$i]->bathrooms} beds {$xml[$i]->bedrooms} baths {$xml[$i]->finishedSqFt} sqft</div>".
 					 "</div>";
 			$html .= "<div class='clear'></div>";
