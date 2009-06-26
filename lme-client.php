@@ -406,7 +406,7 @@ LME_CONTENT;
 				<a href="{$affordability_link}?scid=gen-api-wplugin" target="_blank">See {$this->city} home values at Zillow.com</a>
 			</div>
 			<div id="lme_zillow_logo" class="lme_float_50">
-				<a href="http://www.zillow.com/?scid=gen-api-wplugin"><img src="http://www.zillow.com/static/logos/Zillowlogo_150x40.gif" /></a>
+				<a href="http://www.zillow.com/?scid=gen-api-wplugin"><img src="http://www.zillow.com/static/logos/Zillowlogo_150x40.gif" alt="Zillow - Real Estate" /></a>
 			</div>
 			<div class="clear"></div>
 HTML;
