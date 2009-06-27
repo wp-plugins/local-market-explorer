@@ -362,18 +362,18 @@ LME_CONTENT;
 							<a href="javascript:void(0);" onclick="LocalMarketExplorer.ZillowIndex.setDuration('10years')" id="lme_zillow_market_10_yr">10 YR</a>
 					</div>
 				</div>
-				<img src="$region_chart->url" id="lme_zillow_region_chart" />
+				<img src="$region_chart->url" id="lme_zillow_region_chart" alt="{$this->location_for_display} real estate market value change over time" />
 			</div>
 			
 			<div id="lme_zillow_home_value">
 				<div class="lme_float_50">
 					<h4>Avg. Home Value</h4>
-					<img src="$avg_home_value->url" />
+					<img src="$avg_home_value->url" alt="{$this->location_for_display} home prices and values" />
 				</div>
 				
 				<div class="lme_float_50">
-					<h4>Avg. Condo Value.</h4>
-					<img src="$avg_condo_value->url" />
+					<h4>Avg. Condo Value</h4>
+					<img src="$avg_condo_value->url" alt="{$this->location_for_display} condo prices and values" />
 				</div>
 			</div>
 			<div class="clear"></div>
