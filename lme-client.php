@@ -153,6 +153,19 @@ FOOTER;
 		$this->is_lme = true;
 	}
 	
+	function get_url_as_xml($url) {
+		if (ini_get('allow_url_fopen')) {
+			$xml = simplexml_load_file($url);
+		}
+		else {
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_HEADER, false);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			$xml_raw = curl_exec($ch);
+			$xml = simplexml_load_string($xml_raw);
+		}
+		return $xml;
+	}
 	function get_string_from_xml($xml){
 		return trim((string)$xml);
 	}
@@ -308,8 +321,8 @@ LME_CONTENT;
 		$lme_username_zillow = get_option('lme_username_zillow');
 		
 		$zillow_chart_url = "http://www.zillow.com/webservice/GetRegionChart.htm?zws-id=$lme_apikey_zillow&state=$this->state&city=$this->city&unit-type=percent&width=400&height=200";
-		$zillow_xml = simplexml_load_file("http://www.zillow.com/webservice/GetDemographics.htm?zws-id=$lme_apikey_zillow&state=$this->state&city=$this->city"); // .'&neighborhood=Ballard'
-		$zillow_chart = simplexml_load_file("http://www.zillow.com/webservice/GetRegionChart.htm?zws-id=$lme_apikey_zillow&state=$this->state&city=$this->city&unit-type=percent&width=400&height=200");
+		$zillow_xml = $this->get_url_as_xml("http://www.zillow.com/webservice/GetDemographics.htm?zws-id=$lme_apikey_zillow&state=$this->state&city=$this->city"); // .'&neighborhood=Ballard'
+		$zillow_chart = $this->get_url_as_xml("http://www.zillow.com/webservice/GetRegionChart.htm?zws-id=$lme_apikey_zillow&state=$this->state&city=$this->city&unit-type=percent&width=400&height=200");
 		
 		$node = $zillow_chart->xpath("response"); $region_chart = $node[0];
 		$node = $zillow_xml->xpath("response/charts/chart[name='Average Home Value']"); $avg_home_value = $node[0];
@@ -523,7 +536,7 @@ HTML;
 	function get_zillow_market_activity_data() {
 		$lme_apikey_zillow = get_option('lme_apikey_zillow');
 		$lme_username_zillow = get_option('lme_username_zillow');
-		$zillow_fmr = simplexml_load_file("http://www.zillow.com/webservice/FMRWidget.htm?region=$this->city+$this->state&status=recentlySold&zws-id=$lme_apikey_zillow");
+		$zillow_fmr = $this->get_url_as_xml("http://www.zillow.com/webservice/FMRWidget.htm?region=$this->city+$this->state&status=recentlySold&zws-id=$lme_apikey_zillow");
 
 		$recent_sales = $zillow_fmr->xpath("response/results/result");
 		$recently_sold_html = $this->get_recent_sold_html($recent_sales);
