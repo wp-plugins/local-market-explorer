@@ -94,12 +94,12 @@ class LMEPage
 		
 		if ($this->is_lme){
 			echo <<<HEAD
-				<link rel="stylesheet" type="text/css" href="{$wpurl}/wp-content/plugins/lme/includes/lme-client.css" />
+				<link rel="stylesheet" type="text/css" href="{$wpurl}/wp-content/plugins/local-market-explorer/includes/lme-client.css" />
 				<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 				<script type="text/javascript">
 					var \$j = jQuery.noConflict();
 				</script>
-				<script type="text/javascript" src="{$wpurl}/wp-content/plugins/lme/includes/lme-client.js"></script>
+				<script type="text/javascript" src="{$wpurl}/wp-content/plugins/local-market-explorer/includes/lme-client.js"></script>
 HEAD;
 		}
 	}
