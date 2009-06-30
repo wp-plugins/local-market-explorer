@@ -123,19 +123,20 @@ FOOTER;
 		global $wp;
 		global $wp_query;
 		
-		$cityStateRegex = "/". $this->slug ."\/(?<City>[^,\/]+),(?<State>[\w]{2})\/?(?<Neighborhood>[0-9a-zA-Z])?/";
-		$zipRegex = "/". $this->slug ."\/(?<Zip>[\d]{5})\/?/";
+		$cityStateRegex = "/". $this->slug ."\/(?P<city>[^,\/]+),(?P<state>[\w]{2})/";
+		$zipRegex = "/". $this->slug ."\/(?P<zip>[\d]{5})/";
 
 		$cityStateRegexSuccess = preg_match($cityStateRegex, $wp->request, $cityStateUrlMatch);
-		$zipRegexSuccess = preg_match($zipRegex, $wp->request, $zipUrlMatch);
+		//$zipRegexSuccess = preg_match($zipRegex, $wp->request, $zipUrlMatch);
 
-		if ($cityStateRegexSuccess == 0 && $zipRegexSuccess == 0) {
+		//if ($cityStateRegexSuccess == 0 && $zipRegexSuccess == 0) {
+		if ($cityStateRegexSuccess == 0) {
 			$this->is_lme = false;
 			return;
 		}
 
-		$this->city = trim(ucwords(str_replace('-', ' ', $cityStateUrlMatch['City'])));
-		$this->state = trim(strtoupper(str_replace('-', ' ', $cityStateUrlMatch['State'])));
+		$this->city = trim(ucwords(str_replace('-', ' ', $cityStateUrlMatch['city'])));
+		$this->state = trim(strtoupper(str_replace('-', ' ', $cityStateUrlMatch['state'])));
 		//$this->neighborhood = trim(str_replace('-', ' ', $cityStateUrlMatch['Neighborhood']));
 		//$this->zip = $zipUrlMatch['Zip'];
 		
@@ -569,8 +570,8 @@ HTML;
 			$formatted_last_sold_price = $this->get_money_from_xml($xml[$i]->lastSoldPrice);
 			$html .= "<div class='lme_recently_sold_item'>".					 	
 					 	//"<div></div>".
-					 	"<div><a href='{$xml[$i]->detailPageLink}' target='_blank'><img src='{$listingImage}' class='lme_recently_sold_item_photo' /></a>".
-					 	"<a href='{$xml[$i]->detailPageLink}' target='_blank'>{$xml[$i]->address->street}</a><br />".
+					 	"<div><a href='{$xml[$i]->detailPageLink}?scid=gen-api-wplugin' target='_blank'><img src='{$listingImage}' class='lme_recently_sold_item_photo' /></a>".
+					 	"<a href='{$xml[$i]->detailPageLink}?scid=gen-api-wplugin' target='_blank'>{$xml[$i]->address->street}</a><br />".
 					 	"Recently Sold ({$xml[$i]->lastSoldDate}): \${$formatted_last_sold_price}<br />".
 					 	"{$xml[$i]->bathrooms} beds {$xml[$i]->bedrooms} baths {$xml[$i]->finishedSqFt} sqft</div>".
 					 "</div>";
