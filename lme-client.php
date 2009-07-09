@@ -53,7 +53,7 @@ class LMEPage
 			$lme_post->post_title = $this->city . ', ' . $this->state;
 			$lme_post->post_category = 0;
 			$lme_post->post_excerpt = '';
-			$lme_post->post_status = 'static';
+			$lme_post->post_status = 'publish';
 			$lme_post->comment_status = 'closed';
 			$lme_post->ping_status = 'closed';
 			$lme_post->post_password = '';
@@ -72,10 +72,10 @@ class LMEPage
 		
 			$wp_query->is_page = true;
 			//Not sure if this one is necessary but might as well set it like a true page
-			$wp_query->is_singular = true;
+			$wp_query->is_single = true;
 			$wp_query->is_home = false;
 			$wp_query->is_archive = false;
-			$wp_query->is_category = false;
+			//$wp_query->is_category = false;
 			//Longer permalink structures may not match the fake post slug and cause a 404 error so we catch the error here
 			unset($wp_query->query["error"]);
 			$wp_query->query_vars["error"]="";
@@ -153,16 +153,19 @@ FOOTER;
 		$this->is_lme = true;
 	}
 	
-	function get_url_as_xml($url) {
+	function get_url_data($url) {
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_HEADER, false);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		$raw = curl_exec($ch);
+		return $raw;
+	}
+	function get_url_data_as_xml($url) {
 		if (ini_get('allow_url_fopen')) {
 			$xml = simplexml_load_file($url);
 		}
 		else {
-			$ch = curl_init($url);
-			curl_setopt($ch, CURLOPT_HEADER, false);
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			$xml_raw = curl_exec($ch);
-			$xml = simplexml_load_string($xml_raw);
+			$xml = simplexml_load_string($this->get_url_data($url));
 		}
 		return $xml;
 	}
@@ -321,8 +324,8 @@ LME_CONTENT;
 		$lme_username_zillow = get_option('lme_username_zillow');
 		
 		$zillow_chart_url = "http://www.zillow.com/webservice/GetRegionChart.htm?zws-id=$lme_apikey_zillow&state=$this->state&city=$this->city&unit-type=percent&width=400&height=200";
-		$zillow_xml = $this->get_url_as_xml("http://www.zillow.com/webservice/GetDemographics.htm?zws-id=$lme_apikey_zillow&state=$this->state&city=$this->city"); // .'&neighborhood=Ballard'
-		$zillow_chart = $this->get_url_as_xml("http://www.zillow.com/webservice/GetRegionChart.htm?zws-id=$lme_apikey_zillow&state=$this->state&city=$this->city&unit-type=percent&width=400&height=200");
+		$zillow_xml = $this->get_url_data_as_xml("http://www.zillow.com/webservice/GetDemographics.htm?zws-id=$lme_apikey_zillow&state=$this->state&city=$this->city"); // .'&neighborhood=Ballard'
+		$zillow_chart = $this->get_url_data_as_xml("http://www.zillow.com/webservice/GetRegionChart.htm?zws-id=$lme_apikey_zillow&state=$this->state&city=$this->city&unit-type=percent&width=400&height=200");
 		
 		$node = $zillow_chart->xpath("response"); $region_chart = $node[0];
 		$node = $zillow_xml->xpath("response/charts/chart[name='Average Home Value']"); $avg_home_value = $node[0];
@@ -442,7 +445,7 @@ HTML;
 			$encoded_flickr_places_params[] = urlencode($key).'='.urlencode($value);
 		}
 		$flickr_places_request_url = $flickr_api_request_url . implode('&', $encoded_flickr_places_params);
-		$flickr_response = unserialize(file_get_contents($flickr_places_request_url));
+		$flickr_response = unserialize($this->get_url_data($flickr_places_request_url));
 		
 		$flickr_min_taken_date = strtotime(date("Y-m-d") . " -6 month");
 		$flickr_search_params = array(
@@ -463,7 +466,7 @@ HTML;
 			$encoded_flickr_search_params[] = urlencode($key).'='.urlencode($value);
 		}
 		$flickr_search_request_url = $flickr_api_request_url . implode('&', $encoded_flickr_search_params);
-		$flickr_response = unserialize(file_get_contents($flickr_search_request_url));
+		$flickr_response = unserialize($this->get_url_data($flickr_search_request_url));
 		$flickr_image_html = '';
 		
 		if($flickr_response && $flickr_response['photos'] && $flickr_response['photos']['photo']){
@@ -536,7 +539,7 @@ HTML;
 	function get_zillow_market_activity_data() {
 		$lme_apikey_zillow = get_option('lme_apikey_zillow');
 		$lme_username_zillow = get_option('lme_username_zillow');
-		$zillow_fmr = $this->get_url_as_xml("http://www.zillow.com/webservice/FMRWidget.htm?region=$this->city+$this->state&status=recentlySold&zws-id=$lme_apikey_zillow");
+		$zillow_fmr = $this->get_url_data_as_xml("http://www.zillow.com/webservice/FMRWidget.htm?region=$this->city+$this->state&status=recentlySold&zws-id=$lme_apikey_zillow");
 
 		$recent_sales = $zillow_fmr->xpath("response/results/result");
 		$recently_sold_html = $this->get_recent_sold_html($recent_sales);
@@ -609,7 +612,7 @@ HTML;
 		}*/
 		// otherwise, we shouldn't be here
 		
-		$educationdotcom_data_raw = file_get_contents($educationdotcom_url);
+		$educationdotcom_data_raw = $this->get_url_data($educationdotcom_url);
 		$educationdotcom_data = unserialize($educationdotcom_data_raw);
 
 		$elementary_school_html = '';
