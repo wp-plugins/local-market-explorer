@@ -4,10 +4,7 @@ class LMEPage
 	var $slug = 'local';
 	var $city = '';
 	var $state = '';
-	//var $zip = '';
 
-	// the following 3 vars will only be set if the neighborhood is part of the URL
-	//var $neighborhood = '';
 	// these will be set from the initial zillow request we pull
 	//var $center_lat = '';
 	//var $center_long = '';
@@ -124,12 +121,8 @@ FOOTER;
 		global $wp_query;
 		
 		$cityStateRegex = "/". $this->slug ."\/(?P<city>[^,\/]+),(?P<state>[\w]{2})/";
-		$zipRegex = "/". $this->slug ."\/(?P<zip>[\d]{5})/";
-
 		$cityStateRegexSuccess = preg_match($cityStateRegex, $wp->request, $cityStateUrlMatch);
-		//$zipRegexSuccess = preg_match($zipRegex, $wp->request, $zipUrlMatch);
-
-		//if ($cityStateRegexSuccess == 0 && $zipRegexSuccess == 0) {
+		
 		if ($cityStateRegexSuccess == 0) {
 			$this->is_lme = false;
 			return;
@@ -137,18 +130,8 @@ FOOTER;
 
 		$this->city = trim(ucwords(str_replace('-', ' ', $cityStateUrlMatch['city'])));
 		$this->state = trim(strtoupper(str_replace('-', ' ', $cityStateUrlMatch['state'])));
-		//$this->neighborhood = trim(str_replace('-', ' ', $cityStateUrlMatch['Neighborhood']));
-		//$this->zip = $zipUrlMatch['Zip'];
 		
 		$this->location_for_display = $this->city . ', ' . $this->state;
-
-		/*if ($this->neighborhood != '') {
-			$this->location_for_display = $this->neighborhood . ' in ' . $this->city . ', ' . $this->state;
-		} else if ($this->city != '' && $this->state != '') {
-			$this->location_for_display = $this->city . ', ' . $this->state;
-		} else if ($this->zip != '') {
-			$this->location_for_display = $this->zip;
-		}*/
 
 		$this->is_lme = true;
 	}
@@ -324,7 +307,7 @@ LME_CONTENT;
 		$lme_username_zillow = get_option('lme_username_zillow');
 		
 		$zillow_chart_url = "http://www.zillow.com/webservice/GetRegionChart.htm?zws-id=$lme_apikey_zillow&state=$this->state&city=$this->city&unit-type=percent&width=400&height=200";
-		$zillow_xml = $this->get_url_data_as_xml("http://www.zillow.com/webservice/GetDemographics.htm?zws-id=$lme_apikey_zillow&state=$this->state&city=$this->city"); // .'&neighborhood=Ballard'
+		$zillow_xml = $this->get_url_data_as_xml("http://www.zillow.com/webservice/GetDemographics.htm?zws-id=$lme_apikey_zillow&state=$this->state&city=$this->city");
 		$zillow_chart = $this->get_url_data_as_xml("http://www.zillow.com/webservice/GetRegionChart.htm?zws-id=$lme_apikey_zillow&state=$this->state&city=$this->city&unit-type=percent&width=400&height=200");
 		
 		$node = $zillow_chart->xpath("response"); $region_chart = $node[0];
@@ -515,22 +498,11 @@ HTML;
 	}
 	function get_description(){
 		$lme_area_cities = unserialize(get_option('lme_area_cities'));
-		$lme_area_zips = unserialize(get_option('lme_area_zips'));
 		$lme_area_states = unserialize(get_option('lme_area_states'));
-		$lme_area_neighborhoods = unserialize(get_option('lme_area_neighborhoods'));
 		$lme_area_descriptions = unserialize(get_option('lme_area_descriptions'));
 		
 		for($i=0;$i<sizeOf($lme_area_cities);$i++){
-			if(
-				(
-					trim(strtolower($lme_area_cities[$i])) == trim(strtolower($this->city))/* &&
-					trim(strtolower($lme_area_states[$i])) == trim(strtolower($this->state)) &&
-					trim(strtolower($lme_area_neighborhoods[$i])) == trim(strtolower($this->neighborhood))*/
-				)/* || (
-					trim(strtolower($lme_area_zips[$i])) == trim(strtolower($this->zip)) &&
-					trim(strtolower($lme_area_neighborhoods[$i])) == trim(strtolower($this->neighborhood))
-				)*/
-			){
+			if(trim(strtolower($lme_area_cities[$i])) == trim(strtolower($this->city))){
 				return $lme_area_descriptions[$i];
 			}
 		}
@@ -603,13 +575,6 @@ HTML;
 		$educationdotcom_url = 'http://www.education.com/service/service.php?f=schoolSearch&sn=sf&resf=php&key='. $lme_apikey_educationcom;
 		
 		$educationdotcom_url .= '&city='. urlencode($this->city) .'&state='. urlencode($this->state);
-		/*if ($this->neighborhood != '' && $this->center_lat != '' && $this->center_long != '') {
-			$educationdotcom_url .= '&latitude='. $this->center_lat .'&longitude='. $this->center_long;
-		} else if ($this->city != '' && $this->state != '') {
-			$educationdotcom_url .= '&city='. $this->city .'&state='. $this->state;
-		} else if ($this->zip != '') {
-			$educationdotcom_url .= '&city='. $this->city .'&state='. $this->state;
-		}*/
 		// otherwise, we shouldn't be here
 		
 		$educationdotcom_data_raw = $this->get_url_data($educationdotcom_url);

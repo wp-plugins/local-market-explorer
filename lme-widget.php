@@ -7,10 +7,7 @@ function widget_lme_register(){
 		extract($args);
 		
 		$lme_area_cities = unserialize(get_option('lme_area_cities'));
-		$lme_area_zips = unserialize(get_option('lme_area_zips'));
 		$lme_area_states = unserialize(get_option('lme_area_states'));
-		$lme_area_neighborhoods = unserialize(get_option('lme_area_neighborhoods'));
-		//$lme_area_descriptions = unserialize(get_option('lme_area_descriptions'));
 		
 		?>
 		<?php echo $before_widget; ?>
@@ -23,17 +20,9 @@ function widget_lme_register(){
 			if($lme_area_cities[$i] != '' && $lme_area_states[$i] != '') {
 				$title = $lme_area_cities[$i] .', '. $lme_area_states[$i];
 				$link = $lme_area_cities[$i] .','. $lme_area_states[$i];
-				
-				if($lme_area_neighborhoods[$i] != '') {
-					$title = $lme_area_neighborhoods[$i];
-					$link .= '/'. $lme_area_neighborhoods[$i];
-				}
-			} else if($lme_area_zips[$i] != ''){
-				$title = $lme_area_zips[$i];
-				$link = $lme_area_zips[$i];
 			}
+			
 			$link = strtolower(str_replace(' ', '-', $link));
-			//$title = ucwords(strtolower($title));
 			?><a href="<?= $wpurl .'/'. $slug .'/'. $link ?>"><?= $title ?></a><br /><?
 		}
 		?>

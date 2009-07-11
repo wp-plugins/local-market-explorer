@@ -60,8 +60,6 @@ function update_lme_options(){
 	
 	$lme_area_cities = array();
 	$lme_area_states = array();
-	$lme_area_zips = array();
-	$lme_area_neighborhoods = array();
 	$lme_area_descriptions = array();
 	
 	foreach ( $_REQUEST as $key => $value ) { 
@@ -77,41 +75,23 @@ function update_lme_options(){
 	}
 	
 	foreach ( $_REQUEST as $key => $value ) { 
-		if(strpos($key, 'lme_area_zips__') !== false){
-			$lme_area_zips[sizeof($lme_area_zips)] = $value;
-		}
-	}
-	
-	foreach ( $_REQUEST as $key => $value ) { 
-		if(strpos($key, 'lme_area_neighborhoods__') !== false){
-			$lme_area_neighborhoods[sizeof($lme_area_neighborhoods)] = $value;
-		}
-	}
-	
-	foreach ( $_REQUEST as $key => $value ) { 
 		if(strpos($key, 'lme_area_descriptions__') !== false){
 			$lme_area_descriptions[sizeof($lme_area_descriptions)] = $value;
 		}
 	}
 	
 	$lme_area_cities_new = $_REQUEST['lme_area_cities_new'];
-	$lme_area_zips_new = $_REQUEST['lme_area_zips_new'];
 	$lme_area_states_new = $_REQUEST['lme_area_states_new'];
-	$lme_area_neighborhoods_new = $_REQUEST['lme_area_neighborhoods_new'];
 	$lme_area_descriptions_new = $_REQUEST['lme_area_descriptions_new'];
 	
-	if(($lme_area_cities_new != '' && $lme_area_states_new != '') || ($lme_area_zips_new != '')){
+	if($lme_area_cities_new != '' && $lme_area_states_new != ''){
 		$lme_area_cities[sizeof($lme_area_cities)] = $lme_area_cities_new;
 		$lme_area_states[sizeof($lme_area_states)] = $lme_area_states_new;
-		$lme_area_zips[sizeof($lme_area_zips)] = $lme_area_zips_new;
-		$lme_area_neighborhoods[sizeof($lme_area_neighborhoods)] = $lme_area_neighborhoods_new;
 		$lme_area_descriptions[sizeof($lme_area_descriptions)] = $lme_area_descriptions_new;		
 	}
 	
 	update_option('lme_area_cities', serialize($lme_area_cities));
 	update_option('lme_area_states', serialize($lme_area_states));
-	update_option('lme_area_zips', serialize($lme_area_zips));
-	update_option('lme_area_neighborhoods', serialize($lme_area_neighborhoods));
 	update_option('lme_area_descriptions', serialize($lme_area_descriptions));
 			
 	?><div id="message" class="updated fade"><p><strong>Options Saved</p></strong></div><?
@@ -135,9 +115,7 @@ function print_lme_options() {
 	$lme_apikey_walkscore = get_option('lme_apikey_walkscore');
 	
 	$lme_area_cities = unserialize(get_option('lme_area_cities'));
-	$lme_area_zips = unserialize(get_option('lme_area_zips'));
 	$lme_area_states = unserialize(get_option('lme_area_states'));
-	$lme_area_neighborhoods = unserialize(get_option('lme_area_neighborhoods'));
 	$lme_area_descriptions = unserialize(get_option('lme_area_descriptions'));
 	
 	?>
@@ -255,22 +233,6 @@ function print_lme_options() {
 					</tr>
 					<tr valign="top">
 						<th scope="row">
-							<label for="lme_area_zips__<?= $i ?>">Zip</label>
-						</th>
-						<td>
-							<input class="regular-text code" type="text" value="<?= $lme_area_zips[$i] ?>" name="lme_area_zips__<?= $i ?>"/>
-						</td>
-					</tr>
-					<tr valign="top">
-						<th scope="row">
-							<label for="lme_area_neighborhoods__<?= $i ?>">Neighborhood</label>
-						</th>
-						<td>
-							<input class="regular-text code" type="text" value="<?= $lme_area_neighborhoods[$i] ?>" name="lme_area_neighborhoods__<?= $i ?>"/>
-						</td>
-					</tr>
-					<tr valign="top">
-						<th scope="row">
 							<label for="lme_area_descriptions__<?= $i ?>">Description</label>
 						</th>
 						<td>
@@ -311,22 +273,6 @@ function print_lme_options() {
 				</tr>
 				<tr valign="top">
 					<th scope="row">
-						<label for="lme_area_zips_new">Zip</label>
-					</th>
-					<td>
-						<input class="regular-text code" type="text" value="" name="lme_area_zips_new"/>
-					</td>
-				</tr>
-				<tr valign="top">
-					<th scope="row">
-						<label for="lme_area_neighborhoods_new">Neighborhood</label>
-					</th>
-					<td>
-						<input class="regular-text code" type="text" value="" name="lme_area_neighborhoods_new"/>
-					</td>
-				</tr>
-				<tr valign="top">
-					<th scope="row">
 						<label for="lme_area_descriptions_new">Description</label>
 					</th>
 					<td>
@@ -360,9 +306,7 @@ function set_lme_options(){
 	add_option('lme_apikey_walkscore', '', '', 'yes');
 	
 	add_option('lme_area_cities', '', '', 'yes');
-	add_option('lme_area_zips', '', '', 'yes');
 	add_option('lme_area_states', '', '', 'yes');
-	add_option('lme_area_neighborhoods', '', '', 'yes');
 	add_option('lme_area_descriptions', '', '', 'yes');
 }
 
@@ -382,9 +326,11 @@ function unset_lme_options(){
 	delete_option('lme_apikey_walkscore');
 	
 	delete_option('lme_area_cities');
-	delete_option('lme_area_zips');
 	delete_option('lme_area_states');
-	delete_option('lme_area_neighborhoods');
 	delete_option('lme_area_descriptions');
+	
+	// these stay in because they may have been added at one point depending on how long the plugin has been installed
+	delete_option('lme_area_neighborhoods');
+	delete_option('lme_area_zips');
 }
 ?>
