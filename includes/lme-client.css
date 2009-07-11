@@ -343,3 +343,23 @@ ul.lme_schools_list{
 	width: 400px;
 	margin: 0 auto;
 }
+
+/* YELP */
+
+#lme-yelp-map{
+	width: 428px;
+	height: 300px;
+	border:1px solid #999999;
+	background-color: white;
+}
+.lme-yelp-preview{
+	text-align: left;
+	min-height: 100px;
+}
+.lme-yelp-preview img{
+	vertical-align:middle;
+}
+
+.lme-yelp-preview em{
+	font-size:8px;
+}

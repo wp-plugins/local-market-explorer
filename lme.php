@@ -35,6 +35,7 @@ register_deactivation_hook(__FILE__, 'unset_lme_options');
 
 include('lme-widget.php');
 include('lme-client.php');
-add_action('init', widget_lme_register);
+//add_action('init', widget_lme_register);
+add_action('widgets_init', create_function('', 'return register_widget("LMEWidget");'));
 new LMEPage;
 ?>

@@ -1,7 +1,10 @@
 <?
 function lme_admin_head(){
+	// call this to add any options that don't exist in the current install
+	set_lme_options();
+	
 	$wpurl = get_bloginfo('wpurl');
-	echo "<script type=\"text/javascript\" src=\"{$wpurl}/wp-content/plugins/lme/includes/lme-admin.js\"></script>";
+	echo "<script type=\"text/javascript\" src=\"{$wpurl}/wp-content/plugins/local-market-explorer/includes/lme-admin.js\"></script>";
 }
 
 function lme_admin_menu() {
@@ -58,6 +61,15 @@ function update_lme_options(){
 		update_option('lme_apikey_walkscore', $_REQUEST['lme_apikey_walkscore']);
 	}
 	
+	if($_REQUEST['lme_panels_show_yelp']){
+		update_option('lme_panels_show_yelp', $_REQUEST['lme_panels_show_yelp']);
+	} else {
+		update_option('lme_panels_show_yelp', '0');
+	}
+	if($_REQUEST['lme_apikey_yelp']){
+		update_option('lme_apikey_yelp', $_REQUEST['lme_apikey_yelp']);
+	}
+	
 	$lme_area_cities = array();
 	$lme_area_states = array();
 	$lme_area_descriptions = array();
@@ -97,7 +109,7 @@ function update_lme_options(){
 	?><div id="message" class="updated fade"><p><strong>Options Saved</p></strong></div><?
 }
 
-function print_lme_options() {
+function print_lme_options() {		
 	$lme_panels_show_zillow_homevalue = get_option('lme_panels_show_zillow_homevalue');
 	$lme_panels_show_zillow_marketactivity = get_option('lme_panels_show_zillow_marketactivity');
 	$lme_apikey_zillow = get_option('lme_apikey_zillow');
@@ -113,6 +125,9 @@ function print_lme_options() {
 	
 	$lme_panels_show_walkscore = get_option('lme_panels_show_walkscore');
 	$lme_apikey_walkscore = get_option('lme_apikey_walkscore');
+	
+	$lme_panels_show_yelp = get_option('lme_panels_show_yelp');
+	$lme_apikey_yelp = get_option('lme_apikey_yelp');
 	
 	$lme_area_cities = unserialize(get_option('lme_area_cities'));
 	$lme_area_states = unserialize(get_option('lme_area_states'));
@@ -205,6 +220,27 @@ function print_lme_options() {
 					<td>
 						<input id="lme_apikey_walkscore" class="regular-text code" type="text" value="<?= $lme_apikey_walkscore ?>" name="lme_apikey_walkscore"/>
 						<span class="setting-description">Get your key here: <a href="http://www.walkscore.com/request-tile-key.php" target="_blank">http://www.walkscore.com/request-tile-key.php</a></span>
+					</td>
+				</tr>
+			</table>
+			
+			<h3>Yelp</h3>
+			<table class="form-table">
+				<tr>
+					<th class="th-full" colspan="2" scope="row">
+						<label for="lme_panels_show_yelp">
+							<input id="lme_panels_show_yelp" type="checkbox" <?= $lme_panels_show_yelp == '1' ? 'checked="checked"' : ''?> value="1" name="lme_panels_show_yelp"/>
+							Show Yelp Panel
+						</label>
+					</th>
+				</tr>
+				<tr valign="top">
+					<th scope="row">
+						<label for="lme_apikey_yelp">Yelp API Key</label>
+					</th>
+					<td>
+						<input id="lme_apikey_yelp" class="regular-text code" type="text" value="<?= $lme_apikey_yelp ?>" name="lme_apikey_yelp"/>
+						<span class="setting-description">Get your key here: <a href="http://www.yelp.com/developers/getting_started/api_access" target="_blank">http://www.yelp.com/developers/getting_started/api_access</a></span>
 					</td>
 				</tr>
 			</table>
@@ -305,6 +341,9 @@ function set_lme_options(){
 	add_option('lme_panels_show_walkscore', '1', '', 'yes');
 	add_option('lme_apikey_walkscore', '', '', 'yes');
 	
+	add_option('lme_panels_show_yelp', '1', '', 'yes');
+	add_option('lme_apikey_yelp', '', '', 'yes');
+	
 	add_option('lme_area_cities', '', '', 'yes');
 	add_option('lme_area_states', '', '', 'yes');
 	add_option('lme_area_descriptions', '', '', 'yes');
@@ -325,6 +364,9 @@ function unset_lme_options(){
 	delete_option('lme_panels_show_walkscore');
 	delete_option('lme_apikey_walkscore');
 	
+	delete_option('lme_panels_show_yelp');
+	delete_option('lme_apikey_yelp');
+	
 	delete_option('lme_area_cities');
 	delete_option('lme_area_states');
 	delete_option('lme_area_descriptions');
@@ -332,5 +374,6 @@ function unset_lme_options(){
 	// these stay in because they may have been added at one point depending on how long the plugin has been installed
 	delete_option('lme_area_neighborhoods');
 	delete_option('lme_area_zips');
+	delete_option('lme_sidebar_badge');
 }
 ?>
