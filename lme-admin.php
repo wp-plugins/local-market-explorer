@@ -45,6 +45,12 @@ function update_lme_options(){
 		update_option('lme_panels_show_marketactivity', '0');
 	}
 	
+	if($_REQUEST['lme_sold_listings_to_show']) {
+		update_option('lme_sold_listings_to_show', $_REQUEST['lme_sold_listings_to_show']);
+	} else {
+		update_option('lme_sold_listings_to_show', '0');
+	}
+	
 	if($_REQUEST['lme_apikey_educationcom']){
 		update_option('lme_apikey_educationcom', $_REQUEST['lme_apikey_educationcom']);
 	}
@@ -128,6 +134,7 @@ function print_lme_options() {
 	$lme_apikey_flickr = get_option('lme_apikey_flickr');
 	
 	$lme_panels_show_marketactivity = get_option('lme_panels_show_marketactivity');
+	$lme_sold_listings_to_show = get_option('lme_sold_listings_to_show');
 	
 	$lme_apikey_educationcom = get_option('lme_apikey_educationcom');
 	
@@ -194,6 +201,15 @@ function print_lme_options() {
 							Show Market Activity Panel
 						</label>
 					</th>
+				</tr>
+				<tr>
+					<th scope="row">
+						<label for="lme_sold_listings_to_show"># of Sold Listings</label>
+					</th>
+					<td>
+						<input id="lme_sold_listings_to_show" class="regular-text code" type="text" value="<?= $lme_sold_listings_to_show ?>" name="lme_sold_listings_to_show" maxlength="2" style="width:40px;"/>
+						<span class="setting-description">Set this to a value between 0 and 20 to define how many sold listings the plugin should display</span>
+					</td>
 				</tr>
 			</table>
 			
@@ -353,6 +369,7 @@ function set_lme_options(){
 	add_option('lme_apikey_flickr', '', '', 'yes');
 	
 	add_option('lme_panels_show_marketactivity', '1', '', 'yes');
+	add_option('lme_sold_listings_to_show', '', '', 'yes');
 	
 	add_option('lme_apikey_educationcom', '', '', 'yes');
 	
@@ -372,6 +389,8 @@ function unset_lme_options(){
 	delete_option('lme_apikey_zillow');
 	delete_option('lme_username_zillow');
 	delete_option('lme_zillow_mylistings_widget');
+	
+	delete_option('lme_sold_listings_to_show');
 	
 	delete_option('lme_apikey_educationcom');
 	

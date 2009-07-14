@@ -1,14 +1,16 @@
 === Local Market Explorer ===
 Contributors: amattie, jmabe, zillow
 Tags: zillow, flickr, walk-score
-Requires at least: 2.0
+Requires at least: 2.8
 Tested up to: 2.8
-Stable tag: 1.0-b9
+Stable tag: 1.0-b11
 
 This plugin allows WordPress to load data from a number of real estate and neighborhood APIs to be presented all within a single
 page in WordPress.
 
 == Description ==
+
+* REQUIRES PHP 5 *
 
 This plugin allows for WordPress to load in data from the following APIs:
 

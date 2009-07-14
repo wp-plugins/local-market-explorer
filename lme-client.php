@@ -580,8 +580,13 @@ HTML;
 	
 	function get_recent_sold_html($xml){
 		$html = '';
+		$lme_sold_listings_to_show = get_option('lme_sold_listings_to_show');
 		
-		for($i=0;$i< (sizeOf($xml) > 4 ? 4 : sizeOf($xml)) ;$i++){
+		if ($lme_sold_listings_to_show == '') {
+			$lme_sold_listings_to_show = 4;
+		}
+		
+		for($i=0;$i< (sizeOf($xml) > $lme_sold_listings_to_show ? $lme_sold_listings_to_show : sizeOf($xml)) ;$i++){
 			$listingImage = str_replace('size=134,98', 'size=82,60', $xml[$i]->largeImageLink);
 			$formatted_last_sold_price = $this->get_money_from_xml($xml[$i]->lastSoldPrice);
 			$html .= "<div class='lme_recently_sold_item'>".					 	
