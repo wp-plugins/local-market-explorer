@@ -37,6 +37,12 @@ States, you'll find that most cities are sufficiently covered by nearly all of t
 
 == Frequently Asked Questions ==
 
+= How do I use the module after I install it? =
+
+The module is loaded / activated when the URL in your browser location bar matches the format of
+&lt;http://www.yourblog.com/local/_city_,_state_&gt;. In other words, to load the module for Seattle, you'll want to point
+your browser to / link to &lt;http://www.yourblog.com/local/seattle,wa&gt;. See the "Description" tab for more info.
+
 = Can I specify a zip or a neighborhood instead of a city? =
 
 This isn't currently possible, but it's something we'd like to do in the future once the necessary data is available in the

@@ -6,7 +6,7 @@ function lme_admin_head(){
 
 function lme_admin_menu() {
    if (function_exists('add_options_page')) {
-        add_options_page('LME Options Page', 'LME Options', 8, basename(__FILE__), 'lme_plugin_options');
+        add_options_page('LME Options Page', 'Local Market Explorer', 8, basename(__FILE__), 'lme_plugin_options');
 	}
 }
 
