@@ -3,7 +3,7 @@ Contributors: amattie, jmabe, zillow
 Tags: zillow, flickr, walk-score, schools, education
 Requires at least: 2.8
 Tested up to: 2.8
-Stable tag: 1.0-b11
+Stable tag: 1.0-b12
 
 This plugin allows WordPress to load data from a number of real estate and neighborhood APIs to be presented all within a single
 page in WordPress.
