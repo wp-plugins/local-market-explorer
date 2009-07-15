@@ -1,6 +1,6 @@
 === Local Market Explorer ===
 Contributors: amattie, jmabe, zillow
-Tags: zillow, flickr, walk-score, schools, education
+Tags: zillow, flickr, walk score, schools, education.com, real estate, local information, city data, yelp
 Requires at least: 2.8
 Tested up to: 2.8
 Stable tag: 1.0-b12

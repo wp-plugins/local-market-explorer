@@ -33,12 +33,19 @@ class LMEPage
 		}
 	}
 	
+	function template_override_for_lme() {
+		include(TEMPLATEPATH . '/page.php');
+		exit;
+	}
+	
 	// hooked filters
 	function get_post($posts) {
 		// filter 'the_posts'
 
 		if ($this->is_lme){
 			remove_filter('the_content', 'wpautop'); // keep wordpress from mucking up our HTML
+			add_action('template_redirect', array(&$this, 'template_override_for_lme'));
+			
 			$formattedNow = date('Y-m-d H:i:s');
 			
 			$lme_post = new stdClass();
@@ -374,6 +381,12 @@ LME_CONTENT;
 		$zindex = $this->get_money_from_xml($region_chart->zindex);
 		$affordability_link = $this->get_string_from_xml($affordability_link);
 		
+		$lme_username_zillow = get_option('lme_username_zillow');
+		if (strlen($lme_username_zillow) > 0)
+			$zillow_scrnm = '&scrnnm=' . $lme_username_zillow;
+		else
+			$zillow_scrnm = '';
+		
 		return <<<HTML
 			<h3>\${$zindex}</h3>
 
@@ -410,6 +423,11 @@ LME_CONTENT;
 			
 			<h4>{$this->location_for_display} Affordability Data</h4>
 			<table id="lme_zillow_affordability_data">
+				<tr>
+					<td>&nbsp;</td>
+					<th>City</th>
+					<th>National</th>
+				</tr>
 				<tr class="lme_primary">
 					<td>{$row1_name}</td>
 					<td class="lme_number lme_primary_value">{$formatted_city_home_value}</td>
@@ -433,10 +451,10 @@ LME_CONTENT;
 			</table>
 			
 			<div id="lme_zillow_see_more_link" class="lme_float_50">
-				<a href="{$affordability_link}?scid=gen-api-wplugin" target="_blank">See {$this->city} home values at Zillow.com</a>
+				<a href="{$affordability_link}?scid=gen-api-wplugin{$zillow_scrnm}" target="_blank">See {$this->city} home values at Zillow.com</a>
 			</div>
 			<div id="lme_zillow_logo" class="lme_float_50">
-				<a href="http://www.zillow.com/?scid=gen-api-wplugin"><img src="http://www.zillow.com/static/logos/Zillowlogo_150x40.gif" alt="Zillow - Real Estate" /></a>
+				<a href="http://www.zillow.com/?scid=gen-api-wplugin{$zillow_scrnm}"><img src="http://www.zillow.com/static/logos/Zillowlogo_150x40.gif" alt="Zillow - Real Estate" /></a>
 			</div>
 			<div class="clear"></div>
 HTML;
@@ -540,9 +558,14 @@ HTML;
 
 	function get_zillow_market_activity_data() {
 		$lme_apikey_zillow = get_option('lme_apikey_zillow');
-		$lme_username_zillow = get_option('lme_username_zillow');
 		$zillow_fmr = $this->get_url_data_as_xml("http://www.zillow.com/webservice/FMRWidget.htm?region=$this->city+$this->state&status=recentlySold&zws-id=$lme_apikey_zillow");
-
+		
+		$lme_username_zillow = get_option('lme_username_zillow');
+		if (strlen($lme_username_zillow) > 0)
+			$zillow_scrnm = '&scrnnm=' . $lme_username_zillow;
+		else
+			$zillow_scrnm = '';
+		
 		$recent_sales = $zillow_fmr->xpath("response/results/result");
 		$recently_sold_html = $this->get_recent_sold_html($recent_sales);
 
@@ -573,7 +596,7 @@ HTML;
 					{$recently_sold_html}
 				</div>
 				<div id="lme_recently_sold_link">
-					<a href="{$this->zillow_for_sale_link}?scid=gen-api-wplugin" target="_blank">See $this->city real estate and homes for sale</a>
+					<a href="{$this->zillow_for_sale_link}?scid=gen-api-wplugin{$zillow_scrnm}" target="_blank">See $this->city real estate and homes for sale</a>
 				</div>
 				<div class="clear"></div>
 			</div>
@@ -583,6 +606,11 @@ HTML;
 	function get_recent_sold_html($xml){
 		$html = '';
 		$lme_sold_listings_to_show = get_option('lme_sold_listings_to_show');
+		$lme_username_zillow = get_option('lme_username_zillow');
+		if (strlen($lme_username_zillow) > 0)
+			$zillow_scrnm = '&scrnnm=' . $lme_username_zillow;
+		else
+			$zillow_scrnm = '';
 		
 		if ($lme_sold_listings_to_show == '') {
 			$lme_sold_listings_to_show = 4;
@@ -593,8 +621,8 @@ HTML;
 			$formatted_last_sold_price = $this->get_money_from_xml($xml[$i]->lastSoldPrice);
 			$html .= "<div class='lme_recently_sold_item'>".					 	
 					 	//"<div></div>".
-					 	"<div><a href='{$xml[$i]->detailPageLink}?scid=gen-api-wplugin' target='_blank'><img src='{$listingImage}' class='lme_recently_sold_item_photo' /></a>".
-					 	"<a href='{$xml[$i]->detailPageLink}?scid=gen-api-wplugin' target='_blank'>{$xml[$i]->address->street}</a><br />".
+					 	"<div><a href='{$xml[$i]->detailPageLink}?scid=gen-api-wplugin{$zillow_scrnm}' target='_blank'><img src='{$listingImage}' class='lme_recently_sold_item_photo' /></a>".
+					 	"<a href='{$xml[$i]->detailPageLink}?scid=gen-api-wplugin{$zillow_scrnm}' target='_blank'>{$xml[$i]->address->street}</a><br />".
 					 	"Recently Sold ({$xml[$i]->lastSoldDate}): \${$formatted_last_sold_price}<br />".
 					 	"{$xml[$i]->bathrooms} beds {$xml[$i]->bedrooms} baths {$xml[$i]->finishedSqFt} sqft</div>".
 					 "</div>";

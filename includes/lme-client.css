@@ -173,7 +173,7 @@ tr.lme_secondary{
 	background-color: #F1F4FF;
 }
 td.lme_number{
-	text-align: right;
+	text-align: center;
 }
 td.lme_primary_value{
 	color: #C16D16;
@@ -197,6 +197,10 @@ td.lme_primary_value{
 }
 #lme_zillow_affordability_data{
 	width: 100%;
+}
+#lme_zillow_affordability_data th{
+	font-weight: bold;
+	text-align: center;
 }
 #lme_zillow_affordability_data td{
 	padding: 5px;

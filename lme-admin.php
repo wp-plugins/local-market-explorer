@@ -248,6 +248,10 @@ function print_lme_options() {
 				</tr>
 			</table>
 			
+			<p class="submit">
+				<input class="button-primary" type="submit" value="Save Changes" name="Submit"/>
+			</p>
+			
 			<h3>Target Areas</h3>
 		<?
 		if(is_array($lme_area_cities)){
