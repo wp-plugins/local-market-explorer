@@ -10,7 +10,7 @@ page in WordPress.
 
 == Description ==
 
-* REQUIRES PHP 5 *
+**REQUIRES PHP 5**
 
 This plugin allows for WordPress to load in data from the following APIs:
 
@@ -18,15 +18,15 @@ This plugin allows for WordPress to load in data from the following APIs:
 * [Education.com](http://www.education.com)
 * [Flickr](http://www.flickr.com)
 * [Walk Score](http://www.walkscore.com)
-* [Yelp](http://www.yelp.com) (coming soon)
+* [Yelp](http://www.yelp.com)
 
 The data from the different APIs is then presented on a single page that is dynamically created on the server depending on the
 specially-crafted URL that is being accessed. The format of the URL to load the plugin is as follows:
-&lt;http://www.example.com/local/_city_,_state_&gt;.
+&lt;http://www.example.com/local/_city_/_state_&gt;.
 
 For example, to load the Local Market Explorer for Seattle, WA, you'd simply need to point your browser to
 &lt;http://www.example.com/local/seattle,wa&gt;. If you have spaces in your city name, you can use hyphens for the spaces in the URL,
-like so: &lt;http://www.example.com/local/rancho-santa-margarita,ca&gt;.
+like so: &lt;http://www.example.com/local/rancho-santa-margarita/ca&gt;.
 
 At any time, you can link to any city in any state that you'd like. While not all of the APIs have data for every single city in the United
 States, you'll find that most cities are sufficiently covered by nearly all of the APIs.
@@ -42,8 +42,8 @@ States, you'll find that most cities are sufficiently covered by nearly all of t
 = How do I use the module after I install it? =
 
 The module is loaded / activated when the URL in your browser location bar matches the format of
-&lt;http://www.yourblog.com/local/_city_,_state_&gt;. In other words, to load the module for Seattle, you'll want to point
-your browser to / link to &lt;http://www.yourblog.com/local/seattle,wa&gt;. See the "Description" tab for more info.
+&lt;http://www.yourblog.com/local/_city_/_state_&gt;. In other words, to load the module for Seattle, you'll want to point
+your browser to / link to &lt;http://www.yourblog.com/local/seattle/wa&gt;. See the "Description" tab for more info.
 
 = Can I specify a zip or a neighborhood instead of a city? =
 

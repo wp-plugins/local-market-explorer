@@ -128,16 +128,16 @@ FOOTER;
 		global $wp;
 		global $wp_query;
 		
-		$cityStateRegex = "/". $this->slug ."\/(?P<city>[^,\/]+),(?P<state>[\w]{2})/";
+		$cityStateRegex = "/". $this->slug ."\/(?P<locationPartOne>[^\/]+)\/(?P<locationPartTwo>\w{2})/";
 		$cityStateRegexSuccess = preg_match($cityStateRegex, $wp->request, $cityStateUrlMatch);
 		
 		if ($cityStateRegexSuccess == 0) {
 			$this->is_lme = false;
 			return;
 		}
-
-		$this->city = trim(ucwords(str_replace('-', ' ', $cityStateUrlMatch['city'])));
-		$this->state = trim(strtoupper(str_replace('-', ' ', $cityStateUrlMatch['state'])));
+		
+		$this->city = trim(ucwords(str_replace('-', ' ', $cityStateUrlMatch['locationPartOne'])));
+		$this->state = trim(strtoupper(str_replace('-', ' ', $cityStateUrlMatch['locationPartTwo'])));
 		
 		$this->location_for_display = $this->city . ', ' . $this->state;
 
@@ -454,7 +454,7 @@ LME_CONTENT;
 				<a href="{$affordability_link}?scid=gen-api-wplugin{$zillow_scrnm}" target="_blank">See {$this->city} home values at Zillow.com</a>
 			</div>
 			<div id="lme_zillow_logo" class="lme_float_50">
-				<a href="http://www.zillow.com/?scid=gen-api-wplugin{$zillow_scrnm}"><img src="http://www.zillow.com/static/logos/Zillowlogo_150x40.gif" alt="Zillow - Real Estate" /></a>
+				<a href="http://www.zillow.com/?scid=gen-api-wplugin{$zillow_scrnm}" target="_blank"><img src="http://www.zillow.com/static/logos/Zillowlogo_150x40.gif" alt="Zillow - Real Estate" /></a>
 			</div>
 			<div class="clear"></div>
 HTML;
@@ -632,12 +632,71 @@ HTML;
 		
 		return $html;
 	}
+	
+	function get_state_translation() {
+		$states = array();
+		
+		$states["AL"] = "ALABAMA";
+		$states["AK"] = "ALASKA";
+		$states["AZ"] = "ARIZONA ";
+		$states["AR"] = "ARKANSAS";
+		$states["CA"] = "CALIFORNIA ";
+		$states["CO"] = "COLORADO ";
+		$states["CT"] = "CONNECTICUT";
+		$states["DE"] = "DELAWARE";
+		$states["DC"] = "DISTRICT OF COLUMBIA";
+		$states["FL"] = "FLORIDA";
+		$states["GA"] = "GEORGIA";
+		$states["HI"] = "HAWAII";
+		$states["ID"] = "IDAHO";
+		$states["IL"] = "ILLINOIS";
+		$states["IN"] = "INDIANA";
+		$states["IA"] = "IOWA";
+		$states["KS"] = "KANSAS";
+		$states["KY"] = "KENTUCKY";
+		$states["LA"] = "LOUISIANA";
+		$states["ME"] = "MAINE";
+		$states["MD"] = "MARYLAND";
+		$states["MA"] = "MASSACHUSETTS";
+		$states["MI"] = "MICHIGAN";
+		$states["MN"] = "MINNESOTA";
+		$states["MS"] = "MISSISSIPPI";
+		$states["MO"] = "MISSOURI";
+		$states["MT"] = "MONTANA";
+		$states["NE"] = "NEBRASKA";
+		$states["NV"] = "NEVADA";
+		$states["NH"] = "NEW HAMPSHIRE";
+		$states["NJ"] = "NEW JERSEY";
+		$states["NM"] = "NEW MEXICO";
+		$states["NY"] = "NEW YORK";
+		$states["NC"] = "NORTH CAROLINA";
+		$states["ND"] = "NORTH DAKOTA";
+		$states["OH"] = "OHIO";
+		$states["OK"] = "OKLAHOMA";
+		$states["OR"] = "OREGON";
+		$states["PA"] = "PENNSYLVANIA";
+		$states["RI"] = "RHODE ISLAND";
+		$states["SC"] = "SOUTH CAROLINA";
+		$states["SD"] = "SOUTH DAKOTA";
+		$states["TN"] = "TENNESSEE";
+		$states["TX"] = "TEXAS";
+		$states["UT"] = "UTAH";
+		$states["VT"] = "VERMONT";
+		$states["VA"] = "VIRGINIA ";
+		$states["WA"] = "WASHINGTON";
+		$states["WV"] = "WEST VIRGINIA";
+		$states["WI"] = "WISCONSIN";
+		$states["WY"] = "WYOMING";
+		
+		return $states;
+	}
 
 	function get_educationdotcom_data() {
 		//$lme_apikey_educationcom = get_option('lme_apikey_educationcom');
 		$lme_apikey_educationcom = 'bd23bb5cb91e37c39282f6bf75d56fb9'; // education.com wants this embedded
 		$educationdotcom_url = 'http://www.education.com/service/service.php?f=schoolSearch&sn=sf&resf=php&key='. $lme_apikey_educationcom;
 		
+		$state_translation = $this->get_state_translation();
 		$educationdotcom_url .= '&city='. urlencode($this->city) .'&state='. urlencode($this->state);
 		// otherwise, we shouldn't be here
 		
@@ -647,6 +706,7 @@ HTML;
 		$elementary_school_html = '';
 		$middle_school_html = '';
 		$high_school_html = '';
+		$full_state = strtolower(str_replace(' ', '-', $state_translation[$this->state]));
 		
 		for ($i = 0; $i < sizeof($educationdotcom_data); $i++) {
 			$school = $educationdotcom_data[$i]['school'];
@@ -655,10 +715,10 @@ HTML;
 			
 			$list_item_html = <<<HTML
 				<li schooltype="{$schoolType}">
-					<a class="lme_school_name" href="{$school['url']}">{$school['schoolname']}</a>
+					<a class="lme_school_name" target="_blank" href="{$school['url']}">{$school['schoolname']}</a>
 					<div>{$school['address']}, {$school['phonenumber']}</div>
 					<div>{$school['gradesserved']} |
-					<a href="http://www.education.com/schoolfinder/us/{$this->state}/district/{$hyphenatedSchoolDistrict}/" target="_blank">{$school['schooldistrictname']}</a></div>
+					<a href="http://www.education.com/schoolfinder/us/{$full_state}/district/{$hyphenatedSchoolDistrict}/" target="_blank">{$school['schooldistrictname']}</a></div>
 				</li>
 HTML;
 			
@@ -676,19 +736,19 @@ HTML;
 		return <<<HTML
 			<div id="lme_schools_panel_left_container">
 				<div class="lme_schools_panel_left" id="lme_schools_panel_elementary">
-					<h5 class="lme_schools_list_subheader"><a href="http://www.education.com/schoolfinder/us/{$this->state}/{$this->city}/elementary/" target="_blank">{$this->location_for_display} Elementary Schools</a></h5>
+					<h5 class="lme_schools_list_subheader"><a href="http://www.education.com/schoolfinder/us/{$state_translation}/{$this->city}/elementary/" target="_blank">{$this->location_for_display} Elementary Schools</a></h5>
 					<div class="lme_schools_list_container">
 						<ul id="lme_schools_elementary_list" class="lme_schools_list">$elementary_school_html</ul>
 					</div>
 				</div>
 				<div class="lme_schools_panel_left lme_hide" id="lme_schools_panel_middle">
-					<h5 class="lme_schools_list_subheader"><a href="http://www.education.com/schoolfinder/us/{$this->state}/{$this->city}/middle/" target="_blank">{$this->location_for_display} Middle Schools</a></h5>
+					<h5 class="lme_schools_list_subheader"><a href="http://www.education.com/schoolfinder/us/{$state_translation}/{$this->city}/middle/" target="_blank">{$this->location_for_display} Middle Schools</a></h5>
 					<div class="lme_schools_list_container">
 						<ul id="lme_schools_middle_list" class="lme_schools_list">$middle_school_html</ul>
 					</div>
 				</div>
 				<div class="lme_schools_panel_left lme_hide" id="lme_schools_panel_high">
-					<h5 class="lme_schools_list_subheader"><a href="http://www.education.com/schoolfinder/us/{$this->state}/{$this->city}/high/" target="_blank">{$this->location_for_display} High Schools</a></h5>
+					<h5 class="lme_schools_list_subheader"><a href="http://www.education.com/schoolfinder/us/{$state_translation}/{$this->city}/high/" target="_blank">{$this->location_for_display} High Schools</a></h5>
 					<div class="lme_schools_list_container">
 						<ul id="lme_schools_high_list" class="lme_schools_list">$high_school_html</ul>
 					</div>
@@ -754,7 +814,7 @@ HTML;
 					<a href="http://www.education.com/schoolfinder/us/{$this->state}/{$this->city}/" target="_blank">See more info on {$this->location_for_display} schools</a>
 				</div>
 				<div id="lme_educationdotcom_logo">
-					<a href="http://www.education.com/schoolfinder/tools"><img src="http://www.education.com/i/logo/edu-logo-150x32.jpg" /></a>
+					<a href="http://www.education.com/schoolfinder/tools" target="_blank"><img src="http://www.education.com/i/logo/edu-logo-150x32.jpg" /></a>
 				</div>
 			</div>
 			<div class="clear"></div>

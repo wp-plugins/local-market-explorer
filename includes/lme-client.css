@@ -6,8 +6,6 @@
 	display: none;
 }
 .local_market_explorer{
-	font-size: 11px !important;
-	font-family: Verdana !important;
 	margin-top:5px;
 }
 
@@ -307,7 +305,6 @@ ul.lme_schools_list{
 }
 .lme_schools_list li{
 	clear:both;
-	font-weight:normal;
 	margin:0 !important;
 	height:65px;
 }
