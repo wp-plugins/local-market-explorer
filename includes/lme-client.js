@@ -165,12 +165,14 @@ var LocalMarketExplorer = {
 							    var infowindow = new google.maps.InfoWindow({
 							        content: 
 							        	"<div class='lme-yelp-preview'>"+
-							        		"<img src='"+ business.rating_img_url +"' title='"+ business.avg_rating +"' alt='"+ business.avg_rating +"' /> <em>based on "+ business.review_count +" reviews</em><br />"+
 							        		"<a href='"+ business.url +"' target='_blank'>"+ business.name +"</a><br />"+
+							        		"<div class='lme-yelm-preview-description'>"+
+							        		"<img src='"+ business.rating_img_url +"' title='"+ business.avg_rating +"' alt='"+ business.avg_rating +"' /> <em>based on "+ business.review_count +" reviews</em><br />"+
 							        		"Category: "+ (business.categories.length > 0 ? business.categories[0].name : "n/a") +"<br />"+
 							        		business.phone.replace(/(\d{3})(\d{3})(\d{4})/,"$1-$2-$3") +"<br />"+
 							        		business.address1 + (business.address2 != "" ? " " + business.address1 : "") + "<br />"+
 							        		business.city +", "+ business.state +" "+ business.zip +
+							        		"</div>" +
 							        	"</div>"
 							    });
 							    

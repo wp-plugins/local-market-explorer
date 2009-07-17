@@ -353,14 +353,38 @@ ul.lme_schools_list{
 	border:1px solid #999999;
 	background-color: white;
 }
+
 .lme-yelp-preview{
 	text-align: left;
 	min-height: 100px;
 }
+.lme-yelm-preview-description{
+	font-size: 0.9em;
+}
+.lme-yelp-preview a{
+	font-weight: bold;
+	font-size: 1.0em;
+}
 .lme-yelp-preview img{
 	vertical-align:middle;
 }
-
 .lme-yelp-preview em{
 	font-size:8px;
 }
+
+.lme-yelp-item{
+	text-align: left;
+	margin-top: 5px !important;
+}
+.lme-yelp-item-description{
+	font-size: 0.9em;
+}
+.lme-yelp-item a{
+	font-weight: bold;
+	font-size: 1.0em;
+}
+.lme-yelp-item img{
+	vertical-align:middle;
+}
+.lme-yelp-item em{
+	font-size

@@ -127,7 +127,7 @@ FOOTER;
 	function check_url(){
 		global $wp;
 		global $wp_query;
-		
+
 		$cityStateRegex = "/". $this->slug ."\/(?P<locationPartOne>[^\/]+)\/(?P<locationPartTwo>\w{2})/";
 		$cityStateRegexSuccess = preg_match($cityStateRegex, $wp->request, $cityStateUrlMatch);
 		
@@ -835,18 +835,39 @@ HTML;
 HTML;
 	}
 	
-	
 	function get_yelp_reviews_data() {
 		$lme_apikey_yelp = get_option('lme_apikey_yelp');
-		$yelp_request = "http://api.yelp.com/business_review_search?location=".urlencode($this->city).",%20".urlencode($this->state)."&ywsid={$lme_apikey_yelp}&radius=5&num_biz_requested=20&term=Gas,Grocery,Bank,Restaurant";
+		$yelp_request = "http://api.yelp.com/business_review_search?location=".urlencode($this->city).",%20".urlencode($this->state)."&ywsid={$lme_apikey_yelp}&radius=5&num_biz_requested=10&term=Gas,Grocery,Bank,Restaurant";
 		$yelp_reviews_raw = $this->get_url_data($yelp_request);
+		$review_html = $this->get_yelp_review_list_html(json_decode($yelp_reviews_raw));
 		
 		return <<<HTML
 			<script>LocalMarketExplorer.Yelp.Data = {$yelp_reviews_raw};</script>
 			<div id="lme-yelp-map"></div>
 			<em>Gas Stations, Grocery Stores, Banks, and Restaurants near {$this->city}</em>
+			<div id="lme-yelp-list">{$review_html}</div>
 			<div style='text-align:right'><a href='http://www.yelp.com/' target='_blank'><img title='Powered by Yelp' alt='Powered by Yelp' src='http://static.px.yelp.com/static/20090709/i/new/developers/yelp_logo_75x38.png' /></a></div>
 HTML;
+	}
+	
+	function get_yelp_review_list_html($yelp_json){
+		$html = '';
+		
+		foreach($yelp_json->businesses as $key => $business){	
+			$category_name = (sizeof($business->categories) > 0 ? $business->categories[0]->name : "n/a");
+			$phone = preg_replace('/(\d{3})(\d{3})(\d{4})/',"\\1-\\2-\\3", $business->phone);
+			$address = $business->address1 . ($business->address2 != "" ? " " + $business->address1 : "");
+			$html .= "<div class='lme-yelp-item'>
+        		<a href='{$business->url}' target='_blank'>{$business->name}</a><br />
+        		<div class=\"lme-yelp-item-description\">
+	        		<img src='{$business->rating_img_url}' title='{$business->avg_rating}' alt='{$business->avg_rating}' /> <em>based on {$business->review_count} reviews</em><br />
+	        		Category: {$category_name}<br />
+	        		{$address}, {$business->city}, {$phone}
+        		</div>
+        	</div>";
+		}
+		
+		return $html;
 	}
 }
 ?>

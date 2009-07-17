@@ -62,6 +62,11 @@ compliance with the API provider(s).
 Nope. You can turn off the "About" panel, the "Market Activity" panel, and / or the "Walk Score" panel in the Local Market
 Explorer admin section of WordPress.
 
+= How do I add a Sidebar Module listing my Target Markets? =
+
+Simply navigate to Appearance -> Widgets, then you can drag + drop the "LME Widget" from the "Available Widgets" to a sidebar on the right (such as "Sidebar 1"). Once the widget is placed, you can click the down-arrow on the newly placed widget to customize the Title and Badge.
+
+
 == Screenshots ==
 
 1. A screenshot of the module for Seattle, WA.

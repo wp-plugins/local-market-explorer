@@ -29,7 +29,7 @@ class LMEWidget extends WP_Widget {
 			
 			if($lme_area_cities[$i] != '' && $lme_area_states[$i] != '') {
 				$title = $lme_area_cities[$i] .', '. $lme_area_states[$i];
-				$link = $lme_area_cities[$i] .','. $lme_area_states[$i];
+				$link = $lme_area_cities[$i] .'/'. $lme_area_states[$i];
 			}
 			
 			$link = strtolower(str_replace(' ', '-', $link));
