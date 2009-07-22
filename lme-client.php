@@ -16,16 +16,15 @@ class LMEPage
 	var $zillow_for_sale_link = '';
 	
 	function LMEPage(){
-		add_filter('posts_request', array(&$this, 'query_override_for_lme'));
+		add_action('the_posts', array(&$this, 'check_url'));
 		add_filter('the_posts', array(&$this, 'get_post'));
 		add_filter('wp_head', array(&$this, 'get_head'));
+		add_filter('posts_request', array(&$this, 'query_override_for_lme'));
 		add_filter('wp_footer', array(&$this, 'get_footer'));
 	}
 	
 	// this will speed up requests by making the query to MySQL SUPER simple
 	function query_override_for_lme($query){
-		$this->check_url();
-		
 		if ($this->is_lme){
 			return 'SELECT NULL WHERE 1 = 0';
 		} else {
@@ -41,7 +40,7 @@ class LMEPage
 	// hooked filters
 	function get_post($posts) {
 		// filter 'the_posts'
-
+		
 		if ($this->is_lme){
 			remove_filter('the_content', 'wpautop'); // keep wordpress from mucking up our HTML
 			add_action('template_redirect', array(&$this, 'template_override_for_lme'));
@@ -74,17 +73,6 @@ class LMEPage
 			$lme_post->post_mime_type = '';
 			$lme_post->comment_count = 0;
 		
-			$wp_query->is_page = true;
-			//Not sure if this one is necessary but might as well set it like a true page
-			$wp_query->is_single = true;
-			$wp_query->is_home = false;
-			$wp_query->is_archive = false;
-			//$wp_query->is_category = false;
-			//Longer permalink structures may not match the fake post slug and cause a 404 error so we catch the error here
-			unset($wp_query->query["error"]);
-			$wp_query->query_vars["error"]="";
-			$wp_query->is_404=false;
-		
 			return array($lme_post);
 		} else {
 			return $posts;
@@ -93,7 +81,6 @@ class LMEPage
 	
 	function get_head() {
 		//filter wp_head
-		$this->check_url();
 		$wpurl = get_bloginfo('wpurl');
 		
 		if ($this->is_lme){
@@ -138,10 +125,20 @@ FOOTER;
 		
 		$this->city = trim(ucwords(str_replace('-', ' ', $cityStateUrlMatch['locationPartOne'])));
 		$this->state = trim(strtoupper(str_replace('-', ' ', $cityStateUrlMatch['locationPartTwo'])));
-		
 		$this->location_for_display = $this->city . ', ' . $this->state;
-
+		
 		$this->is_lme = true;
+		
+		$wp_query->is_page = true;
+		//Not sure if this one is necessary but might as well set it like a true page
+		$wp_query->is_single = true;
+		$wp_query->is_home = false;
+		$wp_query->is_archive = false;
+		//$wp_query->is_category = false;
+		//Longer permalink structures may not match the fake post slug and cause a 404 error so we catch the error here
+		unset($wp_query->query["error"]);
+		$wp_query->query_vars["error"]="";
+		$wp_query->is_404 = false;
 	}
 	
 	function get_url_data($url) {
