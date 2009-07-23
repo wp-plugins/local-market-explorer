@@ -111,7 +111,7 @@ FOOTER;
 		}
 	}
 	
-	function check_url(){
+	function check_url($posts){
 		global $wp;
 		global $wp_query;
 
@@ -120,7 +120,7 @@ FOOTER;
 		
 		if ($cityStateRegexSuccess == 0) {
 			$this->is_lme = false;
-			return;
+			return $posts;
 		}
 		
 		$this->city = trim(ucwords(str_replace('-', ' ', $cityStateUrlMatch['locationPartOne'])));
@@ -139,6 +139,8 @@ FOOTER;
 		unset($wp_query->query["error"]);
 		$wp_query->query_vars["error"]="";
 		$wp_query->is_404 = false;
+		
+		return $posts;
 	}
 	
 	function get_url_data($url) {
@@ -203,7 +205,7 @@ LME_CONTENT;
 LME_CONTENT;
 		if ($lme_panels_show_walkscore) {
 			$lme_content .= <<<LME_CONTENT
-						<a href="#lme-walk-score">Walk Score</a>
+						<a href="#lme-walk-score">Walk Score</a> |
 LME_CONTENT;
 		}
 		if ($lme_panels_show_yelp) {
