@@ -31,7 +31,7 @@ if(is_admin()){
 }
 
 register_activation_hook(__FILE__, 'set_lme_options');
-register_deactivation_hook(__FILE__, 'unset_lme_options');
+//register_deactivation_hook(__FILE__, 'unset_lme_options');
 
 include('lme-widget.php');
 include('lme-client.php');
