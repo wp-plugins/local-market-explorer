@@ -189,9 +189,9 @@ function print_lme_options() {
 			<table class="form-table">
 				<tr>
 					<th class="th-full" colspan="2" scope="row">
-						In order to show market activity, you'll need to <a href="http://www.zillow.com/webservice/APIUpgradeRequest.htm" target="_blank">
+						<p>In order to show market activity, you'll need to <a href="http://www.zillow.com/webservice/APIUpgradeRequest.htm" target="_blank">
 						submit an upgrade request</a> for your Zillow API key. After signing in, please choose "Local Market Explorer Wordpress Plugin"
-						from the "API Request Type" drop down box.
+						from the "API Request Type" drop down box.</p>
 						<br />
 						<label for="lme_panels_show_marketactivity">
 							<input id="lme_panels_show_marketactivity" type="checkbox" <?= $lme_panels_show_marketactivity == '1' ? 'checked="checked"' : ''?> value="1" name="lme_panels_show_marketactivity"/>

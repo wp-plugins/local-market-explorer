@@ -20,7 +20,7 @@ class LMEPage
 		add_filter('the_posts', array(&$this, 'get_post'));
 		add_filter('wp_head', array(&$this, 'get_head'));
 		add_filter('posts_request', array(&$this, 'query_override_for_lme'));
-		add_filter('wp_footer', array(&$this, 'get_footer'));
+		add_action('wp_footer', array(&$this, 'get_footer'));
 	}
 	
 	// this will speed up requests by making the query to MySQL SUPER simple
@@ -95,7 +95,7 @@ class LMEPage
 HEAD;
 		}
 	}
-	function get_footer() {
+	function get_footer($content) {
 		//filter wp_footer
 		$current_year = date('Y');
 		if ($this->is_lme) {
@@ -109,6 +109,7 @@ HEAD;
 				</div>
 FOOTER;
 		}
+		return $content;
 	}
 	
 	function check_url($posts){
