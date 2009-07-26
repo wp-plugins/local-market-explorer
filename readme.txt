@@ -45,27 +45,50 @@ The module is loaded / activated when the URL in your browser location bar match
 &lt;http://www.yourblog.com/local/_city_/_state_&gt;. In other words, to load the module for Seattle, you'll want to point
 your browser to / link to &lt;http://www.yourblog.com/local/seattle/wa&gt;. See the "Description" tab for more info.
 
-= Can I specify a zip or a neighborhood instead of a city? =
+= Can I specify a ZIP or a neighborhood instead of a city? =
 
-This isn't currently possible, but it's something we'd like to do in the future once the necessary data is available in the
-APIs.
+The Local Market Explorer plugin does not currently let you specify a neighborhood or ZIP, but it's planned for the next iteration of this plugin.
 
 = Can I customize the styling and display format? =
 
-Yep. All of the styles are controlled via an external CSS stylesheet named lme-client.css (located in the 'includes' folder).
-You can easily override any of the styles in there. Be aware, however, that the default styles were created to be compliant with
-all of the branding requirements of the different APIs. It's possible that overriding any of the styles could put you out of
-compliance with the API provider(s).
+Yes. All of the styles are controlled via an external CSS stylesheet named lme-client.css (located in the 'includes' folder). You can easily override any of the styles in there. Be aware, however, that the default styles were created to be compliant with all of the branding requirements of the different APIs. It's possible that overriding any of the styles could put you out of compliance with the API provider(s).
 
 = Do I have to show all of the panels? =
 
-Nope. You can turn off the "About" panel, the "Market Activity" panel, and / or the "Walk Score" panel in the Local Market
-Explorer admin section of WordPress.
+No. You can turn off the About, Market Activity, Walk Score, and Yelp modules via the Local Market Explorer admin section of your WordPress installation.
 
-= How do I add a Sidebar Module listing my Target Markets? =
+= How do I draw attention to the pages for my target markets? =
 
-Simply navigate to Appearance -> Widgets, then you can drag + drop the "LME Widget" from the "Available Widgets" to a sidebar on the right (such as "Sidebar 1"). Once the widget is placed, you can click the down-arrow on the newly placed widget to customize the Title and Badge.
+There are a number of pre-built images you can use to use as calls to action on your sidebar or anywhere else. The images are available in the following colors: black, blue, green, orange, and red. The images can be found in the following folder: http://www.yoursite.com/wp-content/plugins/local-market-explorer/images/badges
 
+= How to alter image colors for the sidebar module to match my site? =
+
+We have already given you a few sample colors to choose from but if you want even more control to integrate these buttons to match your blog, you can do so with almost all image software. To do so in Adobe Photoshop, just open the image and go to 
+
+Image > Adjustments > Hue/Saturation (Ctrl + U) 
+
+Adjust the sliders to match your site colors. Hue will change the color profile (blue to purple, for example) and the saturation is how strong or vibrant that color is. 
+
+If you do not have access to Photoshop, this can also be accomplished with GIMP, a free image manipulation software. (Instructions are here: http://docs.gimp.org/en/gimp-tool-hue-saturation.html)
+
+= How do I add a sidebar module listing my target markets? =
+
+From your wordpress admin interface, simply navigate to Appearance -> Widgets, then you can drag + drop the "LME Widget" from the "Available Widgets" to a sidebar on the right (such as "Sidebar 1"). Once the widget is placed, you can click the down-arrow on the newly placed widget to customize the Title and Badge.
+
+= My sidebar is not widgetized - how do I use this plugin on my blog? =
+
+You can always direct traffic to any city by simply linking to the page from within a blog post. For instance, you could link the word "Seattle" within a blog post to http://www.yoursite.com/local/Seattle/WA/. Alternatively, if you are a real estate agent specializing in Sammamish, Issaquah, and Redmond, here is some sample code to place a module in your sidebar that links to all your target markets:
+
+&lt;p align="center"&gt;&lt;img src="http://www.yoursite.com/wp-content/plugins/local-market-explorer/images/badges/120_lmegraph_orange.gif"&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://www.yoursite.com/local/Sammamish/WA/"&gt;Sammamish&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.yoursite.com/local/Redmond/WA/"&gt;Redmond&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.yoursite.com/local/Issaquah/WA/"&gt;Issaquah&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+= The Market Activity module is not getting populated with recent sales data - why? =
+
+The module is driven by a private API call that needs permissions to be granted to a specific Zillow API key. To request access to this API, simply fill out the API Upgrade form located here and select "Local Market Explorer Wordpress Plugin" in the API Request Type field. Once the request is processed, your market activity module should populate automatically with recent sales data.
 
 == Screenshots ==
 

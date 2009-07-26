@@ -827,10 +827,24 @@ HTML;
 		return <<<HTML
 			<div id="lme_walk_score_container">
 				<script type="text/javascript">
-					var ws_address = '{$this->city},{$this->state}';
-					var ws_width = '400';
+					var ws_wsid = "{$walkscore_api_key}";
+					var ws_address = "1501 Pike Place, Seattle, WA, 98101";
+					var ws_width = "400";
+					var ws_height = "286";
+					var ws_layout = "horizontal";
 				</script>
-				<script type="text/javascript" src="http://www.walkscore.com/tile/show-tile.php?wsid={$walkscore_api_key}"></script>
+				
+				<div id="ws-walkscore-tile">
+					<div id="ws-footer" style="position:absolute;top:268px;left:8px;width:488px">
+						<form id="ws-form">
+							<a id="ws-a" href="http://www.walkscore.com/" target="_blank">Find out your home"s Walk Score:</a>
+							<input type="text" id="ws-street" style="position:absolute;top:0px;left:225px;width:231px" />
+							<input type="image" id="ws-go" src="http://www2.walkscore.com/images/tile/go-button.gif" height="15" width="22" border="0" alt="get my Walk Score" style="position:absolute;top:0px;right:0px" />
+						</form>
+					</div>
+				</div>
+				
+				<script type="text/javascript" src="http://www.walkscore.com/tile/show-walkscore-tile.php"></script>
 			</div>
 HTML;
 	}
