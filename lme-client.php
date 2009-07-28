@@ -226,7 +226,7 @@ LME_CONTENT;
 				<div class="lme_container">
 					<div class="lme_container_top lme_container_cap">
 						<div class="lme_container_top_left lme_container_left"></div>
-						<h3>Zillow Home Value Index</h3>
+						<h3>Market Statistics</h3>
 						<div class="lme_container_top_right lme_container_right"></div>
 					</div>
 					<div id="lme_zillow_index" class="lme_container_body">{$home_value_data}</div>
@@ -828,7 +828,7 @@ HTML;
 			<div id="lme_walk_score_container">
 				<script type="text/javascript">
 					var ws_wsid = "{$walkscore_api_key}";
-					var ws_address = "1501 Pike Place, Seattle, WA, 98101";
+					var ws_address = "{$this->city},{$this->state}";
 					var ws_width = "400";
 					var ws_height = "286";
 					var ws_layout = "horizontal";
