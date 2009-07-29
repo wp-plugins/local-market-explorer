@@ -187,7 +187,7 @@ FOOTER;
 				<div class="lme_header">
 					<div class="lme_left"></div>
 					<div class="lme_middle" id="lme_navigation">
-						<a href="#lme-zillow-home-value-index">Zillow Home Value</a> |
+						<a href="#lme-zillow-home-value-index">Market Statistics</a> |
 LME_CONTENT;
 
 		if ($lme_panels_show_aboutarea) {
@@ -221,7 +221,7 @@ LME_CONTENT;
 					<div class="lme_right"></div>
 				</div>
 
-				<!-- "ZILLOW HOME VALUE INDEX" SECTION -->
+				<!-- "Market Statistics" SECTION -->
 				<a name="lme-zillow-home-value-index"></a>
 				<div class="lme_container">
 					<div class="lme_container_top lme_container_cap">
@@ -837,7 +837,7 @@ HTML;
 				<div id="ws-walkscore-tile">
 					<div id="ws-footer" style="position:absolute;top:268px;left:8px;width:488px">
 						<form id="ws-form">
-							<a id="ws-a" href="http://www.walkscore.com/" target="_blank">Find out your home"s Walk Score:</a>
+							<a id="ws-a" href="http://www.walkscore.com/" target="_blank">Find out your home's Walk Score:</a>
 							<input type="text" id="ws-street" style="position:absolute;top:0px;left:225px;width:231px" />
 							<input type="image" id="ws-go" src="http://www2.walkscore.com/images/tile/go-button.gif" height="15" width="22" border="0" alt="get my Walk Score" style="position:absolute;top:0px;right:0px" />
 						</form>
