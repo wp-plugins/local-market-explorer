@@ -25,12 +25,12 @@ var LocalMarketExplorer = {
 			
 			processChanges: function(){		
 				if(pageReady){	
-					$j('#lme_zillow_percentage').css('text-decoration', zillowShowPercent == 'false' ? 'underline' : 'none');
-					$j('#lme_zillow_dollar').css('text-decoration', zillowShowPercent == 'true' ? 'underline' : 'none');
+					$j('#lme_zillow_percentage').css('text-decoration', zillowShowPercent == 'false' ? 'none' : 'underline');
+					$j('#lme_zillow_dollar').css('text-decoration', zillowShowPercent == 'true' ? 'none' : 'underline');
 					
-					$j('#lme_zillow_market_1_yr').css('text-decoration', zillowChartDuration == '1year' ? 'none' : 'underline');
-					$j('#lme_zillow_market_5_yr').css('text-decoration', zillowChartDuration == '5years' ? 'none' : 'underline');
-					$j('#lme_zillow_market_10_yr').css('text-decoration', zillowChartDuration == '10years' ? 'none' : 'underline');
+					$j('#lme_zillow_market_1_yr').css('text-decoration', zillowChartDuration == '1year' ? 'underline' : 'none');
+					$j('#lme_zillow_market_5_yr').css('text-decoration', zillowChartDuration == '5years' ? 'underline' : 'none');
+					$j('#lme_zillow_market_10_yr').css('text-decoration', zillowChartDuration == '10years' ? 'underline' : 'none');
 
 					$j('#lme_zillow_region_chart').attr('src', zillowUrl.
 						replace("{show_percent}", zillowShowPercent). 

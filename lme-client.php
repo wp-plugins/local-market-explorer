@@ -53,7 +53,7 @@ class LMEPage
 			$lme_post->post_date = $formattedNow;
 			$lme_post->post_date_gmt = $formattedNow;
 			$lme_post->post_content = $this->get_content();
-			$lme_post->post_title = $this->city . ', ' . $this->state;
+			$lme_post->post_title = $this->city . ', ' . $this->state . ' Market Statistics, School Information, and Local Amenities';
 			$lme_post->post_category = 0;
 			$lme_post->post_excerpt = '';
 			$lme_post->post_status = 'publish';
@@ -811,7 +811,7 @@ HTML;
 			
 			<div id="lme_educationdotcom_footer">
 				<div id="lme_educationdotcom_see_more_link">
-					<a href="http://www.education.com/schoolfinder/us/{$this->state}/{$this->city}/" target="_blank">See more info on {$this->location_for_display} schools</a>
+					<a href="http://www.education.com/schoolfinder/us/{$full_state}/{$this->city}/" target="_blank">See more info on {$this->location_for_display} schools</a>
 				</div>
 				<div id="lme_educationdotcom_logo">
 					<a href="http://www.education.com/schoolfinder/tools" target="_blank"><img src="http://www.education.com/i/logo/edu-logo-150x32.jpg" /></a>
