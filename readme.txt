@@ -3,7 +3,7 @@ Contributors: amattie, jmabe, zillow
 Tags: zillow, flickr, walk score, schools, education.com, real estate, local information, city data, yelp
 Requires at least: 2.8
 Tested up to: 2.8
-Stable tag: 1.0-b20
+Stable tag: 1.0-b21
 
 This plugin allows WordPress to load data from a number of real estate and neighborhood APIs to be presented all within a single
 page in WordPress.
@@ -44,10 +44,6 @@ States, you'll find that most cities are sufficiently covered by nearly all of t
 The module is loaded / activated when the URL in your browser location bar matches the format of
 &lt;http://www.yourblog.com/local/_city_/_state_&gt;. In other words, to load the module for Seattle, you'll want to point
 your browser to / link to &lt;http://www.yourblog.com/local/seattle/wa&gt;. See the "Description" tab for more info.
-
-The Market Activity module is not getting populated with recent sales data - why?
-
-The module is driven by a private API call that needs permissions to be granted to a specific Zillow API key. To request access to this API, simply fill out the API upgrade form located [here](http://www.zillow.com/webservice/APIUpgradeRequest.htm) and select "Local Market Explorer Wordpress Plugin" in the API request type field. Once the request is processed, your market activity module should populate automatically with recent sales data.
 
 = Can I specify a ZIP or a neighborhood instead of a city? =
 
@@ -92,7 +88,7 @@ You can always direct traffic to any city by simply linking to the page from wit
 
 = The Market Activity module is not getting populated with recent sales data - why? =
 
-The module is driven by a private API call that needs permissions to be granted to a specific Zillow API key. To request access to this API, simply fill out the API Upgrade form located here and select "Local Market Explorer Wordpress Plugin" in the API Request Type field. Once the request is processed, your market activity module should populate automatically with recent sales data.
+The module is driven by a private API call that needs permissions to be granted to a specific Zillow API key. To request access to this API, simply fill out the API upgrade form located [here](http://www.zillow.com/webservice/APIUpgradeRequest.htm) and select "Local Market Explorer Wordpress Plugin" in the API request type field. Once the request is processed, your market activity module should populate automatically with recent sales data.
 
 == Screenshots ==
 
