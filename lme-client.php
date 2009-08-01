@@ -53,7 +53,7 @@ class LMEPage
 			$lme_post->post_date = $formattedNow;
 			$lme_post->post_date_gmt = $formattedNow;
 			$lme_post->post_content = $this->get_content();
-			$lme_post->post_title = $this->city . ', ' . $this->state . ' Market Statistics, School Information, and Local Amenities';
+			$lme_post->post_title = $this->city . ', ' . $this->state . ' Real Estate Information';
 			$lme_post->post_category = 0;
 			$lme_post->post_excerpt = '';
 			$lme_post->post_status = 'publish';
