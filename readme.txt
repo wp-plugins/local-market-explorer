@@ -3,7 +3,7 @@ Contributors: amattie, jmabe, zillow
 Tags: zillow, flickr, walk score, schools, education.com, real estate, local information, city data, yelp
 Requires at least: 2.8
 Tested up to: 2.8
-Stable tag: 1.0
+Stable tag: 1.0.1
 
 This plugin allows WordPress to load data from a number of real estate and neighborhood APIs to be presented all within a single
 page in WordPress.
@@ -25,7 +25,7 @@ specially-crafted URL that is being accessed. The format of the URL to load the 
 &lt;http://www.example.com/local/_city_/_state_&gt;.
 
 For example, to load the Local Market Explorer for Seattle, WA, you'd simply need to point your browser to
-&lt;http://www.example.com/local/seattle,wa&gt;. If you have spaces in your city name, you can use hyphens for the spaces in the URL,
+&lt;http://www.example.com/local/seattle/wa&gt;. If you have spaces in your city name, you can use hyphens for the spaces in the URL,
 like so: &lt;http://www.example.com/local/rancho-santa-margarita/ca&gt;.
 
 At any time, you can link to any city in any state that you'd like. While not all of the APIs have data for every single city in the United
@@ -33,9 +33,11 @@ States, you'll find that most cities are sufficiently covered by nearly all of t
 
 == Installation ==
 
-1. Extract `local-market-explorer.zip` to the `/wp-content/plugins/` directory
-2. Activate the plugin through the 'Plugins' menu in WordPress admin
-3. Go to Settings => LME Options in the admin area and fill in the necessary API keys
+1. Go to your WordPress admin area, then go to the "Plugins" area, then go to "Add New".
+2. Search for "local market explorer" (sans quotes) in the plugin search box.
+3. Click "Install" on the right, then click "Install" at the top-right in the window that comes up.
+4. Go to the "Settings" -> "Local Market Explorer" area.
+5. Visit each of the API key links and get your API keys. After you put in each API key, the data will load for the corresponding modules.
 
 == Frequently Asked Questions ==
 

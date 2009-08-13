@@ -736,19 +736,19 @@ HTML;
 		return <<<HTML
 			<div id="lme_schools_panel_left_container">
 				<div class="lme_schools_panel_left" id="lme_schools_panel_elementary">
-					<h5 class="lme_schools_list_subheader"><a href="http://www.education.com/schoolfinder/us/{$state_translation}/{$this->city}/elementary/" target="_blank">{$this->location_for_display} Elementary Schools</a></h5>
+					<h5 class="lme_schools_list_subheader"><a href="http://www.education.com/schoolfinder/us/{$full_state}/{$this->city}/elementary/" target="_blank">{$this->location_for_display} Elementary Schools</a></h5>
 					<div class="lme_schools_list_container">
 						<ul id="lme_schools_elementary_list" class="lme_schools_list">$elementary_school_html</ul>
 					</div>
 				</div>
 				<div class="lme_schools_panel_left lme_hide" id="lme_schools_panel_middle">
-					<h5 class="lme_schools_list_subheader"><a href="http://www.education.com/schoolfinder/us/{$state_translation}/{$this->city}/middle/" target="_blank">{$this->location_for_display} Middle Schools</a></h5>
+					<h5 class="lme_schools_list_subheader"><a href="http://www.education.com/schoolfinder/us/{$full_state}/{$this->city}/middle/" target="_blank">{$this->location_for_display} Middle Schools</a></h5>
 					<div class="lme_schools_list_container">
 						<ul id="lme_schools_middle_list" class="lme_schools_list">$middle_school_html</ul>
 					</div>
 				</div>
 				<div class="lme_schools_panel_left lme_hide" id="lme_schools_panel_high">
-					<h5 class="lme_schools_list_subheader"><a href="http://www.education.com/schoolfinder/us/{$state_translation}/{$this->city}/high/" target="_blank">{$this->location_for_display} High Schools</a></h5>
+					<h5 class="lme_schools_list_subheader"><a href="http://www.education.com/schoolfinder/us/{$full_state}/{$this->city}/high/" target="_blank">{$this->location_for_display} High Schools</a></h5>
 					<div class="lme_schools_list_container">
 						<ul id="lme_schools_high_list" class="lme_schools_list">$high_school_html</ul>
 					</div>
