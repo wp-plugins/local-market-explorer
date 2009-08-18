@@ -3,7 +3,7 @@ Contributors: amattie, jmabe, zillow
 Tags: zillow, flickr, walk score, schools, education.com, real estate, local information, city data, yelp
 Requires at least: 2.8
 Tested up to: 2.8
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 
 This plugin allows WordPress to load data from a number of real estate and neighborhood APIs to be presented all within a single
 page in WordPress.
@@ -38,6 +38,17 @@ States, you'll find that most cities are sufficiently covered by nearly all of t
 3. Click "Install" on the right, then click "Install" at the top-right in the window that comes up.
 4. Go to the "Settings" -> "Local Market Explorer" area.
 5. Visit each of the API key links and get your API keys. After you put in each API key, the data will load for the corresponding modules.
+
+== Changelog ==
+
+= 1.0.2 =
+* Fixed another bug with two links in Education.com module (specifically, cities with spaces and anything in California, Colorado, or Arizona)
+* Added handling for Thesis theme and any other theme that has a file called "custom_template.php" instead of "page.php" -- new fallback is to "post.php" if neither of those exist
+* Added handling for what seems to be a Walk Score tile duplication issue where the tile is getting placed on the page twice (due to their script?)
+
+= 1.0.1 =
+* Updated installation instructions
+* Fixed bug with links in Education.com module
 
 == Frequently Asked Questions ==
 

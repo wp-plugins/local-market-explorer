@@ -349,10 +349,19 @@ ul.lme_schools_list{
 }
 .local_market_explorer #ws-walkscore-tile{
 	position:relative;
-	text-align:left
+	text-align:left;
+	overflow: hidden;
 }
 .local_market_explorer #ws-walkscore-tile *{
 	float:none;
+}
+.local_market_explorer #ws-footer{
+	position:absolute;
+	top:268px;
+	left:8px;
+	width:488px;
+	background-color:#FFF;
+	height: 18px;
 }
 .local_market_explorer #ws-footer a,#ws-footer a:link{
 	font:11px Verdana,Arial,Helvetica,sans-serif;
@@ -413,5 +422,3 @@ ul.lme_schools_list{
 .lme-yelp-item img{
 	vertical-align:middle;
 }
-.lme-yelp-item em{
-	font-size

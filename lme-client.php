@@ -33,7 +33,13 @@ class LMEPage
 	}
 	
 	function template_override_for_lme() {
-		include(TEMPLATEPATH . '/page.php');
+		if (file_exists(TEMPLATEPATH . '/page.php')) {
+			include(TEMPLATEPATH . '/page.php');
+		} elseif (file_exists(TEMPLATEPATH . '/custom_tempate.php')) {
+			include(TEMPLATEPATH . '/custom_tempate.php');
+		} else {
+			include(TEMPLATEPATH . '/post.php');
+		}
 		exit;
 	}
 	
@@ -638,10 +644,10 @@ HTML;
 		
 		$states["AL"] = "ALABAMA";
 		$states["AK"] = "ALASKA";
-		$states["AZ"] = "ARIZONA ";
+		$states["AZ"] = "ARIZONA";
 		$states["AR"] = "ARKANSAS";
-		$states["CA"] = "CALIFORNIA ";
-		$states["CO"] = "COLORADO ";
+		$states["CA"] = "CALIFORNIA";
+		$states["CO"] = "COLORADO";
 		$states["CT"] = "CONNECTICUT";
 		$states["DE"] = "DELAWARE";
 		$states["DC"] = "DISTRICT OF COLUMBIA";
@@ -707,6 +713,7 @@ HTML;
 		$middle_school_html = '';
 		$high_school_html = '';
 		$full_state = strtolower(str_replace(' ', '-', $state_translation[$this->state]));
+		$city_for_link = strtolower(str_replace(' ', '-', $this->city));
 		
 		for ($i = 0; $i < sizeof($educationdotcom_data); $i++) {
 			$school = $educationdotcom_data[$i]['school'];
@@ -736,19 +743,19 @@ HTML;
 		return <<<HTML
 			<div id="lme_schools_panel_left_container">
 				<div class="lme_schools_panel_left" id="lme_schools_panel_elementary">
-					<h5 class="lme_schools_list_subheader"><a href="http://www.education.com/schoolfinder/us/{$full_state}/{$this->city}/elementary/" target="_blank">{$this->location_for_display} Elementary Schools</a></h5>
+					<h5 class="lme_schools_list_subheader"><a href="http://www.education.com/schoolfinder/us/{$full_state}/{$city_for_link}/elementary/" target="_blank">{$this->location_for_display} Elementary Schools</a></h5>
 					<div class="lme_schools_list_container">
 						<ul id="lme_schools_elementary_list" class="lme_schools_list">$elementary_school_html</ul>
 					</div>
 				</div>
 				<div class="lme_schools_panel_left lme_hide" id="lme_schools_panel_middle">
-					<h5 class="lme_schools_list_subheader"><a href="http://www.education.com/schoolfinder/us/{$full_state}/{$this->city}/middle/" target="_blank">{$this->location_for_display} Middle Schools</a></h5>
+					<h5 class="lme_schools_list_subheader"><a href="http://www.education.com/schoolfinder/us/{$full_state}/{$city_for_link}/middle/" target="_blank">{$this->location_for_display} Middle Schools</a></h5>
 					<div class="lme_schools_list_container">
 						<ul id="lme_schools_middle_list" class="lme_schools_list">$middle_school_html</ul>
 					</div>
 				</div>
 				<div class="lme_schools_panel_left lme_hide" id="lme_schools_panel_high">
-					<h5 class="lme_schools_list_subheader"><a href="http://www.education.com/schoolfinder/us/{$full_state}/{$this->city}/high/" target="_blank">{$this->location_for_display} High Schools</a></h5>
+					<h5 class="lme_schools_list_subheader"><a href="http://www.education.com/schoolfinder/us/{$full_state}/{$city_for_link}/high/" target="_blank">{$this->location_for_display} High Schools</a></h5>
 					<div class="lme_schools_list_container">
 						<ul id="lme_schools_high_list" class="lme_schools_list">$high_school_html</ul>
 					</div>
@@ -811,7 +818,7 @@ HTML;
 			
 			<div id="lme_educationdotcom_footer">
 				<div id="lme_educationdotcom_see_more_link">
-					<a href="http://www.education.com/schoolfinder/us/{$full_state}/{$this->city}/" target="_blank">See more info on {$this->location_for_display} schools</a>
+					<a href="http://www.education.com/schoolfinder/us/{$full_state}/{$city_for_link}/" target="_blank">See more info on {$this->location_for_display} schools</a>
 				</div>
 				<div id="lme_educationdotcom_logo">
 					<a href="http://www.education.com/schoolfinder/tools" target="_blank"><img src="http://www.education.com/i/logo/edu-logo-150x32.jpg" /></a>
@@ -835,7 +842,7 @@ HTML;
 				</script>
 				
 				<div id="ws-walkscore-tile">
-					<div id="ws-footer" style="position:absolute;top:268px;left:8px;width:488px">
+					<div id="ws-footer">
 						<form id="ws-form">
 							<a id="ws-a" href="http://www.walkscore.com/" target="_blank">Find out your home's Walk Score:</a>
 							<input type="text" id="ws-street" style="position:absolute;top:0px;left:225px;width:231px" />
