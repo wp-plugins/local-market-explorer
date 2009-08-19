@@ -109,7 +109,7 @@ HEAD;
 				<div id="lme_footer">
 					<p>
 						&copy; Zillow, Inc., {$current_year}. Use is subject to <a href="http://www.zillow.com/corp/Terms.htm?scid=gen-api-wplugin" target="_blank">Terms of Use</a>.
-						<a href="http://www.zillow.com/howto/Zestimate.htm?scid=gen-api-wplugin" target="_blank">What's a Zestimate</a>?
+						<a href="http://www.zillow.com/howto/WhatsaZindex.htm?scid=gen-api-wplugin" target="_blank">What's a Zindex</a>?
 					</p>
 					<p>This product uses the Flickr API but is not endorsed or certified by Flickr.</p>
 				</div>
