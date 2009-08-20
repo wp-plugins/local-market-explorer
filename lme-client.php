@@ -350,8 +350,9 @@ LME_CONTENT;
 		$lme_apikey_zillow = get_option('lme_apikey_zillow');
 		$lme_username_zillow = get_option('lme_username_zillow');
 		
-		$zillow_xml = $this->get_url_data_as_xml("http://www.zillow.com/webservice/GetDemographics.htm?zws-id=$lme_apikey_zillow&state=$this->state&city=$this->city");
-		$zillow_chart = $this->get_url_data_as_xml("http://www.zillow.com/webservice/GetRegionChart.htm?zws-id=$lme_apikey_zillow&state=$this->state&city=$this->city&unit-type=percent&width=400&height=200");
+		$encoded_city = urlencode($this->city);
+		$zillow_xml = $this->get_url_data_as_xml("http://www.zillow.com/webservice/GetDemographics.htm?zws-id=$lme_apikey_zillow&state=$this->state&city=$encoded_city");
+		$zillow_chart = $this->get_url_data_as_xml("http://www.zillow.com/webservice/GetRegionChart.htm?zws-id=$lme_apikey_zillow&state=$this->state&city=$encoded_city&unit-type=percent&width=400&height=200");
 		
 		$node = $zillow_chart->xpath("response"); $region_chart = $node[0];
 		$node = $zillow_xml->xpath("response/charts/chart[name='Average Home Value']"); $avg_home_value = $node[0];
@@ -564,7 +565,8 @@ HTML;
 
 	function get_zillow_market_activity_data() {
 		$lme_apikey_zillow = get_option('lme_apikey_zillow');
-		$zillow_fmr = $this->get_url_data_as_xml("http://www.zillow.com/webservice/FMRWidget.htm?region=$this->city+$this->state&status=recentlySold&zws-id=$lme_apikey_zillow");
+		$encoded_city = urlencode($this->city);
+		$zillow_fmr = $this->get_url_data_as_xml("http://www.zillow.com/webservice/FMRWidget.htm?region=$encoded_city+$this->state&status=recentlySold&zws-id=$lme_apikey_zillow");
 		
 		$lme_username_zillow = get_option('lme_username_zillow');
 		if (strlen($lme_username_zillow) > 0)
