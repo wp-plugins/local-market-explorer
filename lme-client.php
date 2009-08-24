@@ -35,8 +35,8 @@ class LMEPage
 	function template_override_for_lme() {
 		if (file_exists(TEMPLATEPATH . '/page.php')) {
 			include(TEMPLATEPATH . '/page.php');
-		} elseif (file_exists(TEMPLATEPATH . '/custom_tempate.php')) {
-			include(TEMPLATEPATH . '/custom_tempate.php');
+		} elseif (file_exists(TEMPLATEPATH . '/custom_template.php')) {
+			include(TEMPLATEPATH . '/custom_template.php');
 		} else {
 			include(TEMPLATEPATH . '/post.php');
 		}
