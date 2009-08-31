@@ -4,6 +4,8 @@ class LMEPage
 	var $slug = 'local';
 	var $city = '';
 	var $state = '';
+	var $neighborhood = '';
+	var $zip = '';
 
 	// these will be set from the initial zillow request we pull
 	//var $center_lat = '';
@@ -59,21 +61,21 @@ class LMEPage
 			$lme_post->post_date = $formattedNow;
 			$lme_post->post_date_gmt = $formattedNow;
 			$lme_post->post_content = $this->get_content();
-			$lme_post->post_title = $this->city . ', ' . $this->state . ' Real Estate Information';
+			$lme_post->post_title = $this->location_for_display . ' Real Estate Information';
 			$lme_post->post_category = 0;
 			$lme_post->post_excerpt = '';
 			$lme_post->post_status = 'publish';
 			$lme_post->comment_status = 'closed';
 			$lme_post->ping_status = 'closed';
 			$lme_post->post_password = '';
-			$lme_post->post_name = $this->slug . '/' . $this->city . ',' . $this->state; // (ex. $slug/%city,%state)';
+			$lme_post->post_name = $lme_post->post_title;
 			$lme_post->to_ping = '';
 			$lme_post->pinged = '';
 			$lme_post->post_modified = $formattedNow; // maybe this and the gmt should be some static date for WP caching reasons?
 			$lme_post->post_modified_gmt = $formattedNow;
 			$lme_post->post_content_filtered = '';
 			$lme_post->post_parent = 0;
-			$lme_post->guid = get_bloginfo('wpurl') . '/' . $this->slug . '/' . $this->city . ',' . $this->state;
+			$lme_post->guid = get_bloginfo('wpurl') . '/' . $this->slug . '/' . $this->zip . '/' . $this->neighborhood . '/' . $this->city . '/' . $this->state;
 			$lme_post->menu_order = 0;
 			$lme_post->post_type = 'page';
 			$lme_post->post_mime_type = '';
@@ -122,17 +124,28 @@ FOOTER;
 		global $wp;
 		global $wp_query;
 
-		$cityStateRegex = "/". $this->slug ."\/(?P<locationPartOne>[^\/]+)\/(?P<locationPartTwo>\w{2})/";
+		$cityStateRegex = "/". $this->slug ."\/((?P<neighborhood>[^\/]+)\/)?(?P<city>[^\/]+)\/(?P<state>\w{2})/";
+		$zipRegex = "/". $this->slug ."\/(?P<zip>\d{5})/";
 		$cityStateRegexSuccess = preg_match($cityStateRegex, $wp->request, $cityStateUrlMatch);
+		$zipRegexSuccess = preg_match($zipRegex, $wp->request, $zipUrlMatch);
 		
-		if ($cityStateRegexSuccess == 0) {
+		if ($cityStateRegexSuccess > 0) {
+			$this->city = trim(ucwords(str_replace('-', ' ', $cityStateUrlMatch['city'])));
+			$this->state = trim(strtoupper(str_replace('-', ' ', $cityStateUrlMatch['state'])));
+			
+			if (!is_null($cityStateUrlMatch['neighborhood'])) {
+				$this->neighborhood = trim(ucwords(str_replace('-', ' ', $cityStateUrlMatch['neighborhood'])));
+				$this->location_for_display = $this->neighborhood . 'in' . $this->city . ', ' . $this->state;
+			} else {
+				$this->location_for_display = $this->city . ', ' . $this->state;
+			}
+		} else if ($zipRegexSuccess > 0) {
+			$this->zip = $zipUrlMatch['zip'];
+			$this->location_for_display = $this->zip;
+		} else {
 			$this->is_lme = false;
 			return $posts;
 		}
-		
-		$this->city = trim(ucwords(str_replace('-', ' ', $cityStateUrlMatch['locationPartOne'])));
-		$this->state = trim(strtoupper(str_replace('-', ' ', $cityStateUrlMatch['locationPartTwo'])));
-		$this->location_for_display = $this->city . ', ' . $this->state;
 		
 		$this->is_lme = true;
 		
@@ -350,7 +363,17 @@ LME_CONTENT;
 		$lme_apikey_zillow = get_option('lme_apikey_zillow');
 		$lme_username_zillow = get_option('lme_username_zillow');
 		
-		$encoded_city = urlencode($this->city);
+		$location_for_api = '';
+		
+		if ($this->state != '') {
+			$location_for_api .+ 'city=' . urlencode($this->city) . '&state=' .$this->state;
+			if ($this->neighborhood != '') {
+				$location_for_api .+ '&neighborhood=' . urlencode($this->neighborhood);
+			}
+		} else if ($this->zip != '') {
+			$location_for_api .+ 'zip=' . urlencode($this->zip);
+		}
+		
 		$zillow_xml = $this->get_url_data_as_xml("http://www.zillow.com/webservice/GetDemographics.htm?zws-id=$lme_apikey_zillow&state=$this->state&city=$encoded_city");
 		$zillow_chart = $this->get_url_data_as_xml("http://www.zillow.com/webservice/GetRegionChart.htm?zws-id=$lme_apikey_zillow&state=$this->state&city=$encoded_city&unit-type=percent&width=400&height=200");
 		
