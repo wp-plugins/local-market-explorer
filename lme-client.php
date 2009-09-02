@@ -222,12 +222,12 @@ LME_CONTENT;
 		}
 		if ($lme_panels_show_yelp) {
 			$lme_content .= <<<LME_CONTENT
-						<a href="#lme-yelp">Yelp Local Reviews</a>
+						<a href="#lme-yelp">Yelp Local Reviews</a> |
 LME_CONTENT;
 		}
 		if ($lme_panels_show_teachstreet) {
 			$lme_content .= <<<LME_CONTENT
-						<a href="#lme-teachstreet">TeachStreet</a>
+						<a href="#lme-teachstreet">Local Classes</a>
 LME_CONTENT;
 		}
 		
@@ -332,7 +332,7 @@ LME_CONTENT;
 		}
 		
 		if ($lme_panels_show_teachstreet) {
-			$yelp_data = $this->get_teachstreet_data();
+			$teachstreet_data = $this->get_teachstreet_data();
 			$lme_content .= <<<LME_CONTENT
 				<!-- TEACHSTREET SECTION -->
 				<a name="lme-teachstreet"></a>
@@ -889,14 +889,44 @@ HTML;
 	}
 	
 	function get_teachstreet_data() {
-		$api_url = 'http://www.teachstreet.com/lme/classes.json?where=' + urlencode($this->city) + ',' + urlencode($this->state);
-		$api_data = json_decode($this->get_url_data($api_url));
+		$api_url = 'http://www.teachstreet.com/lme/classes.json?where=' . urlencode($this->city) . ',' . urlencode($this->state);
+		$api_data = $this->get_url_data($api_url);
+		$api_data_decoded = json_decode($api_data);
 		$html = '';
-		
-		print_r($api_data);
-		$html = <<<HTML
+
+		for ($i = 0; $i < sizeof($api_data_decoded->items); $i++) {
+			$description = $api_data_decoded->items[$i]->description;
+			$title = $api_data_decoded->items[$i]->title;
+			$url = $api_data_decoded->items[$i]->url;
+			$image = $api_data_decoded->items[$i]->image;
 			
+			$teacher_name = $api_data_decoded->items[$i]->teacher->name;
+			$teacher_url = $api_data_decoded->items[$i]->teacher->url;
+			
+			$category_name = $api_data_decoded->items[$i]->category->name;
+			$category_url = $api_data_decoded->items[$i]->category->url;
+			
+			$html .= <<<HTML
+				<div class="ts_item">
+					<div class="ts_item_image">
+						<a href="$url" target="_blank"><img alt="$title" src="$image" /></a>
+					</div>
+					<div class="ts_item_details">
+						<p><a href="$url" target="_blank">$title</a></p>
+						<p>Taught by <a href="$teacher_url" target="_blank">$teacher_name</a></p>
+						<p>More <a href="$category_url" target="_blank">$category_name classes in {$this->location_for_display}</a></p>
+					</div>
+					<div class="clear"></div> 
+				</div>
 HTML;
+		}
+		
+		$html .= <<<HTML
+			<div class="ts_footer">
+				<a href="{$api_data_decoded->region_browse_url}" target="_blank">Find more classes and teachers in {$this->location_for_display}</a>
+			</div>
+HTML;
+		
 		return $html;
 	}
 	

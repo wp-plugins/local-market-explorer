@@ -76,6 +76,15 @@ function update_lme_options(){
 		update_option('lme_apikey_yelp', $_REQUEST['lme_apikey_yelp']);
 	}
 	
+	if($_REQUEST['lme_panels_show_teachstreet']){
+		update_option('lme_panels_show_teachstreet', $_REQUEST['lme_panels_show_teachstreet']);
+	} else {
+		update_option('lme_panels_show_teachstreet', '0');
+	}
+	if($_REQUEST['lme_apikey_teachstreet']){
+		update_option('lme_apikey_teachstreet', $_REQUEST['lme_apikey_teachstreet']);
+	}
+	
 	$lme_area_cities = array();
 	$lme_area_states = array();
 	$lme_area_descriptions = array();
@@ -135,6 +144,9 @@ function print_lme_options() {
 	
 	$lme_panels_show_yelp = get_option('lme_panels_show_yelp');
 	$lme_apikey_yelp = get_option('lme_apikey_yelp');
+	
+	$lme_panels_show_yelp = get_option('lme_panels_show_teachstreet');
+	$lme_apikey_yelp = get_option('lme_apikey_teachstreet');
 	
 	$lme_area_cities = unserialize(get_option('lme_area_cities'));
 	$lme_area_states = unserialize(get_option('lme_area_states'));
@@ -252,6 +264,32 @@ function print_lme_options() {
 				</tr>
 			</table>
 			
+			<h3>TeachStreet (Local Classes)</h3>
+		<?
+		if (function_exists('json_decode')) {
+		?>
+			<table class="form-table">
+				<tr>
+					<th class="th-full" colspan="2" scope="row">
+						<label for="lme_panels_show_teachstreet">
+							<input id="lme_panels_show_teachstreet" type="checkbox" <?= $lme_panels_show_teachstreet == '1' ? 'checked="checked"' : ''?> value="1" name="lme_panels_show_teachstreet"/>
+							Show TeachStreet Panel
+						</label>
+					</th>
+				</tr>
+			</table>
+		<?
+		} else {}
+		?>
+			<p>
+				Unfortunately, it seems that the version of PHP that you're running is too old to be able to support the data available via TeachStreet.
+				We highly recommend that you ask your web host to upgrade their version of PHP on the server that your website is on as it is buggy and more
+				than 3 years old.
+			</p> 
+		<?
+		}
+		?>
+			
 			<p class="submit">
 				<input class="button-primary" type="submit" value="Save Changes" name="Submit"/>
 			</p>
@@ -356,6 +394,8 @@ function set_lme_options(){
 	add_option('lme_panels_show_yelp', '1', '', 'yes');
 	add_option('lme_apikey_yelp', '', '', 'yes');
 	
+	add_option('lme_panels_show_teachstreet', '1', '', 'yes');
+	
 	add_option('lme_area_cities', '', '', 'yes');
 	add_option('lme_area_states', '', '', 'yes');
 	add_option('lme_area_descriptions', '', '', 'yes');
@@ -380,6 +420,8 @@ function unset_lme_options(){
 	
 	delete_option('lme_panels_show_yelp');
 	delete_option('lme_apikey_yelp');
+	
+	delete_option('lme_panels_show_teachstreet');
 	
 	delete_option('lme_area_cities');
 	delete_option('lme_area_states');
