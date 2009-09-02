@@ -179,6 +179,11 @@ FOOTER;
 		$lme_panels_show_marketactivity = get_option('lme_panels_show_marketactivity');
 		$lme_panels_show_walkscore = get_option('lme_panels_show_walkscore');
 		$lme_panels_show_yelp = get_option('lme_panels_show_yelp');
+		$lme_panels_show_teachstreet = get_option('lme_panels_show_teachstreet');
+		
+		if ($lme_panels_show_teachstreet && !function_exists('json_decode'))
+			$lme_panels_show_teachstreet = FALSE;
+		$lme_panels_show_teachstreet = TRUE;
 		
 		$lme_apikey_flickr = get_option('lme_apikey_flickr');
 		$lme_apikey_walkscore = get_option('lme_apikey_walkscore');
@@ -218,6 +223,11 @@ LME_CONTENT;
 		if ($lme_panels_show_yelp) {
 			$lme_content .= <<<LME_CONTENT
 						<a href="#lme-yelp">Yelp Local Reviews</a>
+LME_CONTENT;
+		}
+		if ($lme_panels_show_teachstreet) {
+			$lme_content .= <<<LME_CONTENT
+						<a href="#lme-teachstreet">TeachStreet</a>
 LME_CONTENT;
 		}
 		
@@ -313,6 +323,26 @@ LME_CONTENT;
 						<div class="lme_container_top_right lme_container_right"></div>
 					</div>
 					<div id="lme_walk_score" class="lme_container_body">{$walk_score_data}</div>
+					<div class="lme_container_bottom lme_container_cap">
+						<div class="lme_container_bottom_left lme_container_left"></div>
+						<div class="lme_container_bottom_right lme_container_right"></div>
+					</div>
+				</div>
+LME_CONTENT;
+		}
+		
+		if ($lme_panels_show_teachstreet) {
+			$yelp_data = $this->get_teachstreet_data();
+			$lme_content .= <<<LME_CONTENT
+				<!-- TEACHSTREET SECTION -->
+				<a name="lme-teachstreet"></a>
+				<div class="lme_container">
+					<div class="lme_container_top lme_container_cap">
+						<div class="lme_container_top_left lme_container_left"></div>
+						<h3>New Classes in {$this->location_for_display} (via TeachStreet)</h3>
+						<div class="lme_container_top_right lme_container_right"></div>
+					</div>
+					<div id="lme_teachstreet" class="lme_container_body">{$teachstreet_data}</div>
 					<div class="lme_container_bottom lme_container_cap">
 						<div class="lme_container_bottom_left lme_container_left"></div>
 						<div class="lme_container_bottom_right lme_container_right"></div>
@@ -856,6 +886,18 @@ HTML;
 				<script type="text/javascript" src="http://www.walkscore.com/tile/show-walkscore-tile.php"></script>
 			</div>
 HTML;
+	}
+	
+	function get_teachstreet_data() {
+		$api_url = 'http://www.teachstreet.com/lme/classes.json?where=' + urlencode($this->city) + ',' + urlencode($this->state);
+		$api_data = json_decode($this->get_url_data($api_url));
+		$html = '';
+		
+		print_r($api_data);
+		$html = <<<HTML
+			
+HTML;
+		return $html;
 	}
 	
 	function get_yelp_reviews_data() {
