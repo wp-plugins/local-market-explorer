@@ -19,6 +19,7 @@ This plugin allows for WordPress to load in data from the following APIs:
 * [Flickr](http://www.flickr.com)
 * [Walk Score](http://www.walkscore.com)
 * [Yelp](http://www.yelp.com)
+* [TeachStreet](http://www.teachstreet.com)
 
 The data from the different APIs is then presented on a single page that is dynamically created on the server depending on the
 specially-crafted URL that is being accessed. The format of the URL to load the plugin is as follows:
