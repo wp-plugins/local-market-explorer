@@ -8,8 +8,8 @@ class LMEPage
 	var $zip = '';
 
 	// these will be set from the initial zillow request we pull
-	//var $center_lat = '';
-	//var $center_long = '';
+	var $center_lat = '';
+	var $center_long = '';
 	
 	var $location_for_display = '';
 	var $is_lme = false;
@@ -366,16 +366,24 @@ LME_CONTENT;
 		$location_for_api = '';
 		
 		if ($this->state != '') {
-			$location_for_api .+ 'city=' . urlencode($this->city) . '&state=' .$this->state;
+			$location_for_api .+ '&city=' . urlencode($this->city) . '&state=' .$this->state;
 			if ($this->neighborhood != '') {
 				$location_for_api .+ '&neighborhood=' . urlencode($this->neighborhood);
 			}
 		} else if ($this->zip != '') {
-			$location_for_api .+ 'zip=' . urlencode($this->zip);
+			$location_for_api .+ '&zip=' . urlencode($this->zip);
 		}
 		
-		$zillow_xml = $this->get_url_data_as_xml("http://www.zillow.com/webservice/GetDemographics.htm?zws-id=$lme_apikey_zillow&state=$this->state&city=$encoded_city");
-		$zillow_chart = $this->get_url_data_as_xml("http://www.zillow.com/webservice/GetRegionChart.htm?zws-id=$lme_apikey_zillow&state=$this->state&city=$encoded_city&unit-type=percent&width=400&height=200");
+		$zillow_xml_url = "http://www.zillow.com/webservice/GetDemographics.htm?zws-id=$lme_apikey_zillow$location_for_api";
+		$zillow_chart_url = "http://www.zillow.com/webservice/GetRegionChart.htm?zws-id=$lme_apikey_zillow$location_for_api&unit-type=percent&width=400&height=200";
+		
+		print_r($zillow_xml_url);
+		
+		$zillow_xml = $this->get_url_data_as_xml($zillow_xml_url);
+		$zillow_chart = $this->get_url_data_as_xml($zillow_chart_url);
+		
+		$this->center_lat = '';
+		$this->center_long = '';
 		
 		$node = $zillow_chart->xpath("response"); $region_chart = $node[0];
 		$node = $zillow_xml->xpath("response/charts/chart[name='Average Home Value']"); $avg_home_value = $node[0];
