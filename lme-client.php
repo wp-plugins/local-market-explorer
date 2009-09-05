@@ -183,7 +183,6 @@ FOOTER;
 		
 		if ($lme_panels_show_teachstreet && !function_exists('json_decode'))
 			$lme_panels_show_teachstreet = FALSE;
-		$lme_panels_show_teachstreet = TRUE;
 		
 		$lme_apikey_flickr = get_option('lme_apikey_flickr');
 		$lme_apikey_walkscore = get_option('lme_apikey_walkscore');
@@ -913,7 +912,7 @@ HTML;
 					</div>
 					<div class="ts_item_details">
 						<p><a href="$url" target="_blank">$title</a></p>
-						<p>Taught by <a href="$teacher_url" target="_blank">$teacher_name</a></p>
+						<p>Taught by $teacher_name</p>
 						<p>More <a href="$category_url" target="_blank">$category_name classes in {$this->location_for_display}</a></p>
 					</div>
 					<div class="clear"></div> 

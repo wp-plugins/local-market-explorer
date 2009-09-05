@@ -145,8 +145,7 @@ function print_lme_options() {
 	$lme_panels_show_yelp = get_option('lme_panels_show_yelp');
 	$lme_apikey_yelp = get_option('lme_apikey_yelp');
 	
-	$lme_panels_show_yelp = get_option('lme_panels_show_teachstreet');
-	$lme_apikey_yelp = get_option('lme_apikey_teachstreet');
+	$lme_panels_show_teachstreet = get_option('lme_panels_show_teachstreet');
 	
 	$lme_area_cities = unserialize(get_option('lme_area_cities'));
 	$lme_area_states = unserialize(get_option('lme_area_states'));
@@ -279,7 +278,7 @@ function print_lme_options() {
 				</tr>
 			</table>
 		<?
-		} else {}
+		} else {
 		?>
 			<p>
 				Unfortunately, it seems that the version of PHP that you're running is too old to be able to support the data available via TeachStreet.
