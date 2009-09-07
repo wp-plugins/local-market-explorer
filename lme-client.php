@@ -193,6 +193,10 @@ FOOTER;
 		$lme_panels_show_educationcom = get_option('lme_panels_show_educationcom');
 		$lme_panels_show_walkscore = get_option('lme_panels_show_walkscore');
 		$lme_panels_show_yelp = get_option('lme_panels_show_yelp');
+		$lme_panels_show_teachstreet = get_option('lme_panels_show_teachstreet');
+		
+		if ($lme_panels_show_teachstreet && !function_exists('json_decode'))
+			$lme_panels_show_teachstreet = FALSE;
 		
 		$lme_apikey_flickr = get_option('lme_apikey_flickr');
 		$lme_apikey_walkscore = get_option('lme_apikey_walkscore');
@@ -233,7 +237,12 @@ LME_CONTENT;
 		}
 		if ($lme_panels_show_yelp) {
 			$lme_content .= <<<LME_CONTENT
-						<a href="#lme-yelp">Yelp Local Reviews</a>
+						<a href="#lme-yelp">Yelp Local Reviews</a> |
+LME_CONTENT;
+		}
+		if ($lme_panels_show_teachstreet) {
+			$lme_content .= <<<LME_CONTENT
+						<a href="#lme-teachstreet">Local Classes</a>
 LME_CONTENT;
 		}
 		
@@ -331,6 +340,26 @@ LME_CONTENT;
 						<div class="lme_container_top_right lme_container_right"></div>
 					</div>
 					<div id="lme_walk_score" class="lme_container_body">{$walk_score_data}</div>
+					<div class="lme_container_bottom lme_container_cap">
+						<div class="lme_container_bottom_left lme_container_left"></div>
+						<div class="lme_container_bottom_right lme_container_right"></div>
+					</div>
+				</div>
+LME_CONTENT;
+		}
+		
+		if ($lme_panels_show_teachstreet) {
+			$teachstreet_data = $this->get_teachstreet_data();
+			$lme_content .= <<<LME_CONTENT
+				<!-- TEACHSTREET SECTION -->
+				<a name="lme-teachstreet"></a>
+				<div class="lme_container">
+					<div class="lme_container_top lme_container_cap">
+						<div class="lme_container_top_left lme_container_left"></div>
+						<h3>New Classes in {$this->location_for_display} (via TeachStreet)</h3>
+						<div class="lme_container_top_right lme_container_right"></div>
+					</div>
+					<div id="lme_teachstreet" class="lme_container_body">{$teachstreet_data}</div>
 					<div class="lme_container_bottom lme_container_cap">
 						<div class="lme_container_bottom_left lme_container_left"></div>
 						<div class="lme_container_bottom_right lme_container_right"></div>
@@ -924,6 +953,48 @@ HTML;
 				<script type="text/javascript" src="http://www.walkscore.com/tile/show-walkscore-tile.php"></script>
 			</div>
 HTML;
+	}
+	
+	function get_teachstreet_data() {
+		$api_url = 'http://www.teachstreet.com/lme/classes.json?where=' . urlencode($this->city) . ',' . urlencode($this->state);
+		$api_data = $this->get_url_data($api_url);
+		$api_data_decoded = json_decode($api_data);
+		$html = '';
+
+		for ($i = 0; $i < sizeof($api_data_decoded->items); $i++) {
+			$description = $api_data_decoded->items[$i]->description;
+			$title = $api_data_decoded->items[$i]->title;
+			$url = $api_data_decoded->items[$i]->url;
+			$image = $api_data_decoded->items[$i]->image;
+			
+			$teacher_name = $api_data_decoded->items[$i]->teacher->name;
+			$teacher_url = $api_data_decoded->items[$i]->teacher->url;
+			
+			$category_name = $api_data_decoded->items[$i]->category->name;
+			$category_url = $api_data_decoded->items[$i]->category->url;
+			
+			$html .= <<<HTML
+				<div class="ts_item">
+					<div class="ts_item_image">
+						<a href="$url" target="_blank"><img alt="$title" src="$image" /></a>
+					</div>
+					<div class="ts_item_details">
+						<p><a href="$url" target="_blank">$title</a></p>
+						<p>Taught by $teacher_name</p>
+						<p>More <a href="$category_url" target="_blank">$category_name classes in {$this->location_for_display}</a></p>
+					</div>
+					<div class="clear"></div> 
+				</div>
+HTML;
+		}
+		
+		$html .= <<<HTML
+			<div class="ts_footer">
+				<a href="{$api_data_decoded->region_browse_url}" target="_blank">Find more classes and teachers in {$this->location_for_display}</a>
+			</div>
+HTML;
+		
+		return $html;
 	}
 	
 	function get_yelp_reviews_data() {

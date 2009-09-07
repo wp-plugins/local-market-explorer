@@ -1,9 +1,9 @@
 === Local Market Explorer ===
 Contributors: amattie, jmabe, zillow
-Tags: zillow, flickr, walk score, schools, education.com, real estate, local information, city data, yelp
+Tags: zillow, flickr, walk score, schools, education.com, real estate, local information, city data, yelp, teachstreet
 Requires at least: 2.8
 Tested up to: 2.8
-Stable tag: 1.0.4
+Stable tag: 1.1
 
 This plugin allows WordPress to load data from a number of real estate and neighborhood APIs to be presented all within a single
 page in WordPress.
@@ -19,6 +19,7 @@ This plugin allows for WordPress to load in data from the following APIs:
 * [Flickr](http://www.flickr.com)
 * [Walk Score](http://www.walkscore.com)
 * [Yelp](http://www.yelp.com)
+* [TeachStreet](http://www.teachstreet.com)
 
 The data from the different APIs is then presented on a single page that is dynamically created on the server depending on the
 specially-crafted URL that is being accessed. The format of the URL to load the plugin is as follows:
@@ -40,6 +41,9 @@ States, you'll find that most cities are sufficiently covered by nearly all of t
 5. Visit each of the API key links and get your API keys. After you put in each API key, the data will load for the corresponding modules.
 
 == Changelog ==
+
+= 1.1 =
+* Added ability to pull in TeachStreet data
 
 = 1.0.4 =
 * Fixed typo since 1.0.2 that caused Thesis theme not to work properly

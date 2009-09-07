@@ -383,7 +383,6 @@ ul.lme_schools_list{
 	color:#b14900
 }
 
-
 /* YELP */
 
 #lme-yelp-map{
@@ -425,3 +424,21 @@ ul.lme_schools_list{
 .lme-yelp-item img{
 	vertical-align:middle;
 }
+
+/* TEACHSTREET */
+
+.local_market_explorer .ts_item {
+	margin-bottom: 15px;
+}
+.local_market_explorer .ts_item_image {
+	float:left;
+	width: 55px;
+}
+.local_market_explorer .ts_item_details {
+	float:left;
+	width: 345px;
+}
+.local_market_explorer .ts_footer{
+	text-align: center;
+}
+
