@@ -110,8 +110,8 @@ HEAD;
 			echo <<<FOOTER
 				<div id="lme_footer">
 					<p>
-						&copy; Zillow, Inc., {$current_year}. Use is subject to <a href="http://www.zillow.com/corp/Terms.htm?scid=gen-api-wplugin" target="_blank">Terms of Use</a>.
-						<a href="http://www.zillow.com/howto/WhatsaZindex.htm?scid=gen-api-wplugin" target="_blank">What's a Zindex</a>?
+						&copy; Zillow, Inc., {$current_year}. Use is subject to <a href="http://www.zillow.com/corp/Terms.htm#scid=gen-api-wplugin" target="_blank">Terms of Use</a>.
+						<a href="http://www.zillow.com/howto/WhatsaZindex.htm#scid=gen-api-wplugin" target="_blank">What's a Zindex</a>?
 					</p>
 					<p>This product uses the Flickr API but is not endorsed or certified by Flickr.</p>
 				</div>
@@ -133,9 +133,9 @@ FOOTER;
 			$this->city = trim(ucwords(str_replace('-', ' ', $cityStateUrlMatch['city'])));
 			$this->state = trim(strtoupper(str_replace('-', ' ', $cityStateUrlMatch['state'])));
 			
-			if (!is_null($cityStateUrlMatch['neighborhood'])) {
+			if ($cityStateUrlMatch['neighborhood'] != '') {
 				$this->neighborhood = trim(ucwords(str_replace('-', ' ', $cityStateUrlMatch['neighborhood'])));
-				$this->location_for_display = $this->neighborhood . 'in' . $this->city . ', ' . $this->state;
+				$this->location_for_display = $this->neighborhood . ', ' . $this->city . ', ' . $this->state;
 			} else {
 				$this->location_for_display = $this->city . ', ' . $this->state;
 			}
@@ -190,6 +190,7 @@ FOOTER;
 	function get_content() {
 		$lme_panels_show_aboutarea = get_option('lme_panels_show_aboutarea');
 		$lme_panels_show_marketactivity = get_option('lme_panels_show_marketactivity');
+		$lme_panels_show_educationcom = get_option('lme_panels_show_educationcom');
 		$lme_panels_show_walkscore = get_option('lme_panels_show_walkscore');
 		$lme_panels_show_yelp = get_option('lme_panels_show_yelp');
 		
@@ -220,9 +221,11 @@ LME_CONTENT;
 LME_CONTENT;
 		}
 		
-		$lme_content .= <<<LME_CONTENT
+		if ($lme_panels_show_educationcom) {
+			$lme_content .= <<<LME_CONTENT
 						<a href="#lme-schools">Schools</a> |
 LME_CONTENT;
+		}
 		if ($lme_panels_show_walkscore) {
 			$lme_content .= <<<LME_CONTENT
 						<a href="#lme-walk-score">Walk Score</a> |
@@ -297,22 +300,24 @@ LME_CONTENT;
 		}
 		
 		$educationdotcom_data = $this->get_educationdotcom_data();
-		$lme_content .= <<<LME_CONTENT
-				<!-- "SCHOOLS" (EDUCATION.COM) SECTION -->
-				<a name="lme-schools"></a>
-				<div class="lme_container">
-					<div class="lme_container_top lme_container_cap">
-						<div class="lme_container_top_left lme_container_left"></div>
-						<h3>Schools</h3>
-						<div class="lme_container_top_right lme_container_right"></div>
+		if ($lme_panels_show_educationcom) {
+			$lme_content .= <<<LME_CONTENT
+					<!-- "SCHOOLS" (EDUCATION.COM) SECTION -->
+					<a name="lme-schools"></a>
+					<div class="lme_container">
+						<div class="lme_container_top lme_container_cap">
+							<div class="lme_container_top_left lme_container_left"></div>
+							<h3>Schools</h3>
+							<div class="lme_container_top_right lme_container_right"></div>
+						</div>
+						<div id="lme_schools" class="lme_container_body">{$educationdotcom_data}</div>
+						<div class="lme_container_bottom lme_container_cap">
+							<div class="lme_container_bottom_left lme_container_left"></div>
+							<div class="lme_container_bottom_right lme_container_right"></div>
+						</div>
 					</div>
-					<div id="lme_schools" class="lme_container_body">{$educationdotcom_data}</div>
-					<div class="lme_container_bottom lme_container_cap">
-						<div class="lme_container_bottom_left lme_container_left"></div>
-						<div class="lme_container_bottom_right lme_container_right"></div>
-					</div>
-				</div>
 LME_CONTENT;
+		}
 		
 		if ($lme_panels_show_walkscore) {
 			$walk_score_data = $this->get_walk_score_data();
@@ -366,24 +371,24 @@ LME_CONTENT;
 		$location_for_api = '';
 		
 		if ($this->state != '') {
-			$location_for_api .+ '&city=' . urlencode($this->city) . '&state=' .$this->state;
+			$location_for_api .= '&city=' . urlencode($this->city) . '&state=' .$this->state;
 			if ($this->neighborhood != '') {
-				$location_for_api .+ '&neighborhood=' . urlencode($this->neighborhood);
+				$location_for_api .= '&neighborhood=' . urlencode($this->neighborhood);
 			}
 		} else if ($this->zip != '') {
-			$location_for_api .+ '&zip=' . urlencode($this->zip);
+			$location_for_api .= '&zip=' . urlencode($this->zip);
 		}
 		
 		$zillow_xml_url = "http://www.zillow.com/webservice/GetDemographics.htm?zws-id=$lme_apikey_zillow$location_for_api";
 		$zillow_chart_url = "http://www.zillow.com/webservice/GetRegionChart.htm?zws-id=$lme_apikey_zillow$location_for_api&unit-type=percent&width=400&height=200";
-		
 		print_r($zillow_xml_url);
-		
 		$zillow_xml = $this->get_url_data_as_xml($zillow_xml_url);
 		$zillow_chart = $this->get_url_data_as_xml($zillow_chart_url);
 		
-		$this->center_lat = '';
-		$this->center_long = '';
+		$node = $zillow_xml->xpath("response/region/latitude");
+		$this->center_lat = $node[0];
+		$node = $zillow_xml->xpath("response/region/longitude");
+		$this->center_long = $node[0];
 		
 		$node = $zillow_chart->xpath("response"); $region_chart = $node[0];
 		$node = $zillow_xml->xpath("response/charts/chart[name='Average Home Value']"); $avg_home_value = $node[0];
@@ -421,7 +426,7 @@ LME_CONTENT;
 		
 		$lme_username_zillow = get_option('lme_username_zillow');
 		if (strlen($lme_username_zillow) > 0)
-			$zillow_scrnm = '&scrnnm=' . $lme_username_zillow;
+			$zillow_scrnm = '?scrnnm=' . $lme_username_zillow;
 		else
 			$zillow_scrnm = '';
 		
@@ -489,59 +494,66 @@ LME_CONTENT;
 			</table>
 			
 			<div id="lme_zillow_see_more_link" class="lme_float_50">
-				<a href="{$affordability_link}?scid=gen-api-wplugin{$zillow_scrnm}" target="_blank">See {$this->city} home values at Zillow.com</a>
+				<a href="{$affordability_link}{$zillow_scrnm}#scid=gen-api-wplugin" target="_blank">See {$this->city} home values at Zillow.com</a>
 			</div>
 			<div id="lme_zillow_logo" class="lme_float_50">
-				<a href="http://www.zillow.com/?scid=gen-api-wplugin{$zillow_scrnm}" target="_blank"><img src="http://www.zillow.com/static/logos/Zillowlogo_150x40.gif" alt="Zillow - Real Estate" /></a>
+				<a href="http://www.zillow.com/{$zillow_scrnm}#scid=gen-api-wplugin" target="_blank"><img src="http://www.zillow.com/static/logos/Zillowlogo_150x40.gif" alt="Zillow - Real Estate" /></a>
 			</div>
 			<div class="clear"></div>
 HTML;
 	}
 	
 	function get_about_area_data(){
-		$flickr_api_key = get_option('lme_apikey_flickr');
-		$flickr_api_request_url = 'http://api.flickr.com/services/rest/?';
-		$flickr_photo_url_base = 'http://farm{farm-id}.static.flickr.com/{server-id}/{id}_{secret}_s.jpg';
+		$show_flickr_panel = get_option('lme_panels_show_flickr');
 		
-		$flickr_places_params = array(
-			'method'	=> 'flickr.places.find',
-			'api_key'	=> $flickr_api_key,
-			'query'		=> $this->location_for_display,
-			'format'	=> 'php_serial'
-		);
-		$encoded_flickr_places_params = array();		
-		foreach ($flickr_places_params as $key => $value){
-			$encoded_flickr_places_params[] = urlencode($key).'='.urlencode($value);
-		}
-		$flickr_places_request_url = $flickr_api_request_url . implode('&', $encoded_flickr_places_params);
-		$flickr_response = unserialize($this->get_url_data($flickr_places_request_url));
-		
-		$flickr_min_taken_date = strtotime(date("Y-m-d") . " -6 month");
-		$flickr_search_params = array(
-			'method'	=> 'flickr.photos.search',
-			'api_key'	=> $flickr_api_key,
-			'per_page'	=> '6',
-			'radius'	=> '5',
-			'radius_units'	=> 'mi',
-			'accuracy'	=> '11',
-			'place_id'	=> $flickr_response['places']['place'][0]['place_id'],
-			//'tag'		=> $this->city,
-			'sort'		=> 'interestingness-desc',
-			'min_taken_date'=> date("Y-m-d H:i:s", $flickr_min_taken_date),
-			'format'	=> 'php_serial'
-		);
-		$encoded_flickr_search_params = array();		
-		foreach ($flickr_search_params as $key => $value){
-			$encoded_flickr_search_params[] = urlencode($key).'='.urlencode($value);
-		}
-		$flickr_search_request_url = $flickr_api_request_url . implode('&', $encoded_flickr_search_params);
-		$flickr_response = unserialize($this->get_url_data($flickr_search_request_url));
-		$flickr_image_html = '';
-		
-		if($flickr_response && $flickr_response['photos'] && $flickr_response['photos']['photo']){
-			foreach ($flickr_response['photos']['photo'] as $key => $value){
-				$img_src = str_replace(array('{farm-id}', '{server-id}', '{id}', '{secret}'), array($value['farm'], $value['server'], $value['id'], $value['secret']), $flickr_photo_url_base);
-				$flickr_image_html .= '<img src="' . $img_src . '" class="lme_flickr_image" />';
+		if ($show_flickr_panel) {
+			$flickr_api_key = get_option('lme_apikey_flickr');
+			$flickr_api_request_url = 'http://api.flickr.com/services/rest/?';
+			$flickr_photo_url_base = 'http://farm{farm-id}.static.flickr.com/{server-id}/{id}_{secret}_s.jpg';
+			
+			/* not needed anymore since we now have latitude / longitude from the prior API call to Zillow
+			$flickr_places_params = array(
+				'method'	=> 'flickr.places.find',
+				'api_key'	=> $flickr_api_key,
+				'query'		=> $this->location_for_display,
+				'format'	=> 'php_serial'
+			);
+			$encoded_flickr_places_params = array();		
+			foreach ($flickr_places_params as $key => $value){
+				$encoded_flickr_places_params[] = urlencode($key).'='.urlencode($value);
+			}
+			$flickr_places_request_url = $flickr_api_request_url . implode('&', $encoded_flickr_places_params);
+			$flickr_response = unserialize($this->get_url_data($flickr_places_request_url));*/
+			
+			$flickr_min_taken_date = strtotime(date("Y-m-d") . " -6 month");
+			$flickr_search_params = array(
+				'method'	=> 'flickr.photos.search',
+				'api_key'	=> $flickr_api_key,
+				'per_page'	=> '6',
+				'radius'	=> '5',
+				'radius_units'	=> 'mi',
+				'accuracy'	=> '11',
+				//'place_id'	=> $flickr_response['places']['place'][0]['place_id'],
+				'lat'		=> $this->center_lat,
+				'lon'		=> $this->center_long,
+				//'tag'		=> $this->city,
+				'sort'		=> 'interestingness-desc',
+				'min_taken_date'=> date("Y-m-d H:i:s", $flickr_min_taken_date),
+				'format'	=> 'php_serial'
+			);
+			$encoded_flickr_search_params = array();		
+			foreach ($flickr_search_params as $key => $value){
+				$encoded_flickr_search_params[] = urlencode($key).'='.urlencode($value);
+			}
+			$flickr_search_request_url = $flickr_api_request_url . implode('&', $encoded_flickr_search_params);
+			$flickr_response = unserialize($this->get_url_data($flickr_search_request_url));
+			$flickr_image_html = '';
+			
+			if($flickr_response && $flickr_response['photos'] && $flickr_response['photos']['photo']){
+				foreach ($flickr_response['photos']['photo'] as $key => $value){
+					$img_src = str_replace(array('{farm-id}', '{server-id}', '{id}', '{secret}'), array($value['farm'], $value['server'], $value['id'], $value['secret']), $flickr_photo_url_base);
+					$flickr_image_html .= '<img src="' . $img_src . '" class="lme_flickr_image" />';
+				}
 			}
 		}
 		
@@ -568,7 +580,10 @@ HTML;
 		}
 		
 		$description = $this->get_description();
-		return <<<HTML
+		$panel_html = '';
+		
+		if ($show_flickr_panel) {
+			$panel_html .= <<<HTML
 			<div id="lme_about_area_flickr">
 				<h5>{$this->location_for_display} Photos</h5>
 				<div id="lme_about_area_flickr_photos">
@@ -576,6 +591,10 @@ HTML;
 				</div>
 				<div id="lme_about_area_flickr_provided_by">... provided by flickr&reg;</div>
 			</div>
+HTML;
+		}
+		
+		$panel_html .= <<<HTML
 			<div id="lme_about_area_description">$description</div>
 			$related_posts_html
 			<div class="clear"></div>
@@ -596,12 +615,22 @@ HTML;
 
 	function get_zillow_market_activity_data() {
 		$lme_apikey_zillow = get_option('lme_apikey_zillow');
-		$encoded_city = urlencode($this->city);
-		$zillow_fmr = $this->get_url_data_as_xml("http://www.zillow.com/webservice/FMRWidget.htm?region=$encoded_city+$this->state&status=recentlySold&zws-id=$lme_apikey_zillow");
+		
+		$recent_sales_url = "http://www.zillow.com/webservice/FMRWidget.htm?status=recentlySold&zws-id=$lme_apikey_zillow&region=";
+		if ($this->zip != "") {
+			$recent_sales_url .= "$this->zip"; 
+		} else {
+			if ($this->neighborhood != "") {
+				$recent_sales_url .= urlencode("$this->neighborhood,");				
+			}
+			$recent_sales_url .= urlencode("$this->city,$this->state");
+		}
+		
+		$zillow_fmr = $this->get_url_data_as_xml($recent_sales_url);
 		
 		$lme_username_zillow = get_option('lme_username_zillow');
 		if (strlen($lme_username_zillow) > 0)
-			$zillow_scrnm = '&scrnnm=' . $lme_username_zillow;
+			$zillow_scrnm = '?scrnnm=' . $lme_username_zillow;
 		else
 			$zillow_scrnm = '';
 		
@@ -635,7 +664,7 @@ HTML;
 					{$recently_sold_html}
 				</div>
 				<div id="lme_recently_sold_link">
-					<a href="{$this->zillow_for_sale_link}?scid=gen-api-wplugin{$zillow_scrnm}" target="_blank">See $this->city real estate and homes for sale</a>
+					<a href="{$this->zillow_for_sale_link}{$zillow_scrnm}#scid=gen-api-wplugin" target="_blank">See $this->city real estate and homes for sale</a>
 				</div>
 				<div class="clear"></div>
 			</div>
@@ -647,7 +676,7 @@ HTML;
 		$lme_sold_listings_to_show = get_option('lme_sold_listings_to_show');
 		$lme_username_zillow = get_option('lme_username_zillow');
 		if (strlen($lme_username_zillow) > 0)
-			$zillow_scrnm = '&scrnnm=' . $lme_username_zillow;
+			$zillow_scrnm = '?scrnnm=' . $lme_username_zillow;
 		else
 			$zillow_scrnm = '';
 		
@@ -660,8 +689,8 @@ HTML;
 			$formatted_last_sold_price = $this->get_money_from_xml($xml[$i]->lastSoldPrice);
 			$html .= "<div class='lme_recently_sold_item'>".					 	
 					 	//"<div></div>".
-					 	"<div><a href='{$xml[$i]->detailPageLink}?scid=gen-api-wplugin{$zillow_scrnm}' target='_blank'><img src='{$listingImage}' class='lme_recently_sold_item_photo' /></a>".
-					 	"<a href='{$xml[$i]->detailPageLink}?scid=gen-api-wplugin{$zillow_scrnm}' target='_blank'>{$xml[$i]->address->street}</a><br />".
+					 	"<div><a href='{$xml[$i]->detailPageLink}{$zillow_scrnm}#scid=gen-api-wplugin' target='_blank'><img src='{$listingImage}' class='lme_recently_sold_item_photo' /></a>".
+					 	"<a href='{$xml[$i]->detailPageLink}{$zillow_scrnm}#scid=gen-api-wplugin' target='_blank'>{$xml[$i]->address->street}</a><br />".
 					 	"Recently Sold ({$xml[$i]->lastSoldDate}): \${$formatted_last_sold_price}<br />".
 					 	"{$xml[$i]->bathrooms} beds {$xml[$i]->bedrooms} baths {$xml[$i]->finishedSqFt} sqft</div>".
 					 "</div>";
@@ -736,8 +765,15 @@ HTML;
 		$educationdotcom_url = 'http://www.education.com/service/service.php?f=schoolSearch&sn=sf&resf=php&key='. $lme_apikey_educationcom;
 		
 		$state_translation = $this->get_state_translation();
-		$educationdotcom_url .= '&city='. urlencode($this->city) .'&state='. urlencode($this->state);
-		// otherwise, we shouldn't be here
+		if ($this->zip != "") {
+			$educationdotcom_url .= "&zip=$this->zip"; 
+		} else {
+			if ($this->neighborhood != "") {
+				$educationdotcom_url .= "&latitude={$this->center_lat}&longtude={$this->center_long}";				
+			} else {
+				$educationdotcom_url .= '&city='. urlencode($this->city) .'&state='. urlencode($this->state);
+			}
+		}
 		
 		$educationdotcom_data_raw = $this->get_url_data($educationdotcom_url);
 		$educationdotcom_data = unserialize($educationdotcom_data_raw);
@@ -868,7 +904,8 @@ HTML;
 			<div id="lme_walk_score_container">
 				<script type="text/javascript">
 					var ws_wsid = "{$walkscore_api_key}";
-					var ws_address = "{$this->city},{$this->state}";
+					var ws_lat = "{$this->center_lat}";
+					var ws_lon = "{$this->center_long}";
 					var ws_width = "400";
 					var ws_height = "286";
 					var ws_layout = "horizontal";
@@ -891,14 +928,14 @@ HTML;
 	
 	function get_yelp_reviews_data() {
 		$lme_apikey_yelp = get_option('lme_apikey_yelp');
-		$yelp_request = "http://api.yelp.com/business_review_search?location=".urlencode($this->city).",%20".urlencode($this->state)."&ywsid={$lme_apikey_yelp}&radius=5&num_biz_requested=10&term=Gas,Grocery,Bank,Restaurant";
+		$yelp_request = "http://api.yelp.com/business_review_search?lat={$this->center_lat}&long={$this->center_long}&ywsid={$lme_apikey_yelp}&num_biz_requested=10&category=active+food+localflavor+nightlife+restaurants";
 		$yelp_reviews_raw = $this->get_url_data($yelp_request);
 		$review_html = $this->get_yelp_review_list_html(json_decode($yelp_reviews_raw));
 		
 		return <<<HTML
 			<script>LocalMarketExplorer.Yelp.Data = {$yelp_reviews_raw};</script>
 			<div id="lme-yelp-map"></div>
-			<em>Gas Stations, Grocery Stores, Banks, and Restaurants near {$this->city}</em>
+			<em>Local reviews near {$this->city}</em>
 			<div id="lme-yelp-list">{$review_html}</div>
 			<div style='text-align:right'><a href='http://www.yelp.com/' target='_blank'><img title='Powered by Yelp' alt='Powered by Yelp' src='http://static.px.yelp.com/static/20090709/i/new/developers/yelp_logo_75x38.png' /></a></div>
 HTML;

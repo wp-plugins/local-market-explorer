@@ -38,6 +38,11 @@ function update_lme_options(){
 	} else {
 		update_option('lme_panels_show_aboutarea', '0');
 	}
+	if($_REQUEST['lme_panels_show_flickr']){
+		update_option('lme_panels_show_flickr', $_REQUEST['lme_panels_show_flickr']);
+	} else {
+		update_option('lme_panels_show_flickr', '0');
+	}
 	if($_REQUEST['lme_apikey_flickr']){
 		update_option('lme_apikey_flickr', $_REQUEST['lme_apikey_flickr']);
 	}
@@ -54,8 +59,10 @@ function update_lme_options(){
 		update_option('lme_sold_listings_to_show', '0');
 	}
 	
-	if($_REQUEST['lme_apikey_educationcom']){
-		update_option('lme_apikey_educationcom', $_REQUEST['lme_apikey_educationcom']);
+	if($_REQUEST['lme_panels_show_educationcom']){
+		update_option('lme_panels_show_educationcom', $_REQUEST['lme_panels_show_educationcom']);
+	} else {
+		update_option('lme_panels_show_educationcom', '0');
 	}
 	
 	if($_REQUEST['lme_panels_show_walkscore']){
@@ -123,12 +130,13 @@ function print_lme_options() {
 	$lme_zillow_mylistings_widget = get_option('lme_zillow_mylistings_widget');
 	
 	$lme_panels_show_aboutarea = get_option('lme_panels_show_aboutarea');
+	$lme_panels_show_flickr = get_option('lme_panels_show_flickr');
 	$lme_apikey_flickr = get_option('lme_apikey_flickr');
 	
 	$lme_panels_show_marketactivity = get_option('lme_panels_show_marketactivity');
 	$lme_sold_listings_to_show = get_option('lme_sold_listings_to_show');
 	
-	$lme_apikey_educationcom = get_option('lme_apikey_educationcom');
+	$lme_panels_show_educationcom = get_option('lme_panels_show_educationcom');
 	
 	$lme_panels_show_walkscore = get_option('lme_panels_show_walkscore');
 	$lme_apikey_walkscore = get_option('lme_apikey_walkscore');
@@ -174,6 +182,14 @@ function print_lme_options() {
 						</label>
 					</th>
 				</tr>
+				<tr>
+					<th class="th-full" colspan="2" scope="row">
+						<label for="lme_panels_show_flickr">
+							<input id="lme_panels_show_flickr" type="checkbox" <?= $lme_panels_show_flickr == '1' ? 'checked="checked"' : ''?> value="1" name="lme_panels_show_flickr"/>
+							Show Flickr Panel
+						</label>
+					</th>
+				</tr>
 				<tr valign="top">
 					<th scope="row">
 						<label for="lme_apikey_flickr">Flickr API Key</label>
@@ -182,6 +198,18 @@ function print_lme_options() {
 						<input id="lme_apikey_flickr" class="regular-text code" type="text" value="<?= $lme_apikey_flickr ?>" name="lme_apikey_flickr"/>
 						<span class="setting-description">Get your key here: <a href="http://www.flickr.com/services/api/keys/apply/" target="_blank">http://www.flickr.com/services/api/keys/apply/</a></span>
 					</td>
+				</tr>
+			</table>
+			
+			<h3>Education.com</h3>
+			<table class="form-table">
+				<tr>
+					<th class="th-full" colspan="2" scope="row">
+						<label for="lme_panels_show_educationcom">
+							<input id="lme_panels_show_educationcom" type="checkbox" <?= $lme_panels_show_educationcom == '1' ? 'checked="checked"' : ''?> value="1" name="lme_panels_show_educationcom"/>
+							Show Education.com Panel
+						</label>
+					</th>
 				</tr>
 			</table>
 			
@@ -343,12 +371,13 @@ function set_lme_options(){
 	add_option('lme_zillow_mylistings_widget', '', '', 'yes');
 	
 	add_option('lme_panels_show_aboutarea', '1', '', 'yes');
+	add_option('lme_panels_show_flickr', '1', '', 'yes');
 	add_option('lme_apikey_flickr', '', '', 'yes');
 	
 	add_option('lme_panels_show_marketactivity', '1', '', 'yes');
 	add_option('lme_sold_listings_to_show', '', '', 'yes');
 	
-	add_option('lme_apikey_educationcom', '', '', 'yes');
+	add_option('lme_panels_show_educationcom', '1', '', 'yes');
 	
 	add_option('lme_panels_show_walkscore', '1', '', 'yes');
 	add_option('lme_apikey_walkscore', '', '', 'yes');
@@ -370,9 +399,10 @@ function unset_lme_options(){
 	
 	delete_option('lme_sold_listings_to_show');
 	
-	delete_option('lme_apikey_educationcom');
+	delete_option('lme_panels_show_educationcom');
 	
 	delete_option('lme_panels_show_aboutarea');
+	delete_option('lme_panels_show_flickr');
 	delete_option('lme_apikey_flickr');
 	
 	delete_option('lme_panels_show_walkscore');
