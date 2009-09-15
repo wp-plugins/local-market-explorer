@@ -202,10 +202,6 @@ FOOTER;
 		$lme_apikey_walkscore = get_option('lme_apikey_walkscore');
 		
 		$lme_content = <<<LME_CONTENT
-			<script>
-				LocalMarketExplorer.city = '{$this->city}';
-				LocalMarketExplorer.state = '{$this->state}';
-			</script>
 			<div class="local_market_explorer">
 				<!-- HEADER (LOCATION) WITH PAGE ANCHOR LINKS FOR SECTIONS -->
 				<div class="lme_header">
@@ -251,6 +247,11 @@ LME_CONTENT;
 					</div>
 					<div class="lme_right"></div>
 				</div>
+				
+				<script>
+					LocalMarketExplorer.latitude = '{$this->center_lat}';
+					LocalMarketExplorer.longitude = '{$this->center_long}';
+				</script>
 
 				<!-- "Market Statistics" SECTION -->
 				<a name="lme-zillow-home-value-index"></a>
@@ -410,7 +411,7 @@ LME_CONTENT;
 		
 		$zillow_xml_url = "http://www.zillow.com/webservice/GetDemographics.htm?zws-id=$lme_apikey_zillow$location_for_api";
 		$zillow_chart_url = "http://www.zillow.com/webservice/GetRegionChart.htm?zws-id=$lme_apikey_zillow$location_for_api&unit-type=percent&width=400&height=200";
-		print_r($zillow_xml_url);
+		
 		$zillow_xml = $this->get_url_data_as_xml($zillow_xml_url);
 		$zillow_chart = $this->get_url_data_as_xml($zillow_chart_url);
 		
@@ -419,39 +420,58 @@ LME_CONTENT;
 		$node = $zillow_xml->xpath("response/region/longitude");
 		$this->center_long = $node[0];
 		
-		$node = $zillow_chart->xpath("response"); $region_chart = $node[0];
-		$node = $zillow_xml->xpath("response/charts/chart[name='Average Home Value']"); $avg_home_value = $node[0];
-		$node = $zillow_xml->xpath("response/charts/chart[name='Average Condo Value']"); $avg_condo_value = $node[0];
-		$node = $zillow_xml->xpath("response/links/affordability"); $affordability_link = $node[0];
-		$node = $zillow_xml->xpath("response/links/forSale"); $this->zillow_for_sale_link = $node[0];
-		$node = $zillow_xml->xpath("response/pages/page[name='Affordability']/tables/table[name='Affordability Data']/data/attribute[name='Zillow Home Value Index']"); $zillow_home_value = $node[0];
-		$node = $zillow_xml->xpath("response/pages/page[name='Affordability']/tables/table[name='Affordability Data']/data/attribute[name='1-Yr. Change']"); $one_yr_change = $node[0];
-		$node = $zillow_xml->xpath("response/pages/page[name='Affordability']/tables/table[name='Affordability Data']/data/attribute[name='Median Condo Value']"); $median_condo_value = $node[0];
-		$node = $zillow_xml->xpath("response/pages/page[name='Affordability']/tables/table[name='Affordability Data']/data/attribute[name='Median Single Family Home Value']"); $median_single_family = $node[0];
+		$node = $zillow_chart->xpath("response"); $region_chart = array($node[0]);
+		$node = $zillow_xml->xpath("response/charts/chart[name='Average Home Value']"); $avg_home_value = array($node[0]);
+		$node = $zillow_xml->xpath("response/charts/chart[name='Average Condo Value']"); $avg_condo_value = array($node[0]);
+		$node = $zillow_xml->xpath("response/links/affordability"); $affordability_link = array($node[0]);
+		$node = $zillow_xml->xpath("response/links/forSale"); $this->zillow_for_sale_link = array($node[0]);
 		
-		$city_home_value = $this->get_string_from_xml($zillow_home_value->values->city->value);
-		$national_home_value = $this->get_string_from_xml($zillow_home_value->values->nation->value);
-		$city_year_change_percent = $this->get_string_from_xml($one_yr_change->values->city->value);
-		$national_year_change_percent = $this->get_string_from_xml($one_yr_change->values->nation->value);
+		$node = $zillow_xml->xpath("response/pages/page[name='Affordability']/tables/table[name='Affordability Data']/data/attribute[name='Zillow Home Value Index']/values"); $zillow_home_value = array($node[0]);
+		$node = $zillow_xml->xpath("response/pages/page[name='Affordability']/tables/table[name='Affordability Data']/data/attribute[name='1-Yr. Change']/values"); $one_yr_change = array($node[0]);
+		$node = $zillow_xml->xpath("response/pages/page[name='Affordability']/tables/table[name='Affordability Data']/data/attribute[name='Median Condo Value']/values"); $median_condo_value = array($node[0]);
+		$node = $zillow_xml->xpath("response/pages/page[name='Affordability']/tables/table[name='Affordability Data']/data/attribute[name='Median Single Family Home Value']/values"); $median_single_family = array($node[0]);
 		
-		$row1_name = $this->get_string_from_xml($zillow_home_value->name);
-		$formatted_city_home_value = "$" . number_format($city_home_value);
+		$node = $zillow_xml->xpath("response/market/attribute[name='Median List Price']/values"); $market_median_list_price = array($node[0]);
+		$node = $zillow_xml->xpath("response/market/attribute[name='Median Sale Price']/values"); $market_median_sale_price = array($node[0]);
+		$node = $zillow_xml->xpath("response/market/attribute[name='Median List Price Per Sq Ft']/values"); $market_median_list_ppsf = array($node[0]);
+		$node = $zillow_xml->xpath("response/market/attribute[name='Homes For Sale']/values"); $market_homes_for_sale = array($node[0]);
+		
+		if ($this->neighborhood != '') {
+			$local_node_name = 'neighborhood';
+		} elseif ($this->zip != '') {
+			$local_node_name = 'zip';
+		} else {
+			$local_node_name = 'city';
+		}
+		
+		$local_home_value = $zillow_home_value[0]->$local_node_name->value;
+		$local_year_change_percent = (string)$one_yr_change[0]->$local_node_name->value;
+
+		$formatted_local_home_value = "$" . number_format($local_home_value);
+		$formatted_local_year_change = "$" . number_format($local_home_value - ($local_home_value * (1 - $local_year_change_percent)));
+		$formatted_local_condo_value = "$" . number_format($median_condo_value[0]->$local_node_name->value);
+		$formatted_local_sfr_value = "$" . number_format($median_single_family[0]->$local_node_name->value);
+
+		$national_home_value = $zillow_home_value[0]->nation->value;
+		$national_year_change_percent = (string)$one_yr_change[0]->nation->value[0];
+		
 		$formatted_national_home_value = "$" . number_format($national_home_value);
-		
-		$row2_name = $this->get_string_from_xml($one_yr_change->name);
-		$formatted_city_year_change = "$" . number_format($city_home_value - ($city_home_value * (1 - $city_year_change_percent)));
 		$formatted_national_year_change = "$" . number_format($national_home_value - ($national_home_value * (1 - $national_year_change_percent)));
+		$formatted_national_condo_value = "$" . number_format($median_condo_value[0]->nation->value);
+		$formatted_national_sfr_value = "$" . number_format($median_single_family[0]->nation->value);
 		
-		$row3_name = $this->get_string_from_xml($median_condo_value->name);
-		$formatted_city_condo_value = "$" . number_format($this->get_string_from_xml($median_condo_value->values->city->value));
-		$formatted_national_condo_value = "$" . number_format($this->get_string_from_xml($median_condo_value->values->nation->value));
+		$market_median_list_price_local = "$" . number_format($market_median_list_price[0]->$local_node_name->value);
+		$market_median_sale_price_local = "$" . number_format($market_median_sale_price[0]->$local_node_name->value);
+		$market_median_list_ppsf_local = "$" . number_format($market_median_list_ppsf[0]->$local_node_name->value);
+		$market_homes_for_sale_local = number_format($market_homes_for_sale[0]->$local_node_name->value);
 		
-		$row4_name = $this->get_string_from_xml($median_single_family->name);
-		$formatted_city_sfr_value = "$" . number_format($this->get_string_from_xml($median_single_family->values->city->value));
-		$formatted_national_sfr_value = "$" . number_format($this->get_string_from_xml($median_single_family->values->nation->value));
+		$market_median_list_price_nation = "$" . number_format($market_median_list_price[0]->nation->value);
+		$market_median_sale_price_nation = "$" . number_format($market_median_sale_price[0]->nation->value);
+		$market_median_list_ppsf_nation = "$" . number_format($market_median_list_ppsf[0]->nation->value);
+		$market_homes_for_sale_nation = number_format($market_homes_for_sale[0]->nation->value);
 		
-		$zindex = $this->get_money_from_xml($region_chart->zindex);
-		$affordability_link = $this->get_string_from_xml($affordability_link);
+		$zindex = number_format(trim($region_chart[0]->zindex));
+		$affordability_link = $affordability_link[0]->value;
 		
 		$lme_username_zillow = get_option('lme_username_zillow');
 		if (strlen($lme_username_zillow) > 0)
@@ -477,18 +497,18 @@ LME_CONTENT;
 							<a href="javascript:void(0);" onclick="LocalMarketExplorer.ZillowIndex.setDuration('10years')" id="lme_zillow_market_10_yr">10 YR</a>
 					</div>
 				</div>
-				<img src="$region_chart->url" id="lme_zillow_region_chart" alt="{$this->location_for_display} real estate market value change over time" />
+				<img src="{$region_chart[0]->url}" id="lme_zillow_region_chart" alt="{$this->location_for_display} real estate market value change over time" />
 			</div>
 			
 			<div id="lme_zillow_home_value">
 				<div class="lme_float_50">
 					<h4>Avg. Home Value</h4>
-					<img src="$avg_home_value->url" alt="{$this->location_for_display} home prices and values" />
+					<img src="{$avg_home_value[0]->url}" alt="{$this->location_for_display} home prices and values" />
 				</div>
 				
 				<div class="lme_float_50">
 					<h4>Avg. Condo Value</h4>
-					<img src="$avg_condo_value->url" alt="{$this->location_for_display} condo prices and values" />
+					<img src="{$avg_condo_value[0]->url}" alt="{$this->location_for_display} condo prices and values" />
 				</div>
 			</div>
 			<div class="clear"></div>
@@ -497,28 +517,48 @@ LME_CONTENT;
 			<table id="lme_zillow_affordability_data">
 				<tr>
 					<td>&nbsp;</td>
-					<th>City</th>
+					<th>Local</th>
 					<th>National</th>
 				</tr>
 				<tr class="lme_primary">
-					<td>{$row1_name}</td>
-					<td class="lme_number lme_primary_value">{$formatted_city_home_value}</td>
+					<td>Zillow Home Value Index</td>
+					<td class="lme_number lme_primary_value">{$formatted_local_home_value}</td>
 					<td class="lme_number">{$formatted_national_home_value}</td>
 				</tr>
 				<tr class="lme_secondary">
-					<td>{$row2_name}</td>
-					<td class="lme_number lme_primary_value">{$formatted_city_year_change}</td>
+					<td>1-Yr. Change</td>
+					<td class="lme_number lme_primary_value">{$formatted_local_year_change}</td>
 					<td class="lme_number">{$formatted_national_year_change}</td>
 				</tr>
 				<tr class="lme_primary">
-					<td>{$row3_name}</td>
-					<td class="lme_number lme_primary_value">{$formatted_city_condo_value}</td>
+					<td>Median Condo Value</td>
+					<td class="lme_number lme_primary_value">{$formatted_local_condo_value}</td>
 					<td class="lme_number">{$formatted_national_condo_value}</td>
 				</tr>
 				<tr class="lme_secondary">
-					<td>{$row4_name}</td>
-					<td class="lme_number lme_primary_value">{$formatted_city_sfr_value}</td>
+					<td>Median Single Family Home Value</td>
+					<td class="lme_number lme_primary_value">{$formatted_local_sfr_value}</td>
 					<td class="lme_number">{$formatted_national_sfr_value}</td>
+				</tr>
+				<tr class="lme_primary">
+					<td>Median List Price</td>
+					<td class="lme_number lme_primary_value">{$market_median_list_price_local}</td>
+					<td class="lme_number">{$market_median_list_price_nation}</td>
+				</tr>
+				<tr class="lme_secondary">
+					<td>Median Sale Price</td>
+					<td class="lme_number lme_primary_value">{$market_median_sale_price_local}</td>
+					<td class="lme_number">{$market_median_sale_price_nation}</td>
+				</tr>
+				<tr class="lme_primary">
+					<td>Median List Price Per Sq Ft</td>
+					<td class="lme_number lme_primary_value">{$market_median_list_ppsf_local}</td>
+					<td class="lme_number">{$market_median_list_ppsf_nation}</td>
+				</tr>
+				<tr class="lme_secondary">
+					<td>Homes For Sale</td>
+					<td class="lme_number lme_primary_value">{$market_homes_for_sale_local}</td>
+					<td class="lme_number">{$market_homes_for_sale_nation}</td>
 				</tr>
 			</table>
 			
@@ -628,7 +668,8 @@ HTML;
 			$related_posts_html
 			<div class="clear"></div>
 HTML;
-
+		
+		return $panel_html;
 	}
 	function get_description(){
 		$lme_area_cities = unserialize(get_option('lme_area_cities'));
@@ -999,14 +1040,14 @@ HTML;
 	
 	function get_yelp_reviews_data() {
 		$lme_apikey_yelp = get_option('lme_apikey_yelp');
-		$yelp_request = "http://api.yelp.com/business_review_search?lat={$this->center_lat}&long={$this->center_long}&ywsid={$lme_apikey_yelp}&num_biz_requested=10&category=active+food+localflavor+nightlife+restaurants";
+		$yelp_request = "http://api.yelp.com/business_review_search?lat={$this->center_lat}&long={$this->center_long}&radius=2&ywsid={$lme_apikey_yelp}&num_biz_requested=10&category=active+food+localflavor+nightlife+restaurants";
 		$yelp_reviews_raw = $this->get_url_data($yelp_request);
 		$review_html = $this->get_yelp_review_list_html(json_decode($yelp_reviews_raw));
 		
 		return <<<HTML
 			<script>LocalMarketExplorer.Yelp.Data = {$yelp_reviews_raw};</script>
 			<div id="lme-yelp-map"></div>
-			<em>Local reviews near {$this->city}</em>
+			<em>Local reviews near {$this->location_for_display}</em>
 			<div id="lme-yelp-list">{$review_html}</div>
 			<div style='text-align:right'><a href='http://www.yelp.com/' target='_blank'><img title='Powered by Yelp' alt='Powered by Yelp' src='http://static.px.yelp.com/static/20090709/i/new/developers/yelp_logo_75x38.png' /></a></div>
 HTML;

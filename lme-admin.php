@@ -93,18 +93,13 @@ function update_lme_options(){
 	}
 	
 	$lme_area_cities = array();
-	$lme_area_states = array();
+	$lme_area_zips = array();
+	$lme_area_neighborhoods = array();
 	$lme_area_descriptions = array();
 	
 	foreach ( $_REQUEST as $key => $value ) { 
-		if(strpos($key, 'lme_area_cities__') !== false){
+		if (strpos($key, 'lme_area_cities__') !== false) {
 			$lme_area_cities[sizeof($lme_area_cities)] = $value;
-		}
-	}
-	
-	foreach ( $_REQUEST as $key => $value ) { 
-		if(strpos($key, 'lme_area_states__') !== false){
-			$lme_area_states[sizeof($lme_area_states)] = $value;
 		}
 	}
 	
@@ -329,18 +324,27 @@ function print_lme_options() {
 				<table class="form-table" id="lme_area_table__<?= $i ?>">
 					<tr valign="top">
 						<th scope="row">
-							<label for="lme_area_cities__<?= $i ?>">City</label>
+							<label>Neighborhood</label>
 						</th>
 						<td>
-							<input class="regular-text code" type="text" value="<?= $lme_area_cities[$i] ?>" name="lme_area_cities__<?= $i ?>"/>
+							<input class="regular-text code" type="text" value="<?= $lme_area_neighborhoods[$i] ?>" name="lme_area_neighborhoods__<?= $i ?>" style="width: 200px" />
 						</td>
 					</tr>
 					<tr valign="top">
 						<th scope="row">
-							<label for="lme_area_states__<?= $i ?>">State</label>
+							<label>City, State</label>
 						</th>
 						<td>
-							<input class="regular-text code" type="text" value="<?= $lme_area_states[$i] ?>" name="lme_area_states__<?= $i ?>"/>
+							<input class="regular-text code" type="text" value="<?= $lme_area_cities[$i] ?>" name="lme_area_cities__<?= $i ?>" style="width: 200px" />,
+							<input class="regular-text code" type="text" value="<?= $lme_area_states[$i] ?>" name="lme_area_states__<?= $i ?>" style="width: 25px" />
+						</td>
+					</tr>
+					<tr valign="top">
+						<th scope="row">
+							<label>Zip</label>
+						</th>
+						<td>
+							<input class="regular-text code" type="text" value="<?= $lme_area_zips[$i] ?>" name="lme_area_zips__<?= $i ?>" style="width: 70px" />
 						</td>
 					</tr>
 					<tr valign="top">

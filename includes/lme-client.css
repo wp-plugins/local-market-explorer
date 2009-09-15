@@ -75,9 +75,9 @@
 .local_market_explorer .lme_header .lme_middle{
 	background-image:url(../images/header-middle.png);
 	background-repeat:repeat-x;
-	height:36px;
+	height:43px;
 	margin:0 11px;
-	padding:14px 11px 0 0;
+	padding:7px 11px 0 0;
 	text-align:center;
 }
 .local_market_explorer .lme_header .lme_right{
@@ -429,6 +429,9 @@ ul.lme_schools_list{
 
 .local_market_explorer .ts_item {
 	margin-bottom: 15px;
+}
+.local_market_explorer .ts_item p {
+	margin-bottom: 0px;
 }
 .local_market_explorer .ts_item_image {
 	float:left;

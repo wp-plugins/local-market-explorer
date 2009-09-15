@@ -2,9 +2,7 @@ var LocalMarketExplorer = {
 	
 	ZillowIndex: function() {
 		var returnObj;
-		
 		var zillowUrl = "";
-	
 		var zillowShowPercent = 'true', zillowChartDuration = '1year', pageReady = false;
 		
 		returnObj = {
@@ -134,64 +132,58 @@ var LocalMarketExplorer = {
 		var returnObj;
 
 		returnObj = {
-			loadMap: function(){    
+			loadMap: function(){
 				geocoder = new google.maps.Geocoder();
 				var openedWindow = null;
-				
-				geocoder.geocode({
-					address: LocalMarketExplorer.city + ", " + LocalMarketExplorer.state
-				},function(results, status) {
-					if (status == google.maps.GeocoderStatus.OK) {
-						if (status != google.maps.GeocoderStatus.ZERO_RESULTS) {			
-							var map = new google.maps.Map(document.getElementById("lme-yelp-map"), {
-						      zoom: 8,
-						      center: results[0].geometry.location,
-						      mapTypeId: google.maps.MapTypeId.ROADMAP,
-						      mapTypeControl: false
-						    });
-						    
-						    var bounds = new google.maps.LatLngBounds();
-						    
-						    for(var i=0;i< LocalMarketExplorer.Yelp.Data.businesses.length;i++){
-						    	var business = LocalMarketExplorer.Yelp.Data.businesses[i];
-						    	var latLng = new google.maps.LatLng(business.latitude, business.longitude);
-						    	
-						    	var marker = new google.maps.Marker({
-							        position: latLng, 
-							        map: map,
-							        title:business.name
-							    });
 
-							    var infowindow = new google.maps.InfoWindow({
-							        content: 
-							        	"<div class='lme-yelp-preview'>"+
-							        		"<a href='"+ business.url +"' target='_blank'>"+ business.name +"</a><br />"+
-							        		"<div class='lme-yelm-preview-description'>"+
-							        		"<img src='"+ business.rating_img_url +"' title='"+ business.avg_rating +"' alt='"+ business.avg_rating +"' /> <em>based on "+ business.review_count +" reviews</em><br />"+
-							        		"Category: "+ (business.categories.length > 0 ? business.categories[0].name : "n/a") +"<br />"+
-							        		business.phone.replace(/(\d{3})(\d{3})(\d{4})/,"$1-$2-$3") +"<br />"+
-							        		business.address1 + (business.address2 != "" ? " " + business.address1 : "") + "<br />"+
-							        		business.city +", "+ business.state +" "+ business.zip +
-							        		"</div>" +
-							        	"</div>"
-							    });
-							    
-							    (function(map,marker,infowindow){
-								    google.maps.event.addListener(marker, 'click', function() {
-								    	if(openedWindow != null) openedWindow.close();
-										infowindow.open(map, marker);
-										openedWindow = infowindow;
-								    });
-							    })(map,marker,infowindow);
-							    
-							    bounds.extend(latLng);
-						    }
-						    
-						    map.set_center(bounds.getCenter());
-						    map.fitBounds(bounds);
-						}
-					}
-				});
+				var map = new google.maps.Map(document.getElementById("lme-yelp-map"), {
+			      mapTypeId: google.maps.MapTypeId.ROADMAP,
+			      mapTypeControl: false
+			    });
+			    
+			    var bounds = new google.maps.LatLngBounds();
+			    
+			    for(var i=0;i< LocalMarketExplorer.Yelp.Data.businesses.length;i++){
+			    	var business = LocalMarketExplorer.Yelp.Data.businesses[i];
+					
+					if (!business.latitude)
+						continue;
+					
+			    	var latLng = new google.maps.LatLng(business.latitude, business.longitude);
+			    	
+			    	var marker = new google.maps.Marker({
+				        position: latLng, 
+				        map: map,
+				        title:business.name
+				    });
+
+				    var infowindow = new google.maps.InfoWindow({
+				        content: 
+				        	"<div class='lme-yelp-preview'>"+
+				        		"<a href='"+ business.url +"' target='_blank'>"+ business.name +"</a><br />"+
+				        		"<div class='lme-yelm-preview-description'>"+
+				        		"<img src='"+ business.rating_img_url +"' title='"+ business.avg_rating +"' alt='"+ business.avg_rating +"' /> <em>based on "+ business.review_count +" reviews</em><br />"+
+				        		"Category: "+ (business.categories.length > 0 ? business.categories[0].name : "n/a") +"<br />"+
+				        		business.phone.replace(/(\d{3})(\d{3})(\d{4})/,"$1-$2-$3") +"<br />"+
+				        		business.address1 + (business.address2 != "" ? " " + business.address1 : "") + "<br />"+
+				        		business.city +", "+ business.state +" "+ business.zip +
+				        		"</div>" +
+				        	"</div>"
+				    });
+				    
+				    (function(map,marker,infowindow){
+					    google.maps.event.addListener(marker, 'click', function() {
+					    	if(openedWindow != null) openedWindow.close();
+							infowindow.open(map, marker);
+							openedWindow = infowindow;
+					    });
+				    })(map,marker,infowindow);
+				    
+				    bounds.extend(latLng);
+			    }
+			    
+			    map.set_center(bounds.getCenter());
+			    map.fitBounds(bounds);
 			}
 		}
 
