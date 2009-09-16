@@ -672,15 +672,36 @@ HTML;
 		return $panel_html;
 	}
 	function get_description(){
-		$lme_area_cities = unserialize(get_option('lme_area_cities'));
-		$lme_area_states = unserialize(get_option('lme_area_states'));
-		$lme_area_descriptions = unserialize(get_option('lme_area_descriptions'));
-		
-		for($i=0;$i<sizeOf($lme_area_cities);$i++){
-			if(trim(strtolower($lme_area_cities[$i])) == trim(strtolower($this->city))){
-				return $lme_area_descriptions[$i];
-			}
+		$lme_areas = get_option('lme_areas');
+
+		for ($i = 0; $i < sizeOf($lme_areas); $i++) {
+			if (
+				!empty($this->zip)
+				&& strtolower($lme_areas[$i]['zip']) == strtolower($this->zip)
+				)
+				return $lme_areas[$i]['description'];
+			if (
+				!empty($this->neighborhood)
+				&& strtolower($lme_areas[$i]['neighborhood']) == strtolower($this->neighborhood)
+				&& strtolower($lme_areas[$i]['city']) == strtolower($this->city)
+				&& strtolower($lme_areas[$i]['state']) == strtolower($this->state)
+				)
+				return $lme_areas[$i]['description'];
+			if (
+				empty($this->neighborhood) && $lme_areas[$i]['neighborhood'] == ''
+				&& strtolower($lme_areas[$i]['city']) == strtolower($this->city)
+				&& strtolower($lme_areas[$i]['state']) == strtolower($this->state)
+				)
+				return $lme_areas[$i]['description'];
 		}
+		for ($i = 0; $i < sizeOf($lme_areas); $i++) {
+			if (
+				strtolower($lme_areas[$i]['city']) == strtolower($this->city)
+				&& strtolower($lme_areas[$i]['state']) == strtolower($this->state)
+				)
+				return $lme_areas[$i]['description'];
+		}
+		return '';
 	}
 
 	function get_zillow_market_activity_data() {
