@@ -688,7 +688,7 @@ HTML;
 				)
 				return $lme_areas[$i]['description'];
 			if (
-				empty($this->neighborhood) && $lme_areas[$i]['neighborhood'] == ''
+				empty($this->neighborhood) && !$lme_areas[$i]['neighborhood']
 				&& strtolower($lme_areas[$i]['city']) == strtolower($this->city)
 				&& strtolower($lme_areas[$i]['state']) == strtolower($this->state)
 				)
@@ -696,7 +696,8 @@ HTML;
 		}
 		for ($i = 0; $i < sizeOf($lme_areas); $i++) {
 			if (
-				strtolower($lme_areas[$i]['city']) == strtolower($this->city)
+				!$lme_areas[$i]['neighborhood']
+				&& strtolower($lme_areas[$i]['city']) == strtolower($this->city)
 				&& strtolower($lme_areas[$i]['state']) == strtolower($this->state)
 				)
 				return $lme_areas[$i]['description'];
