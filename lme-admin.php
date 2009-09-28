@@ -1,10 +1,22 @@
 <?
 function lme_admin_head(){
-	// call this to add any options that don't exist in the current install
-	set_lme_options();
-	
 	$wpurl = get_bloginfo('wpurl');
-	echo "<script type=\"text/javascript\" src=\"{$wpurl}/wp-content/plugins/local-market-explorer/includes/lme-admin.js\"></script>";
+	echo <<<HTML
+		<script type="text/javascript" src="{$wpurl}/wp-content/plugins/local-market-explorer/includes/lme-admin.js"></script>
+		<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.0r4/build/yahoo/yahoo-min.js&2.8.0r4/build/get/get-min.js"></script>
+		<script>LocalMarketExplorerAdmin.BlogUrl = '$wpurl';</script>
+		<style type="text/css">
+			#lme_neighborhood_lookup_sponsor {
+				background-color:#EEEEEE;
+				border:1px solid #CCCCCC;
+				font-weight:bold;
+				margin-top:10px;
+				padding:15px;
+				text-align:center;
+				width:525px;
+			}
+		</style>
+HTML;
 }
 
 function lme_admin_menu() {
@@ -132,7 +144,7 @@ function update_lme_options(){
 	?><div id="message" class="updated fade"><p><strong>Options Saved</p></strong></div><?
 }
 
-function print_lme_options() {		
+function print_lme_options() {
 	$lme_panels_show_zillow_homevalue = get_option('lme_panels_show_zillow_homevalue');
 	$lme_panels_show_zillow_marketactivity = get_option('lme_panels_show_zillow_marketactivity');
 	$lme_apikey_zillow = get_option('lme_apikey_zillow');
@@ -158,7 +170,7 @@ function print_lme_options() {
 
 	$lme_areas = get_option('lme_areas');
 	?>
-		<form method="post">
+		<form method="post" id="lme_options_form">
 			<h3>Zillow Home Value Index</h3>
 			<table class="form-table">
 				<tr valign="top">
@@ -327,19 +339,22 @@ function print_lme_options() {
 				<table class="form-table" id="lme_area_table__<?= $i ?>">
 					<tr valign="top">
 						<th scope="row">
-							<label for="lme_areas_<?= $i ?>_neighborhood">Neighborhood</label>
+							<label for="lme_areas_<?= $i ?>_city">City, State</label>
 						</th>
 						<td>
-							<input class="regular-text code" type="text" value="<?= $lme_areas[$i]['neighborhood'] ?>" name="lme_areas_<?= $i ?>_neighborhood" style="width: 200px" />
+							<input class="lme_area_city regular-text code" type="text" value="<?= $lme_areas[$i]['city'] ?>" name="lme_areas_<?= $i ?>_city" style="width: 200px" />,
+							<input class="lme_area_state regular-text code" type="text" value="<?= $lme_areas[$i]['state'] ?>" name="lme_areas_<?= $i ?>_state" style="width: 25px" />
 						</td>
 					</tr>
 					<tr valign="top">
 						<th scope="row">
-							<label for="lme_areas_<?= $i ?>_city">City, State</label>
+							<label for="lme_areas_<?= $i ?>_neighborhood">Neighborhood</label>
 						</th>
 						<td>
-							<input class="regular-text code" type="text" value="<?= $lme_areas[$i]['city'] ?>" name="lme_areas_<?= $i ?>_city" style="width: 200px" />,
-							<input class="regular-text code" type="text" value="<?= $lme_areas[$i]['state'] ?>" name="lme_areas_<?= $i ?>_state" style="width: 25px" />
+							<select class="lme_area_neighborhood" id="lme_areas_<?= $i ?>_neighborhood" name="lme_areas_<?= $i ?>_neighborhood" disabled="true">
+								<option value="<?= $lme_areas[$i]['neighborhood'] ?>"><?= $lme_areas[$i]['neighborhood'] ?></option>
+							</select>
+							<a href="javascript:void(0);" onclick="LocalMarketExplorerAdmin.LoadNeighborhoods(this);" class="lme_area_neighborhood_loader">(load available neighborhoods)</a>
 						</td>
 					</tr>
 					<tr valign="top">
@@ -347,8 +362,12 @@ function print_lme_options() {
 							<label for="lme_areas_<?= $i ?>_zip">Zip</label>
 						</th>
 						<td>
-							<input class="regular-text code" type="text" value="<?= $lme_areas[$i]['zip'] ?>" name="lme_areas_<?= $i ?>_zip" style="width: 70px" />
+							<input class="lme_area_zip regular-text code" type="text" value="<?= $lme_areas[$i]['zip'] ?>" name="lme_areas_<?= $i ?>_zip" style="width: 70px" />
 						</td>
+					</tr>
+					<tr>
+						<th>Link(s)</th>
+						<td class="lme_area_link_display"></td>
 					</tr>
 					<tr valign="top">
 						<th scope="row">
@@ -360,7 +379,7 @@ function print_lme_options() {
 					</tr>
 					<tr>
 						<td colspan="2">
-							<input class="button-primary" type="button" onclick="LocalMarketExplorerAdmin.RemoveArea(<?= $i ?>)" value="Remove Target Area" />
+							<input class="button-secondary" type="button" onclick="LocalMarketExplorerAdmin.RemoveArea(<?= $i ?>)" value="Remove Target Area" />
 						</td>
 					</tr>
 					<tr>
@@ -376,19 +395,21 @@ function print_lme_options() {
 			<table class="form-table">
 				<tr valign="top">
 					<th scope="row">
-						<label for="lme_area_new_neighborhood">Neighborhood</label>
+						<label for="lme_area_new_city">City, State</label>
 					</th>
 					<td>
-						<input class="regular-text code" type="text" value="" name="lme_area_new_neighborhood" style="width: 200px" />
+						<input class="lme_area_city regular-text code" type="text" value="" name="lme_area_new_city" style="width: 200px" />
+						<input class="lme_area_state regular-text code" type="text" value="" name="lme_area_new_state" style="width: 25px" />
 					</td>
 				</tr>
 				<tr valign="top">
 					<th scope="row">
-						<label for="lme_area_new_city">City, State</label>
+						<label for="lme_area_new_neighborhood">Neighborhood</label>
 					</th>
 					<td>
-						<input class="regular-text code" type="text" value="" name="lme_area_new_city" style="width: 200px" />
-						<input class="regular-text code" type="text" value="" name="lme_area_new_state" style="width: 25px" />
+						<select class="lme_area_neighborhood" id="lme_area_new_neighborhood" name="lme_areas_<?= $i ?>_neighborhood" disabled="true">
+							<option value="">Fill in city and state to enable neighborhood selection</option>
+						</select>
 					</td>
 				</tr>
 				<tr valign="top">
@@ -396,8 +417,12 @@ function print_lme_options() {
 						<label for="lme_area_new_zip">Zip</label>
 					</th>
 					<td>
-						<input class="regular-text code" type="text" value="" name="lme_area_new_zip" style="width: 70px" />
+						<input class="lme_area_zip regular-text code" type="text" value="" name="lme_area_new_zip" style="width: 70px" />
 					</td>
+				</tr>
+				<tr>
+					<th>Link(s)</th>
+					<td class="lme_area_link_display"></td>
 				</tr>
 				<tr valign="top">
 					<th scope="row">
@@ -408,6 +433,14 @@ function print_lme_options() {
 					</td>
 				</tr>
 			</table>
+			
+			<div id="lme_neighborhood_lookup_sponsor">
+				Neighborhood lookup provided courtesy of <a href="http://www.diversesolutions.com/?r=lme-blog-admin" target="_blank">Diverse Solutions</a>.
+				<br /><br />
+				<a href="http://www.diversesolutions.com/?r=lme-blog-admin" target="_blank">
+				<img src="<?= get_bloginfo('wpurl') ?>/wp-content/plugins/local-market-explorer/images/diverse-solutions-logo.gif" alt="Diverse Solutions - Real Estate Technology Made Easy" />
+				</a>
+			</div>
 			
 			<p class="submit">
 				<input class="button-primary" type="submit" value="Save Changes" name="Submit"/>

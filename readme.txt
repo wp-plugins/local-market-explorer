@@ -71,7 +71,9 @@ your browser to / link to &lt;http://www.yourblog.com/local/seattle/wa&gt;. See 
 
 = Can I specify a ZIP or a neighborhood instead of a city? =
 
-The Local Market Explorer plugin does not currently let you specify a neighborhood or ZIP, but it's planned for the next iteration of this plugin.
+Yes! In version 2 of Local Market Explorer, support for neighborhoods was added. The neighborhood names must match the names that Zillow has
+made available via their API, but the Local Market Explorer admin area will help you to determine the neighborhoods that are available to you
+and what the links will be for each of those neighborhoods.
 
 = Can I customize the styling and display format? =
 
@@ -79,7 +81,8 @@ Yes. All of the styles are controlled via an external CSS stylesheet named lme-c
 
 = Do I have to show all of the panels? =
 
-No. You can turn off the About, Market Activity, Walk Score, and Yelp modules via the Local Market Explorer admin section of your WordPress installation.
+No. You can turn off the About, Market Activity, Walk Score, TeachStreet, Education.com, and Yelp modules via the Local Market Explorer admin section of your WordPress installation.
+You can't turn off the Zillow "Market Activity" panel though as it provides data that's needed to make the necessary requests for all of the other modules.
 
 = How do I draw attention to the pages for my target markets? =
 
