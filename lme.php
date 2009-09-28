@@ -61,6 +61,9 @@ function set_lme_options() {
 	add_option('lme_areas', '', '', 'yes');
 }
 function upgrade_lme_options() {
+	if (get_option('lme_areas'))
+		return;
+	
 	$lme_areas = array();
 	$lme_area_cities = unserialize(get_option('lme_area_cities'));
 	$lme_area_states = unserialize(get_option('lme_area_states'));
@@ -74,5 +77,9 @@ function upgrade_lme_options() {
 	}
 	
 	update_option('lme_areas', $lme_areas);
+	
+	delete_option('lme_area_cities');
+	delete_option('lme_area_states');
+	delete_option('lme_area_descriptions');
 }
 ?>
