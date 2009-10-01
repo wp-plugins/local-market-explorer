@@ -407,7 +407,7 @@ function print_lme_options() {
 						<label for="lme_area_new_neighborhood">Neighborhood</label>
 					</th>
 					<td>
-						<select class="lme_area_neighborhood" id="lme_area_new_neighborhood" name="lme_areas_<?= $i ?>_neighborhood" disabled="true">
+						<select class="lme_area_neighborhood" id="lme_area_new_neighborhood" name="lme_area_new_neighborhood" disabled="true">
 							<option value="">Fill in city and state to enable neighborhood selection</option>
 						</select>
 					</td>
