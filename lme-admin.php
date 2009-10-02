@@ -44,6 +44,11 @@ function update_lme_options(){
 	if($_REQUEST['lme_username_zillow']){
 		update_option('lme_username_zillow', $_REQUEST['lme_username_zillow']);
 	}
+	if($_REQUEST['lme_panels_show_market_stats']){
+		update_option('lme_panels_show_market_stats', $_REQUEST['lme_panels_show_market_stats']);
+	} else {
+		update_option('lme_panels_show_market_stats', '0');
+	}
 	
 	if($_REQUEST['lme_panels_show_aboutarea']){
 		update_option('lme_panels_show_aboutarea', $_REQUEST['lme_panels_show_aboutarea']);
@@ -145,8 +150,7 @@ function update_lme_options(){
 }
 
 function print_lme_options() {
-	$lme_panels_show_zillow_homevalue = get_option('lme_panels_show_zillow_homevalue');
-	$lme_panels_show_zillow_marketactivity = get_option('lme_panels_show_zillow_marketactivity');
+	$lme_panels_show_market_stats = get_option('lme_panels_show_market_stats');
 	$lme_apikey_zillow = get_option('lme_apikey_zillow');
 	$lme_username_zillow = get_option('lme_username_zillow');
 	$lme_zillow_mylistings_widget = get_option('lme_zillow_mylistings_widget');
@@ -190,6 +194,14 @@ function print_lme_options() {
 						<input id="lme_username_zillow" class="regular-text code" type="text" value="<?= $lme_username_zillow ?>" name="lme_username_zillow"/>
 						<span class="setting-description">Filling in this option will co-brand the Zillow experience on clickthrough</span>
 					</td>
+				</tr>
+				<tr>
+					<th class="th-full" colspan="2" scope="row">
+						<label for="lme_panels_show_market_stats">
+							<input id="lme_panels_show_market_stats" type="checkbox" <?= $lme_panels_show_market_stats == '1' ? 'checked="checked"' : ''?> value="1" name="lme_panels_show_market_stats"/>
+							Show Market Stats Panel
+						</label>
+					</th>
 				</tr>
 			</table>
 			
@@ -354,6 +366,7 @@ function print_lme_options() {
 							<select class="lme_area_neighborhood" id="lme_areas_<?= $i ?>_neighborhood" name="lme_areas_<?= $i ?>_neighborhood" disabled="true">
 								<option value="<?= $lme_areas[$i]['neighborhood'] ?>"><?= $lme_areas[$i]['neighborhood'] ?></option>
 							</select>
+							<input class="lme_area_neighborhood_hidden" type="hidden" name="lme_areas_<?= $i ?>_neighborhood" value="<?= $lme_areas[$i]['neighborhood'] ?>" />
 							<a href="javascript:void(0);" onclick="LocalMarketExplorerAdmin.LoadNeighborhoods(this);" class="lme_area_neighborhood_loader">(load available neighborhoods)</a>
 						</td>
 					</tr>

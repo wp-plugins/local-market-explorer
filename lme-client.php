@@ -188,6 +188,7 @@ FOOTER;
 	
 	// content functions
 	function get_content() {
+		$lme_panels_show_market_stats = get_option('lme_panels_show_market_stats');
 		$lme_panels_show_aboutarea = get_option('lme_panels_show_aboutarea');
 		$lme_panels_show_marketactivity = get_option('lme_panels_show_marketactivity');
 		$lme_panels_show_educationcom = get_option('lme_panels_show_educationcom');
@@ -200,16 +201,21 @@ FOOTER;
 		
 		$lme_apikey_flickr = get_option('lme_apikey_flickr');
 		$lme_apikey_walkscore = get_option('lme_apikey_walkscore');
-		
+
 		$lme_content = <<<LME_CONTENT
 			<div class="local_market_explorer">
 				<!-- HEADER (LOCATION) WITH PAGE ANCHOR LINKS FOR SECTIONS -->
 				<div class="lme_header">
 					<div class="lme_left"></div>
 					<div class="lme_middle" id="lme_navigation">
-						<a href="#lme-zillow-home-value-index">Market Statistics</a> |
 LME_CONTENT;
 
+		if ($lme_panels_show_market_stats) {
+			$lme_content .= <<<LME_CONTENT
+						<a href="#lme-zillow-home-value-index">Market Statistics</a> |
+LME_CONTENT;
+		}
+		
 		if ($lme_panels_show_aboutarea) {
 			$lme_content .= <<<LME_CONTENT
 						<a href="#lme-about-area">About Area</a> |
@@ -253,6 +259,10 @@ LME_CONTENT;
 					LocalMarketExplorer.longitude = '{$this->center_long}';
 				</script>
 
+LME_CONTENT;
+
+		if ($lme_panels_show_market_stats) {
+			$lme_content .= <<<LME_CONTENT
 				<!-- "Market Statistics" SECTION -->
 				<a name="lme-zillow-home-value-index"></a>
 				<div class="lme_container">
@@ -268,6 +278,7 @@ LME_CONTENT;
 					</div>
 				</div>
 LME_CONTENT;
+		}
 
 		if ($lme_panels_show_aboutarea) {
 			$about_area_data = $this->get_about_area_data();
@@ -289,8 +300,8 @@ LME_CONTENT;
 LME_CONTENT;
 		}
 		
+		$market_activity_data = $this->get_zillow_market_activity_data();
 		if ($lme_panels_show_marketactivity) {
-			$market_activity_data = $this->get_zillow_market_activity_data();
 			$lme_content .= <<<LME_CONTENT
 				<!-- "MARKET ACTIVITY" (ZILLOW) SECTION -->
 				<a name="lme-market-activity"></a>
@@ -397,6 +408,7 @@ LME_CONTENT;
 	function get_zillow_home_value_data() {
 		$lme_apikey_zillow = get_option('lme_apikey_zillow');
 		$lme_username_zillow = get_option('lme_username_zillow');
+		$lme_panels_show_market_stats = get_option('lme_panels_show_market_stats');
 		
 		$location_for_api = '';
 		
@@ -413,12 +425,15 @@ LME_CONTENT;
 		$zillow_chart_url = "http://www.zillow.com/webservice/GetRegionChart.htm?zws-id=$lme_apikey_zillow$location_for_api&unit-type=percent&width=400&height=200";
 		
 		$zillow_xml = $this->get_url_data_as_xml($zillow_xml_url);
-		$zillow_chart = $this->get_url_data_as_xml($zillow_chart_url);
-		
 		$node = $zillow_xml->xpath("response/region/latitude");
 		$this->center_lat = $node[0];
 		$node = $zillow_xml->xpath("response/region/longitude");
 		$this->center_long = $node[0];
+		
+		if (!$lme_panels_show_market_stats)
+			return '';
+		
+		$zillow_chart = $this->get_url_data_as_xml($zillow_chart_url);
 		
 		$node = $zillow_chart->xpath("response"); $region_chart = array($node[0]);
 		$node = $zillow_xml->xpath("response/charts/chart[name='Average Home Value']"); $avg_home_value = array($node[0]);

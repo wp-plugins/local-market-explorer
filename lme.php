@@ -40,6 +40,7 @@ register_activation_hook(__FILE__, 'set_lme_options');
 register_activation_hook(__FILE__, 'upgrade_lme_options');
 
 function set_lme_options() {
+	add_option('lme_panels_show_market_stats', '1', '', 'yes');
 	add_option('lme_panels_show_zillow_homevalue', '1', '', 'yes');
 	add_option('lme_panels_show_educationcom', '1', '', 'yes');
 	add_option('lme_panels_show_zillow_marketactivity', '1', '', 'yes');

@@ -57,6 +57,7 @@ var LocalMarketExplorerAdmin = {
 					else
 						neighborhoodEl.append('<option value="' + neighborhoodToAdd + '">' + neighborhoodToAdd + '</option>')
 				}
+				parentTable.find('.lme_area_neighborhood_hidden').remove();
 			}
 		});
 	},
