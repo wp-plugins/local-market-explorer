@@ -486,7 +486,7 @@ LME_CONTENT;
 		$market_homes_for_sale_nation = number_format($market_homes_for_sale[0]->nation->value);
 		
 		$zindex = number_format(trim($region_chart[0]->zindex));
-		$affordability_link = $affordability_link[0]->value;
+		$affordability_link = (string)$affordability_link[0];
 		
 		$lme_username_zillow = get_option('lme_username_zillow');
 		if (strlen($lme_username_zillow) > 0)
