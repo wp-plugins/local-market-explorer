@@ -439,8 +439,8 @@ LME_CONTENT;
 		$node = $zillow_xml->xpath("response/charts/chart[name='Average Home Value']"); $avg_home_value = array($node[0]);
 		$node = $zillow_xml->xpath("response/charts/chart[name='Average Condo Value']"); $avg_condo_value = array($node[0]);
 		$node = $zillow_xml->xpath("response/links/affordability"); $affordability_link = array($node[0]);
-		$node = $zillow_xml->xpath("response/links/forSale"); $this->zillow_for_sale_link = array($node[0]);
-		
+		$node = $zillow_xml->xpath("response/links/forSale"); $this->zillow_for_sale_link = (string)$node[0];
+
 		$node = $zillow_xml->xpath("response/pages/page[name='Affordability']/tables/table[name='Affordability Data']/data/attribute[name='Zillow Home Value Index']/values"); $zillow_home_value = array($node[0]);
 		$node = $zillow_xml->xpath("response/pages/page[name='Affordability']/tables/table[name='Affordability Data']/data/attribute[name='1-Yr. Change']/values"); $one_yr_change = array($node[0]);
 		$node = $zillow_xml->xpath("response/pages/page[name='Affordability']/tables/table[name='Affordability Data']/data/attribute[name='Median Condo Value']/values"); $median_condo_value = array($node[0]);
@@ -490,7 +490,7 @@ LME_CONTENT;
 		
 		$lme_username_zillow = get_option('lme_username_zillow');
 		if (strlen($lme_username_zillow) > 0)
-			$zillow_scrnm = '?scrnnm=' . $lme_username_zillow;
+			$zillow_scrnm = '#{scrnnm=' . $lme_username_zillow . '}';
 		else
 			$zillow_scrnm = '';
 		
@@ -578,10 +578,10 @@ LME_CONTENT;
 			</table>
 			
 			<div id="lme_zillow_see_more_link" class="lme_float_50">
-				<a href="{$affordability_link}{$zillow_scrnm}#scid=gen-api-wplugin" target="_blank">See {$this->city} home values at Zillow.com</a>
+				<a href="{$affordability_link}{$zillow_scrnm}" target="_blank">See {$this->location_for_display} home values at Zillow.com</a>
 			</div>
 			<div id="lme_zillow_logo" class="lme_float_50">
-				<a href="http://www.zillow.com/{$zillow_scrnm}#scid=gen-api-wplugin" target="_blank"><img src="http://www.zillow.com/static/logos/Zillowlogo_150x40.gif" alt="Zillow - Real Estate" /></a>
+				<a href="http://www.zillow.com/{$zillow_scrnm}" target="_blank"><img src="http://www.zillow.com/static/logos/Zillowlogo_150x40.gif" alt="Zillow - Real Estate" /></a>
 			</div>
 			<div class="clear"></div>
 HTML;
@@ -737,7 +737,7 @@ HTML;
 		
 		$lme_username_zillow = get_option('lme_username_zillow');
 		if (strlen($lme_username_zillow) > 0)
-			$zillow_scrnm = '?scrnnm=' . $lme_username_zillow;
+			$zillow_scrnm = '#{scrnnm=' . $lme_username_zillow . '}';
 		else
 			$zillow_scrnm = '';
 		
@@ -771,7 +771,7 @@ HTML;
 					{$recently_sold_html}
 				</div>
 				<div id="lme_recently_sold_link">
-					<a href="{$this->zillow_for_sale_link}{$zillow_scrnm}#scid=gen-api-wplugin" target="_blank">See $this->city real estate and homes for sale</a>
+					<a href="{$this->zillow_for_sale_link}{$zillow_scrnm}" target="_blank">See $this->location_for_display real estate and homes for sale</a>
 				</div>
 				<div class="clear"></div>
 			</div>
@@ -783,7 +783,7 @@ HTML;
 		$lme_sold_listings_to_show = get_option('lme_sold_listings_to_show');
 		$lme_username_zillow = get_option('lme_username_zillow');
 		if (strlen($lme_username_zillow) > 0)
-			$zillow_scrnm = '?scrnnm=' . $lme_username_zillow;
+			$zillow_scrnm = '#{scrnnm=' . $lme_username_zillow . '}';
 		else
 			$zillow_scrnm = '';
 		
@@ -796,14 +796,13 @@ HTML;
 			$formatted_last_sold_price = $this->get_money_from_xml($xml[$i]->lastSoldPrice);
 			$html .= "<div class='lme_recently_sold_item'>".					 	
 					 	//"<div></div>".
-					 	"<div><a href='{$xml[$i]->detailPageLink}{$zillow_scrnm}#scid=gen-api-wplugin' target='_blank'><img src='{$listingImage}' class='lme_recently_sold_item_photo' /></a>".
-					 	"<a href='{$xml[$i]->detailPageLink}{$zillow_scrnm}#scid=gen-api-wplugin' target='_blank'>{$xml[$i]->address->street}</a><br />".
+					 	"<div><a href='{$xml[$i]->detailPageLink}{$zillow_scrnm}' target='_blank'><img src='{$listingImage}' class='lme_recently_sold_item_photo' /></a>".
+					 	"<a href='{$xml[$i]->detailPageLink}{$zillow_scrnm}' target='_blank'>{$xml[$i]->address->street}</a><br />".
 					 	"Recently Sold ({$xml[$i]->lastSoldDate}): \${$formatted_last_sold_price}<br />".
 					 	"{$xml[$i]->bathrooms} beds {$xml[$i]->bedrooms} baths {$xml[$i]->finishedSqFt} sqft</div>".
 					 "</div>";
 			$html .= "<div class='clear'></div>";
 		}
-		
 		
 		return $html;
 	}
