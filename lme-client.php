@@ -163,20 +163,26 @@ FOOTER;
 		return $posts;
 	}
 	
-	function get_url_data($url) {
+	function get_url_data($url, $nocache = false) {
+		if (!$nocache) {
+			$cacheKey = "lme-" & sha1($url);
+			$cacheValue = get_transient($cacheKey);
+			
+			if ($cacheValue)
+				return $cacheValue;
+		}
+		
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_HEADER, false);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		$raw = curl_exec($ch);
+		
+		if (!$nocache)
+			set_transient("lme-" & sha1($url), $raw, 60*60*24);
 		return $raw;
 	}
-	function get_url_data_as_xml($url) {
-		if (ini_get('allow_url_fopen')) {
-			$xml = simplexml_load_file($url);
-		}
-		else {
-			$xml = simplexml_load_string($this->get_url_data($url));
-		}
+	function get_url_data_as_xml($url, $nocache = false) {
+		$xml = simplexml_load_string($this->get_url_data($url, $nocache));
 		return $xml;
 	}
 	function get_string_from_xml($xml){
@@ -424,22 +430,23 @@ LME_CONTENT;
 		$zillow_xml_url = "http://www.zillow.com/webservice/GetDemographics.htm?zws-id=$lme_apikey_zillow$location_for_api";
 		$zillow_chart_url = "http://www.zillow.com/webservice/GetRegionChart.htm?zws-id=$lme_apikey_zillow$location_for_api&unit-type=percent&width=400&height=200";
 		
-		$zillow_xml = $this->get_url_data_as_xml($zillow_xml_url);
+		$zillow_xml = $this->get_url_data_as_xml($zillow_xml_url, true);
 		$node = $zillow_xml->xpath("response/region/latitude");
 		$this->center_lat = $node[0];
 		$node = $zillow_xml->xpath("response/region/longitude");
 		$this->center_long = $node[0];
 		
+		$node = $zillow_xml->xpath("response/links/forSale"); $this->zillow_for_sale_link = (string)$node[0];
+		
 		if (!$lme_panels_show_market_stats)
 			return '';
 		
-		$zillow_chart = $this->get_url_data_as_xml($zillow_chart_url);
+		$zillow_chart = $this->get_url_data_as_xml($zillow_chart_url, true);
 		
 		$node = $zillow_chart->xpath("response"); $region_chart = array($node[0]);
 		$node = $zillow_xml->xpath("response/charts/chart[name='Average Home Value']"); $avg_home_value = array($node[0]);
 		$node = $zillow_xml->xpath("response/charts/chart[name='Average Condo Value']"); $avg_condo_value = array($node[0]);
 		$node = $zillow_xml->xpath("response/links/affordability"); $affordability_link = array($node[0]);
-		$node = $zillow_xml->xpath("response/links/forSale"); $this->zillow_for_sale_link = (string)$node[0];
 
 		$node = $zillow_xml->xpath("response/pages/page[name='Affordability']/tables/table[name='Affordability Data']/data/attribute[name='Zillow Home Value Index']/values"); $zillow_home_value = array($node[0]);
 		$node = $zillow_xml->xpath("response/pages/page[name='Affordability']/tables/table[name='Affordability Data']/data/attribute[name='1-Yr. Change']/values"); $one_yr_change = array($node[0]);
@@ -490,12 +497,12 @@ LME_CONTENT;
 		
 		$lme_username_zillow = get_option('lme_username_zillow');
 		if (strlen($lme_username_zillow) > 0)
-			$zillow_scrnm = '#{scrnnm=' . $lme_username_zillow . '}';
+			$zillow_scrnm = '&scrnnm=' . $lme_username_zillow;
 		else
 			$zillow_scrnm = '';
 		
 		return <<<HTML
-			<h3>\${$zindex}</h3>
+			<h3>Zillow Home Value Index: \${$zindex}</h3>
 
 			<h4>Market Value Change</h4>
 			<div id="lme_zillow_region_chart_container">
@@ -578,10 +585,10 @@ LME_CONTENT;
 			</table>
 			
 			<div id="lme_zillow_see_more_link" class="lme_float_50">
-				<a href="{$affordability_link}{$zillow_scrnm}" target="_blank">See {$this->location_for_display} home values at Zillow.com</a>
+				<a href="{$affordability_link}#{scid=gen-api-wplugin$zillow_scrnm}" target="_blank">See {$this->location_for_display} home values at Zillow.com</a>
 			</div>
 			<div id="lme_zillow_logo" class="lme_float_50">
-				<a href="http://www.zillow.com/{$zillow_scrnm}" target="_blank"><img src="http://www.zillow.com/static/logos/Zillowlogo_150x40.gif" alt="Zillow - Real Estate" /></a>
+				<a href="http://www.zillow.com/#{scid=gen-api-wplugin$zillow_scrnm}" target="_blank"><img src="http://www.zillow.com/static/logos/Zillowlogo_150x40.gif" alt="Zillow - Real Estate" /></a>
 			</div>
 			<div class="clear"></div>
 HTML;
@@ -733,11 +740,11 @@ HTML;
 			$recent_sales_url .= urlencode("$this->city,$this->state");
 		}
 		
-		$zillow_fmr = $this->get_url_data_as_xml($recent_sales_url);
+		$zillow_fmr = $this->get_url_data_as_xml($recent_sales_url, true);
 		
 		$lme_username_zillow = get_option('lme_username_zillow');
 		if (strlen($lme_username_zillow) > 0)
-			$zillow_scrnm = '#{scrnnm=' . $lme_username_zillow . '}';
+			$zillow_scrnm = '&scrnnm=' . $lme_username_zillow;
 		else
 			$zillow_scrnm = '';
 		
@@ -771,7 +778,7 @@ HTML;
 					{$recently_sold_html}
 				</div>
 				<div id="lme_recently_sold_link">
-					<a href="{$this->zillow_for_sale_link}{$zillow_scrnm}" target="_blank">See $this->location_for_display real estate and homes for sale</a>
+					<a href="{$this->zillow_for_sale_link}#{scid=gen-api-wplugin$zillow_scrnm}" target="_blank">See $this->location_for_display real estate and homes for sale</a>
 				</div>
 				<div class="clear"></div>
 			</div>
@@ -783,7 +790,7 @@ HTML;
 		$lme_sold_listings_to_show = get_option('lme_sold_listings_to_show');
 		$lme_username_zillow = get_option('lme_username_zillow');
 		if (strlen($lme_username_zillow) > 0)
-			$zillow_scrnm = '#{scrnnm=' . $lme_username_zillow . '}';
+			$zillow_scrnm = '&scrnnm=' . $lme_username_zillow;
 		else
 			$zillow_scrnm = '';
 		
@@ -796,8 +803,8 @@ HTML;
 			$formatted_last_sold_price = $this->get_money_from_xml($xml[$i]->lastSoldPrice);
 			$html .= "<div class='lme_recently_sold_item'>".					 	
 					 	//"<div></div>".
-					 	"<div><a href='{$xml[$i]->detailPageLink}{$zillow_scrnm}' target='_blank'><img src='{$listingImage}' class='lme_recently_sold_item_photo' /></a>".
-					 	"<a href='{$xml[$i]->detailPageLink}{$zillow_scrnm}' target='_blank'>{$xml[$i]->address->street}</a><br />".
+					 	"<div><a href='{$xml[$i]->detailPageLink}#{scid=gen-api-wplugin$zillow_scrnm}' target='_blank'><img src='{$listingImage}' class='lme_recently_sold_item_photo' /></a>".
+					 	"<a href='{$xml[$i]->detailPageLink}#{scid=gen-api-wplugin$zillow_scrnm}' target='_blank'>{$xml[$i]->address->street}</a><br />".
 					 	"Recently Sold ({$xml[$i]->lastSoldDate}): \${$formatted_last_sold_price}<br />".
 					 	"{$xml[$i]->bathrooms} beds {$xml[$i]->bedrooms} baths {$xml[$i]->finishedSqFt} sqft</div>".
 					 "</div>";

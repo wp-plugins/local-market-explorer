@@ -40,6 +40,9 @@ var LocalMarketExplorer = {
 		$j(function() {
 			pageReady = true;
 			
+			if (!$j('#lme_zillow_region_chart').length)
+				return;
+			
 			zillowUrl = $j('#lme_zillow_region_chart').attr('src');
 			zillowUrl = zillowUrl.replace(/chartDuration=[^&]+&/, "chartDuration={char_duration}&");
 			zillowUrl = zillowUrl.replace(/showPercent=[^&]+&/, "showPercent={show_percent}&");
