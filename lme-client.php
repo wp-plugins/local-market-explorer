@@ -71,8 +71,6 @@ class LMEPage
 			$lme_post->post_name = $lme_post->post_title;
 			$lme_post->to_ping = '';
 			$lme_post->pinged = '';
-			$lme_post->post_modified = $formattedNow; // maybe this and the gmt should be some static date for WP caching reasons?
-			$lme_post->post_modified_gmt = $formattedNow;
 			$lme_post->post_content_filtered = '';
 			$lme_post->post_parent = 0;
 			$lme_post->guid = get_bloginfo('wpurl') . '/' . $this->slug . '/' . $this->zip . '/' . $this->neighborhood . '/' . $this->city . '/' . $this->state;
@@ -106,12 +104,19 @@ HEAD;
 	function get_footer($content) {
 		//filter wp_footer
 		$current_year = date('Y');
+		
+		$lme_username_zillow = get_option('lme_username_zillow');
+		if (strlen($lme_username_zillow) > 0)
+			$zillow_scrnm = '#{scrnnm=' . $lme_username_zillow . '}';
+		else
+			$zillow_scrnm = '';
+		
 		if ($this->is_lme) {
 			echo <<<FOOTER
 				<div id="lme_footer">
 					<p>
-						&copy; Zillow, Inc., {$current_year}. Use is subject to <a href="http://www.zillow.com/corp/Terms.htm#scid=gen-api-wplugin" target="_blank">Terms of Use</a>.
-						<a href="http://www.zillow.com/howto/WhatsaZindex.htm#scid=gen-api-wplugin" target="_blank">What's a Zindex</a>?
+						&copy; Zillow, Inc., {$current_year}. Use is subject to <a href="http://www.zillow.com/corp/Terms.htm$zillow_scrnm" target="_blank">Terms of Use</a>.
+						<a href="http://www.zillow.com/howto/WhatsaZindex.htm$zillow_scrnm" target="_blank">What's a Zindex</a>?
 					</p>
 					<p>This product uses the Flickr API but is not endorsed or certified by Flickr.</p>
 				</div>
@@ -207,8 +212,14 @@ FOOTER;
 		
 		$lme_apikey_flickr = get_option('lme_apikey_flickr');
 		$lme_apikey_walkscore = get_option('lme_apikey_walkscore');
+		
+		$lme_navigation = array();
+		$lme_content = array();
+		
+		$moduleOrder = get_option('lme_module_order');
+		asort($moduleOrder);
 
-		$lme_content = <<<LME_CONTENT
+		$lme_content_html = <<<LME_CONTENT
 			<div class="local_market_explorer">
 				<!-- HEADER (LOCATION) WITH PAGE ANCHOR LINKS FOR SECTIONS -->
 				<div class="lme_header">
@@ -216,46 +227,29 @@ FOOTER;
 					<div class="lme_middle" id="lme_navigation">
 LME_CONTENT;
 
-		if ($lme_panels_show_market_stats) {
-			$lme_content .= <<<LME_CONTENT
-						<a href="#lme-zillow-home-value-index">Market Statistics</a> |
-LME_CONTENT;
-		}
+		if ($lme_panels_show_market_stats)
+			$lme_navigation['market-statistics'] = '<a href="#lme-zillow-home-value-index">Market Statistics</a> | ';
+		if ($lme_panels_show_aboutarea)
+			$lme_navigation['about-area'] = '<a href="#lme-about-area">About Area</a> | ';
+		if ($lme_panels_show_marketactivity)
+			$lme_navigation['market-activity'] = '<a href="#lme-market-activity">Market Activity</a> | ';
+		if ($lme_panels_show_educationcom)
+			$lme_navigation['schools'] = '<a href="#lme-schools">Schools</a> | ';
+		if ($lme_panels_show_walkscore)
+			$lme_navigation['walk-score'] = '<a href="#lme-walk-score">Walk Score</a> | ';
+		if ($lme_panels_show_yelp)
+			$lme_navigation['yelp'] = '<a href="#lme-yelp">Yelp Local Reviews</a> | ';
+		if ($lme_panels_show_teachstreet)
+			$lme_navigation['teachstreet'] = '<a href="#lme-teachstreet">Local Classes</a> | ';
 		
-		if ($lme_panels_show_aboutarea) {
-			$lme_content .= <<<LME_CONTENT
-						<a href="#lme-about-area">About Area</a> |
-LME_CONTENT;
-		}
-		if ($lme_panels_show_marketactivity) {
-			$lme_content .= <<<LME_CONTENT
-						<a href="#lme-market-activity">Market Activity</a> |
-LME_CONTENT;
-		}
 		
-		if ($lme_panels_show_educationcom) {
-			$lme_content .= <<<LME_CONTENT
-						<a href="#lme-schools">Schools</a> |
-LME_CONTENT;
-		}
-		if ($lme_panels_show_walkscore) {
-			$lme_content .= <<<LME_CONTENT
-						<a href="#lme-walk-score">Walk Score</a> |
-LME_CONTENT;
-		}
-		if ($lme_panels_show_yelp) {
-			$lme_content .= <<<LME_CONTENT
-						<a href="#lme-yelp">Yelp Local Reviews</a> |
-LME_CONTENT;
-		}
-		if ($lme_panels_show_teachstreet) {
-			$lme_content .= <<<LME_CONTENT
-						<a href="#lme-teachstreet">Local Classes</a>
-LME_CONTENT;
+		foreach ($moduleOrder as $key => $value) {
+			if (isset($lme_navigation[$key]))
+				$lme_content_html .= $lme_navigation[$key];
 		}
 		
 		$home_value_data = $this->get_zillow_home_value_data();
-		$lme_content .= <<<LME_CONTENT
+		$lme_content_html .= <<<LME_CONTENT
 					</div>
 					<div class="lme_right"></div>
 				</div>
@@ -268,7 +262,7 @@ LME_CONTENT;
 LME_CONTENT;
 
 		if ($lme_panels_show_market_stats) {
-			$lme_content .= <<<LME_CONTENT
+			$lme_content['market-statistics'] = <<<LME_CONTENT
 				<!-- "Market Statistics" SECTION -->
 				<a name="lme-zillow-home-value-index"></a>
 				<div class="lme_container">
@@ -288,7 +282,7 @@ LME_CONTENT;
 
 		if ($lme_panels_show_aboutarea) {
 			$about_area_data = $this->get_about_area_data();
-			$lme_content .= <<<LME_CONTENT
+			$lme_content['about-area'] = <<<LME_CONTENT
 				<!-- "ABOUT {LOCATION}" (CONFIGS + FLICKR) SECTION -->
 				<a name="lme-about-area"></a>
 				<div class="lme_container">
@@ -308,7 +302,7 @@ LME_CONTENT;
 		
 		$market_activity_data = $this->get_zillow_market_activity_data();
 		if ($lme_panels_show_marketactivity) {
-			$lme_content .= <<<LME_CONTENT
+			$lme_content['market-activity'] = <<<LME_CONTENT
 				<!-- "MARKET ACTIVITY" (ZILLOW) SECTION -->
 				<a name="lme-market-activity"></a>
 				<div class="lme_container">
@@ -326,9 +320,9 @@ LME_CONTENT;
 LME_CONTENT;
 		}
 		
-		$educationdotcom_data = $this->get_educationdotcom_data();
 		if ($lme_panels_show_educationcom) {
-			$lme_content .= <<<LME_CONTENT
+			$educationdotcom_data = $this->get_educationdotcom_data();
+			$lme_content['schools'] = <<<LME_CONTENT
 					<!-- "SCHOOLS" (EDUCATION.COM) SECTION -->
 					<a name="lme-schools"></a>
 					<div class="lme_container">
@@ -348,7 +342,7 @@ LME_CONTENT;
 		
 		if ($lme_panels_show_walkscore) {
 			$walk_score_data = $this->get_walk_score_data();
-			$lme_content .= <<<LME_CONTENT
+			$lme_content['walk-score'] = <<<LME_CONTENT
 				<!-- WALK SCORE SECTION -->
 				<a name="lme-walk-score"></a>
 				<div class="lme_container">
@@ -368,7 +362,7 @@ LME_CONTENT;
 		
 		if ($lme_panels_show_teachstreet) {
 			$teachstreet_data = $this->get_teachstreet_data();
-			$lme_content .= <<<LME_CONTENT
+			$lme_content['teachstreet'] = <<<LME_CONTENT
 				<!-- TEACHSTREET SECTION -->
 				<a name="lme-teachstreet"></a>
 				<div class="lme_container">
@@ -388,7 +382,7 @@ LME_CONTENT;
 		
 		if ($lme_panels_show_yelp) {
 			$yelp_data = $this->get_yelp_reviews_data();
-			$lme_content .= <<<LME_CONTENT
+			$lme_content['yelp'] = <<<LME_CONTENT
 				<!-- YELP SECTION -->
 				<a name="lme-yelp"></a>
 				<div class="lme_container">
@@ -406,9 +400,14 @@ LME_CONTENT;
 LME_CONTENT;
 		}
 		
-		$lme_content .= '</div>';
+		foreach ($moduleOrder as $key => $value) {
+			if (isset($lme_content[$key]))
+				$lme_content_html .= $lme_content[$key];
+		}
 		
-		return $lme_content;
+		$lme_content_html .= '</div>';
+		
+		return $lme_content_html;
 	}
 
 	function get_zillow_home_value_data() {

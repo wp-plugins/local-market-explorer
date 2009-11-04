@@ -136,7 +136,6 @@ var LocalMarketExplorer = {
 
 		returnObj = {
 			loadMap: function(){
-				geocoder = new google.maps.Geocoder();
 				var openedWindow = null;
 
 				var map = new google.maps.Map(document.getElementById("lme-yelp-map"), {
@@ -145,6 +144,8 @@ var LocalMarketExplorer = {
 			    });
 			    
 			    var bounds = new google.maps.LatLngBounds();
+				
+				map.scrollwheel = false;
 			    
 			    for(var i=0;i< LocalMarketExplorer.Yelp.Data.businesses.length;i++){
 			    	var business = LocalMarketExplorer.Yelp.Data.businesses[i];

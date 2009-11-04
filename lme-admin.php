@@ -145,6 +145,15 @@ function update_lme_options(){
 		$lme_areas[$new_index]['description'] = $lme_area_new_description;
 	}
 	update_option('lme_areas', $lme_areas);
+	
+	$moduleOrder = array();
+	foreach ( $_REQUEST as $key => $value ) {
+		if (strpos($key, 'lme-order-') === false)
+			continue;
+		
+		$moduleOrder[substr($key, 10)] = $value;
+	}
+	update_option('lme_module_order', $moduleOrder);
 			
 	?><div id="message" class="updated fade"><p><strong>Options Saved</p></strong></div><?
 }
@@ -171,6 +180,8 @@ function print_lme_options() {
 	$lme_apikey_yelp = get_option('lme_apikey_yelp');
 	
 	$lme_panels_show_teachstreet = get_option('lme_panels_show_teachstreet');
+	
+	$moduleOrder = get_option('lme_module_order');
 
 	$lme_areas = get_option('lme_areas');
 	?>
@@ -338,6 +349,43 @@ function print_lme_options() {
 		<?
 		}
 		?>
+			
+			<p class="submit">
+				<input class="button-primary" type="submit" value="Save Changes" name="Submit"/>
+			</p>
+			
+			<h3>Module order</h3>
+			
+			<table class="form-table">
+				<tr>
+					<td width="100"><label for="lme-order-market-statistics">Market Statistics</label></td>
+					<td><input name="lme-order-market-statistics" type="text" value="<?= $moduleOrder['market-statistics'] ?>" style="width: 20px" /></td>
+				</tr>
+				<tr>
+					<td><label for="lme-order-about-area">About Area</label></td>
+					<td><input name="lme-order-about-area" type="text" value="<?= $moduleOrder['about-area'] ?>" style="width: 20px" /></td>
+				</tr>
+				<tr>
+					<td><label for="lme-order-market-activity">Market Activity</label></td>
+					<td><input name="lme-order-market-activity" type="text" value="<?= $moduleOrder['market-activity'] ?>" style="width: 20px" /></td>
+				</tr>
+				<tr>
+					<td><label for="lme-order-schools">Schools</label></td>
+					<td><input name="lme-order-schools" type="text" value="<?= $moduleOrder['schools'] ?>" style="width: 20px" /></td>
+				</tr>
+				<tr>
+					<td><label for="lme-order-walk-score">Walk Score</label></td>
+					<td><input name="lme-order-walk-score" type="text" value="<?= $moduleOrder['walk-score'] ?>" style="width: 20px" /></td>
+				</tr>
+				<tr>
+					<td><label for="lme-order-yelp">Yelp</label></td>
+					<td><input name="lme-order-yelp" type="text" value="<?= $moduleOrder['yelp'] ?>" style="width: 20px" /></td>
+				</tr>
+				<tr>
+					<td><label for="lme-order-teachstreet">Teachstreet</label></td>
+					<td><input name="lme-order-teachstreet" type="text" value="<?= $moduleOrder['teachstreet'] ?>" style="width: 20px" /></td>
+				</tr>
+			</table>
 			
 			<p class="submit">
 				<input class="button-primary" type="submit" value="Save Changes" name="Submit"/>

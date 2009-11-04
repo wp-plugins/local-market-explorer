@@ -60,6 +60,16 @@ function set_lme_options() {
 	add_option('lme_sold_listings_to_show', '', '', 'yes');
 	
 	add_option('lme_areas', '', '', 'yes');
+	
+	add_option('lme_module_order', array(
+		'market-statistics'	=> 1,
+		'about-area'		=> 2,
+		'market-activity'	=> 3,
+		'schools'			=> 4,
+		'walk-score'		=> 5,
+		'yelp'				=> 6,
+		'teachstreet'		=> 7
+	));
 }
 function upgrade_lme_options() {
 	if (get_option('lme_areas'))
