@@ -1,7 +1,7 @@
 <?
 class LMEWidget extends WP_Widget {
 	function LMEWidget() {        
-		parent::WP_Widget(false, $name = 'LME Widget');	
+		parent::WP_Widget(false, $name = 'Local Market Explorer');	
 		add_filter('wp_head', array(&$this, 'widget_head'));
 		add_filter('admin_head', array(&$this, 'widget_admin_head'));
 	}
@@ -11,8 +11,7 @@ class LMEWidget extends WP_Widget {
 		$wpurl = get_bloginfo('wpurl');
 		extract($args);
 		
-		$lme_area_cities = unserialize(get_option('lme_area_cities'));
-		$lme_area_states = unserialize(get_option('lme_area_states'));
+		$areas = get_option('lme_areas');
 		
         $title = esc_attr($instance['title']);
         $badge = esc_attr($instance['badge']);
@@ -21,15 +20,20 @@ class LMEWidget extends WP_Widget {
 		?><div class="lme-widget"><?
 		
 		if($title) { echo $before_title . $title . $after_title; }
-		if($badge) { ?><img src="<?= $badge ?>"<? }
+		if($badge) { ?> <img src="<?= $badge ?>" /> <? }
 		
-		for($i=0;$i<sizeOf($lme_area_cities);$i++){
-			$title = '';
-			$link = '';
-			
-			if($lme_area_cities[$i] != '' && $lme_area_states[$i] != '') {
-				$title = $lme_area_cities[$i] .', '. $lme_area_states[$i];
-				$link = $lme_area_cities[$i] .'/'. $lme_area_states[$i];
+		for($i=0;$i<sizeOf($areas);$i++){
+			if ($areas[$i]['zip']) {
+				$title = $areas[$i]['zip'];
+				$link = $areas[$i]['zip'];
+			} else {
+				if ($areas[$i]['neighborhood']) {
+					$title = $areas[$i]['neighborhood'] . ', ' . $areas[$i]['city'] . ', '. $areas[$i]['state'];
+					$link = $areas[$i]['neighborhood'] . '/' . $areas[$i]['city'] . '/' . $areas[$i]['state'];
+				} else {
+					$title = $areas[$i]['city'] .', '. $areas[$i]['state'];
+					$link = $areas[$i]['city'] .'/'. $areas[$i]['state'];
+				}
 			}
 			
 			$link = strtolower(str_replace(' ', '-', $link));
@@ -75,7 +79,7 @@ class LMEWidget extends WP_Widget {
 
 			?>
 			</select>
-			<span class="setting-description">Choose a premade bade for your sidebar widget, or enter your own URL</span>
+			<span class="setting-description">Choose a premade badge for your sidebar widget, or enter your own URL</span>
 			<div id="<?php echo $this->get_field_id('badge'); ?>_preview" style="margin:5px;display:<?= $badge == '' ? 'none' : 'block' ?>"><img src="<?= $badge ?>" /></div>
         <?php 
 	}

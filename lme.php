@@ -3,7 +3,7 @@
 Plugin Name: Local Market Explorer
 Plugin URI: http://wordpress.org/extend/plugins/local-market-explorer/
 Description: This plugin allows WordPress to load data from a number of real estate and neighborhood APIs to be presented all within a single page in WordPress.
-Version: 2.0
+Version: 2.0.1
 Author: Andrew Mattie & Jonathan Mabe
 */
 
@@ -24,15 +24,16 @@ Author: Andrew Mattie & Jonathan Mabe
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+include('lme-widget.php');
+add_action('widgets_init', create_function('', 'return register_widget("LMEWidget");'));
+
 if(is_admin()) {
 	include('lme-admin.php');
 	add_action('admin_head', 'lme_admin_head'); 
 	add_action('admin_menu', 'lme_admin_menu');
 } else {
-	include('lme-widget.php');
 	include('lme-client.php');
 	//add_action('init', widget_lme_register);
-	add_action('widgets_init', create_function('', 'return register_widget("LMEWidget");'));
 	new LMEPage;
 }
 

@@ -500,7 +500,7 @@ LME_CONTENT;
 		else
 			$zillow_scrnm = '';
 		
-		return <<<HTML
+		$html = <<<HTML
 			<div id="lme_zillow_header">
 				<h4>Zillow Home Value Index:</h4>
 				<h3><a href="{$affordability_link}#{scid=gen-api-wplugin$zillow_scrnm}" target="_blank">\${$zindex}</a></h3>
@@ -544,6 +544,9 @@ LME_CONTENT;
 					<th>Local</th>
 					<th>National</th>
 				</tr>
+HTML;
+		if (!$this->zip)
+			$html .= <<<HTML
 				<tr class="lme_primary">
 					<td>Zillow Home Value Index</td>
 					<td class="lme_number lme_primary_value">{$formatted_local_home_value}</td>
@@ -564,6 +567,8 @@ LME_CONTENT;
 					<td class="lme_number lme_primary_value">{$formatted_local_sfr_value}</td>
 					<td class="lme_number">{$formatted_national_sfr_value}</td>
 				</tr>
+HTML;
+		$html .= <<<HTML
 				<tr class="lme_primary">
 					<td>Median List Price</td>
 					<td class="lme_number lme_primary_value">{$market_median_list_price_local}</td>
@@ -594,6 +599,7 @@ LME_CONTENT;
 			</div>
 			<div class="clear"></div>
 HTML;
+		return $html;
 	}
 	
 	function get_about_area_data(){
