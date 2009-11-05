@@ -501,7 +501,10 @@ LME_CONTENT;
 			$zillow_scrnm = '';
 		
 		return <<<HTML
-			<h3>Zillow Home Value Index: <a href="{$affordability_link}#{scid=gen-api-wplugin$zillow_scrnm}" target="_blank">\${$zindex}</a></h3>
+			<div id="lme_zillow_header">
+				<h4>Zillow Home Value Index:</h4>
+				<h3><a href="{$affordability_link}#{scid=gen-api-wplugin$zillow_scrnm}" target="_blank">\${$zindex}</a></h3>
+			</div>
 
 			<h4>Market Value Change</h4>
 			<div id="lme_zillow_region_chart_container">

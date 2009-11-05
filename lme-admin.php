@@ -110,6 +110,7 @@ function update_lme_options(){
 	}
 	
 	$lme_areas = array();
+	
 	foreach ( $_REQUEST as $key => $value ) { 
 		if (strpos($key, 'lme_areas_') === false)
 			continue;
@@ -121,7 +122,7 @@ function update_lme_options(){
 		if (!$lme_areas[$index])
 			$lme_areas[$index] = array();
 
-		$lme_areas[$index][$type] = $value;
+		$lme_areas[$index][$type] = str_replace('\"', '"', htmlspecialchars_decode($value, ENT_NOQUOTES));
 	}
 
 	$lme_area_new_neighborhood = $_REQUEST['lme_area_new_neighborhood'];
@@ -435,7 +436,7 @@ function print_lme_options() {
 							<label for="lme_areas_<?= $i ?>_description">Description</label>
 						</th>
 						<td>
-							<textarea class="regular-text code" name="lme_areas_<?= $i ?>_description" style="width: 325px; height: 200px;" wrap="soft"><?= htmlentities($lme_areas[$i]['description']) ?></textarea>
+							<textarea class="regular-text code" name="lme_areas_<?= $i ?>_description" style="width: 325px; height: 200px;" wrap="soft"><?= htmlentities($lme_areas[$i]['description'], ENT_NOQUOTES) ?></textarea>
 						</td>
 					</tr>
 					<tr>

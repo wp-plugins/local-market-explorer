@@ -181,12 +181,19 @@ td.lme_primary_value{
 }
 
 /* ZILLOW HOME VALUE INDEX */
+#lme_zillow_header
+{
+	text-align: center;
+}
+#lme_zillow_header h4
+{
+	text-decoration: none;
+}
 #lme_zillow_index h3{
 	color:#4959B8;
 	font-size:20px;
 	font-weight:bold;
 	margin:8px 0;
-	text-align:center;
 }
 #lme_zillow_region_chart{
 	width: 400px;
