@@ -57,6 +57,9 @@
 	font-size: 100%;
 	font-weight: normal;
 }
+.local_market_explorer div{
+	text-align: left;
+}
 
 /* HEADER */
 .local_market_explorer .lme_header{
@@ -72,9 +75,9 @@
 .local_market_explorer .lme_header .lme_middle{
 	background-image:url(../images/header-middle.png);
 	background-repeat:repeat-x;
-	height:36px;
+	height:43px;
 	margin:0 11px;
-	padding:14px 11px 0 0;
+	padding:7px 11px 0 0;
 	text-align:center;
 }
 .local_market_explorer .lme_header .lme_right{
@@ -178,12 +181,19 @@ td.lme_primary_value{
 }
 
 /* ZILLOW HOME VALUE INDEX */
+#lme_zillow_header
+{
+	text-align: center;
+}
+#lme_zillow_header h4
+{
+	text-decoration: none;
+}
 #lme_zillow_index h3{
 	color:#4959B8;
 	font-size:20px;
 	font-weight:bold;
 	margin:8px 0;
-	text-align:center;
 }
 #lme_zillow_region_chart{
 	width: 400px;
@@ -426,6 +436,9 @@ ul.lme_schools_list{
 
 .local_market_explorer .ts_item {
 	margin-bottom: 15px;
+}
+.local_market_explorer .ts_item p {
+	margin-bottom: 0px;
 }
 .local_market_explorer .ts_item_image {
 	float:left;
