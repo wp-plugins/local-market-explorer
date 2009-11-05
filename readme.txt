@@ -3,7 +3,7 @@ Contributors: amattie, jmabe, zillow
 Tags: zillow, flickr, walk score, schools, education.com, real estate, local information, city data, yelp, teachstreet
 Requires at least: 2.8
 Tested up to: 2.8
-Stable tag: 1.1
+Stable tag: 2.0
 
 This plugin allows WordPress to load data from a number of real estate and neighborhood APIs to be presented all within a single
 page in WordPress.
@@ -41,6 +41,15 @@ States, you'll find that most cities are sufficiently covered by nearly all of t
 5. Visit each of the API key links and get your API keys. After you put in each API key, the data will load for the corresponding modules.
 
 == Changelog ==
+
+= 2.0 =
+* Cached some API requests (where allowed) to make module load faster
+* Added support for displaying data for neighborhoods and zips
+* Added ability to reorder modules
+* Added ability to put HTML (YouTube videos, etc) into the area descriptions
+* Usability improvements in the admin
+* Added new market data stats (provided by Zillow)
+* Added ability to turn off Flickr, Schools, and Market stats panel
 
 = 1.1 =
 * Added ability to pull in TeachStreet data
