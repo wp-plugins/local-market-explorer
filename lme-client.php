@@ -169,7 +169,7 @@ FOOTER;
 	}
 	
 	function get_url_data($url, $nocache = false) {
-		if (!$nocache) {
+		if ($url && !$nocache) {
 			$cacheKey = "lme-" & sha1($url);
 			$cacheValue = get_transient($cacheKey);
 			
@@ -182,7 +182,7 @@ FOOTER;
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		$raw = curl_exec($ch);
 		
-		if (!$nocache)
+		if ($raw && $url && !$nocache)
 			set_transient("lme-" & sha1($url), $raw, 60*60*24);
 		return $raw;
 	}
@@ -814,7 +814,7 @@ HTML;
 					 	"<div><a href='{$xml[$i]->detailPageLink}#{scid=gen-api-wplugin$zillow_scrnm}' target='_blank'><img src='{$listingImage}' class='lme_recently_sold_item_photo' /></a>".
 					 	"<a href='{$xml[$i]->detailPageLink}#{scid=gen-api-wplugin$zillow_scrnm}' target='_blank'>{$xml[$i]->address->street}</a><br />".
 					 	"Recently Sold ({$xml[$i]->lastSoldDate}): \${$formatted_last_sold_price}<br />".
-					 	"{$xml[$i]->bathrooms} beds {$xml[$i]->bedrooms} baths {$xml[$i]->finishedSqFt} sqft</div>".
+					 	"{$xml[$i]->bedrooms} beds {$xml[$i]->bathrooms} baths {$xml[$i]->finishedSqFt} sqft</div>".
 					 "</div>";
 			$html .= "<div class='clear'></div>";
 		}
@@ -1106,6 +1106,9 @@ HTML;
 	
 	function get_yelp_review_list_html($yelp_json){
 		$html = '';
+		
+		if (!is_array($yelp_json->businesses))
+			return $html;
 		
 		foreach($yelp_json->businesses as $key => $business){	
 			$category_name = (sizeof($business->categories) > 0 ? $business->categories[0]->name : "n/a");
