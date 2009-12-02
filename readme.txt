@@ -37,6 +37,8 @@ This plugin is open-source donationware. I'm willing to accept and integrate wel
 
 If you'd like to contribute a feature suggestion or need to document a bug, please use the [User Voice forum](http://localmarketexplorer.uservoice.com/) set up specifically for that purpose. With User Voice, each user gets a fixed number of votes that they can cast for any particular bug or feature. The higher the number of votes for an item, the higher the priority will be for that item as development commences on the plugin itself.
 
+Plugin sponsored in part by [Zillow](http://www.zillow.com) and [Education.com](http://www.education.com).
+
 == Installation ==
 
 1. Go to your WordPress admin area, then go to the "Plugins" area, then go to "Add New".
