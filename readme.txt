@@ -1,5 +1,7 @@
 === Local Market Explorer ===
-Contributors: amattie, jmabe, zillow
+Contributors: amattie, jmabe
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=10178626
+User Voice forum link: http://localmarketexplorer.uservoice.com/
 Tags: zillow, flickr, walk score, schools, education.com, real estate, local information, city data, yelp, teachstreet
 Requires at least: 2.8
 Tested up to: 2.8
@@ -29,8 +31,11 @@ For example, to load the Local Market Explorer for Seattle, WA, you'd simply nee
 &lt;http://www.example.com/local/seattle/wa&gt;. If you have spaces in your city name, you can use hyphens for the spaces in the URL,
 like so: &lt;http://www.example.com/local/rancho-santa-margarita/ca&gt;.
 
-At any time, you can link to any city in any state that you'd like. While not all of the APIs have data for every single city in the United
-States, you'll find that most cities are sufficiently covered by nearly all of the APIs.
+At any time, you can link to any city in any state that you'd like. While not all of the APIs have data for every single city in the United States, you'll find that most cities are sufficiently covered by nearly all of the APIs.
+
+This plugin is open-source donationware. I'm willing to accept and integrate well-written patches into the code, but the continued development of the module (new features, bug fixes, etc) by the plugin author is funded by donations. If you'd like to donate, please [donate via PayPal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=10178626).
+
+If you'd like to contribute a feature suggestion or need to document a bug, please use the [User Voice forum](http://localmarketexplorer.uservoice.com/) set up specifically for that purpose. With User Voice, each user gets a fixed number of votes that they can cast for any particular bug or feature. The higher the number of votes for an item, the higher the priority will be for that item as development commences on the plugin itself.
 
 == Installation ==
 
