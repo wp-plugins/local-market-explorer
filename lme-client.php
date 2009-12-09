@@ -34,24 +34,12 @@ class LMEPage
 		}
 	}
 	
-	function template_override_for_lme() {
-		if (file_exists(TEMPLATEPATH . '/page.php')) {
-			include(TEMPLATEPATH . '/page.php');
-		} elseif (file_exists(TEMPLATEPATH . '/custom_template.php')) {
-			include(TEMPLATEPATH . '/custom_template.php');
-		} else {
-			include(TEMPLATEPATH . '/post.php');
-		}
-		exit;
-	}
-	
 	// hooked filters
 	function get_post($posts) {
 		// filter 'the_posts'
 		
 		if ($this->is_lme){
 			remove_filter('the_content', 'wpautop'); // keep wordpress from mucking up our HTML
-			add_action('template_redirect', array(&$this, 'template_override_for_lme'));
 			
 			$formattedNow = date('Y-m-d H:i:s');
 			
@@ -122,7 +110,6 @@ HEAD;
 				</div>
 FOOTER;
 		}
-		return $content;
 	}
 	
 	function check_url($posts){
@@ -155,14 +142,8 @@ FOOTER;
 		$this->is_lme = true;
 		
 		$wp_query->is_page = true;
-		//Not sure if this one is necessary but might as well set it like a true page
-		$wp_query->is_single = true;
+		$wp_query->is_singular = true;
 		$wp_query->is_home = false;
-		$wp_query->is_archive = false;
-		//$wp_query->is_category = false;
-		//Longer permalink structures may not match the fake post slug and cause a 404 error so we catch the error here
-		unset($wp_query->query["error"]);
-		$wp_query->query_vars["error"]="";
 		$wp_query->is_404 = false;
 		
 		return $posts;
@@ -280,8 +261,8 @@ LME_CONTENT;
 LME_CONTENT;
 		}
 
+		$about_area_data = $this->get_about_area_data();
 		if ($lme_panels_show_aboutarea) {
-			$about_area_data = $this->get_about_area_data();
 			$lme_content['about-area'] = <<<LME_CONTENT
 				<!-- "ABOUT {LOCATION}" (CONFIGS + FLICKR) SECTION -->
 				<a name="lme-about-area"></a>
@@ -291,11 +272,20 @@ LME_CONTENT;
 						<h3>About</h3>
 						<div class="lme_container_top_right lme_container_right"></div>
 					</div>
-					<div id="lme_about_area" class="lme_container_body">{$about_area_data}</div>
+					<div id="lme_about_area" class="lme_container_body">{$about_area_data[html]}</div>
 					<div class="lme_container_bottom lme_container_cap">
 						<div class="lme_container_bottom_left lme_container_left"></div>
 						<div class="lme_container_bottom_right lme_container_right"></div>
 					</div>
+				</div>
+LME_CONTENT;
+		}
+		if (!empty($about_area_data['idx-link'])) {
+			$lme_content['idx-link'] = <<<LME_CONTENT
+				<!-- "IDX LINK" SECTION -->
+				<a name="lme-idx-link"></a>
+				<div id="lme-idx-link-container">
+					{$about_area_data["idx-link"]}
 				</div>
 LME_CONTENT;
 		}
@@ -678,8 +668,11 @@ HTML;
 HTML;
 		}
 		
-		$description = $this->get_description();
+		$area = $this->get_description();
 		$panel_html = '';
+
+		if ($area["idx_link"])
+			$idxLink = "<h4 class=\"lme_idx_link\"><a href=\"{$area[idx_link]}\">Search for homes in {$this->location_for_display}</a></h4>";
 		
 		if ($show_flickr_panel) {
 			$panel_html .= <<<HTML
@@ -694,12 +687,12 @@ HTML;
 		}
 		
 		$panel_html .= <<<HTML
-			<div id="lme_about_area_description">$description</div>
+			<div id="lme_about_area_description">{$area[description]}</div>
 			$related_posts_html
 			<div class="clear"></div>
 HTML;
 		
-		return $panel_html;
+		return array("html" => $panel_html, "idx-link" => $idxLink);
 	}
 	function get_description(){
 		$lme_areas = get_option('lme_areas');
@@ -709,20 +702,20 @@ HTML;
 				!empty($this->zip)
 				&& strtolower($lme_areas[$i]['zip']) == strtolower($this->zip)
 				)
-				return $lme_areas[$i]['description'];
+				return $lme_areas[$i];
 			if (
 				!empty($this->neighborhood)
 				&& strtolower($lme_areas[$i]['neighborhood']) == strtolower($this->neighborhood)
 				&& strtolower($lme_areas[$i]['city']) == strtolower($this->city)
 				&& strtolower($lme_areas[$i]['state']) == strtolower($this->state)
 				)
-				return $lme_areas[$i]['description'];
+				return $lme_areas[$i];
 			if (
 				empty($this->neighborhood) && !$lme_areas[$i]['neighborhood']
 				&& strtolower($lme_areas[$i]['city']) == strtolower($this->city)
 				&& strtolower($lme_areas[$i]['state']) == strtolower($this->state)
 				)
-				return $lme_areas[$i]['description'];
+				return $lme_areas[$i];
 		}
 		for ($i = 0; $i < sizeOf($lme_areas); $i++) {
 			if (
@@ -730,7 +723,7 @@ HTML;
 				&& strtolower($lme_areas[$i]['city']) == strtolower($this->city)
 				&& strtolower($lme_areas[$i]['state']) == strtolower($this->state)
 				)
-				return $lme_areas[$i]['description'];
+				return $lme_areas[$i];
 		}
 		return '';
 	}

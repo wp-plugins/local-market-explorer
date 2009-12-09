@@ -6,7 +6,7 @@ function lme_admin_head(){
 		<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.0r4/build/yahoo/yahoo-min.js&2.8.0r4/build/get/get-min.js"></script>
 		<script>LocalMarketExplorerAdmin.BlogUrl = '$wpurl';</script>
 		<style type="text/css">
-			#lme_neighborhood_lookup_sponsor {
+			.lme_notification_area {
 				background-color:#EEEEEE;
 				border:1px solid #CCCCCC;
 				font-weight:bold;
@@ -145,6 +145,12 @@ function update_lme_options(){
 			$lme_areas[$new_index]['zip'] = $lme_area_new_zip;
 		$lme_areas[$new_index]['description'] = $lme_area_new_description;
 	}
+	
+	foreach ($lme_areas as $key => $value) {
+		if (empty($value["idx_link"]) && empty($value["description"])) {
+			unset($lme_areas[$key]);
+		}
+	}
 	update_option('lme_areas', $lme_areas);
 	
 	$moduleOrder = array();
@@ -186,6 +192,18 @@ function print_lme_options() {
 
 	$lme_areas = get_option('lme_areas');
 	?>
+			
+		<div class="lme_notification_area" style="margin: 0 auto; font-weight: normal;">
+			<p>This plugin is open-source donationware. I'm willing to accept and integrate well-written patches into the code,
+			but the continued development of the module (new features, bug fixes, etc) by the plugin author is funded by
+			donations. If you'd like to donate, please <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=10178626">donate via PayPal</a>.</p>
+
+			<p>If you'd like to contribute a feature suggestion or need to document a bug, please use the <a href="http://localmarketexplorer.uservoice.com/">User Voice forum</a> set
+			up specifically for that purpose. With User Voice, each user gets a fixed number of votes that they can cast for
+			any particular bug or feature. The higher the number of votes for an item, the higher the priority will be for
+			that item as development commences on the plugin itself.</p>
+		</div>
+		
 		<form method="post" id="lme_options_form">
 			<h3>Zillow Home Value Index</h3>
 			<table class="form-table">
@@ -386,6 +404,10 @@ function print_lme_options() {
 					<td><label for="lme-order-teachstreet">Teachstreet</label></td>
 					<td><input name="lme-order-teachstreet" type="text" value="<?= $moduleOrder['teachstreet'] ?>" style="width: 20px" /></td>
 				</tr>
+				<tr>
+					<td><label for="lme-order-idx-link">IDX Link</label></td>
+					<td><input name="lme-order-idx-link" type="text" value="<?= $moduleOrder['idx-link'] ?>" style="width: 20px" /></td>
+				</tr>
 			</table>
 			
 			<p class="submit">
@@ -393,6 +415,8 @@ function print_lme_options() {
 			</p>
 			
 			<h3>Target Areas</h3>
+			<p>(please note that you DO NOT need to create / save an area below if you don't want to add a description --
+			you can simply link to the area in your blog)</p>
 		<?
 		if(is_array($lme_areas)){
 			for ($i = 0; $i < sizeOf($lme_areas); $i++){
@@ -430,6 +454,14 @@ function print_lme_options() {
 					<tr>
 						<th>Link(s)</th>
 						<td class="lme_area_link_display"></td>
+					</tr>
+					<tr valign="top">
+						<th scope="row">
+							<label for="lme_areas_<?= $i ?>_idx_link">IDX link for this area</label>
+						</th>
+						<td>
+							<input class="regular-text code" type="text" value="<?= $lme_areas[$i]['idx_link'] ?>" name="lme_areas_<?= $i ?>_idx_link" style="width: 200px" />
+						</td>
 					</tr>
 					<tr valign="top">
 						<th scope="row">
@@ -488,6 +520,14 @@ function print_lme_options() {
 				</tr>
 				<tr valign="top">
 					<th scope="row">
+						<label for="lme_area_new_idx_link">IDX link for this area</label>
+					</th>
+					<td>
+						<input class="regular-text code" type="text" value="" name="lme_areas_new_idx_link" style="width: 300px" />
+					</td>
+				</tr>
+				<tr valign="top">
+					<th scope="row">
 						<label for="lme_area_new_description">Description</label>
 					</th>
 					<td>
@@ -496,7 +536,7 @@ function print_lme_options() {
 				</tr>
 			</table>
 			
-			<div id="lme_neighborhood_lookup_sponsor">
+			<div class="lme_notification_area">
 				Neighborhood lookup provided courtesy of <a href="http://www.diversesolutions.com/?r=lme-blog-admin" target="_blank">Diverse Solutions</a>.
 				<br /><br />
 				<a href="http://www.diversesolutions.com/?r=lme-blog-admin" target="_blank">
