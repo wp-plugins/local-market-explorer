@@ -3,7 +3,7 @@
 Plugin Name: Local Market Explorer
 Plugin URI: http://wordpress.org/extend/plugins/local-market-explorer/
 Description: This plugin allows WordPress to load data from a number of real estate and neighborhood APIs to be presented all within a single page in WordPress.
-Version: 2.0.1
+Version: 2.1
 Author: Andrew Mattie & Jonathan Mabe
 */
 
@@ -24,21 +24,63 @@ Author: Andrew Mattie & Jonathan Mabe
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-include('lme-widget.php');
-add_action('widgets_init', create_function('', 'return register_widget("LMEWidget");'));
+register_activation_hook(__FILE__, "LME::UpgradeOptionsFromVersion1");
+register_activation_hook(__FILE__, "LME::UpgradeOptionsFromVersion2");
+register_activation_hook(__FILE__, "LME::CreateDefaultOptions");
+register_activation_hook(__FILE__, "LME::FlushRewriteRules");
+add_action("widgets_init", "LME::InitWidgets");
 
-if(is_admin()) {
-	include('lme-admin.php');
-	add_action('admin_head', 'lme_admin_head'); 
-	add_action('admin_menu', 'lme_admin_menu');
+$LME_PluginUrl = WP_PLUGIN_URL . "/" . str_replace(".php", "", basename(__FILE__)) . "/";
+$LME_PluginPath = str_replace("\\", "/", WP_PLUGIN_DIR . "/" . str_replace(".php", "", basename(__FILE__)) . "/");
+
+require_once("widget-saved-areas.php");
+require_once("rewrite.php");
+
+if (is_admin()) {
+	require_once($dsSearchAgent_PluginPath . "admin.php");
 } else {
-	include('lme-client.php');
-	//add_action('init', widget_lme_register);
-	new LMEPage;
+	require_once("client.php");
 }
 
-register_activation_hook(__FILE__, 'set_lme_options');
-register_activation_hook(__FILE__, 'upgrade_lme_options');
+class dsSearchAgent {
+	static function UpgradeOptionsFromVersion1() {
+		if (get_option('lme_areas'))
+			return;
+		
+		$lme_areas = array();
+		$lme_area_cities = unserialize(get_option('lme_area_cities'));
+		$lme_area_states = unserialize(get_option('lme_area_states'));
+		$lme_area_descriptions = unserialize(get_option('lme_area_descriptions'));
+		
+		for ($i = 0; $i < sizeOf($lme_area_cities); $i++) {
+			$lme_areas[$i] = array();
+			$lme_areas[$i]['city'] = $lme_area_cities[$i];
+			$lme_areas[$i]['state'] = $lme_area_states[$i];
+			$lme_areas[$i]['description'] = $lme_area_descriptions[$i];
+		}
+		
+		update_option('lme_areas', $lme_areas);
+		delete_option('lme_area_cities');
+		delete_option('lme_area_states');
+		delete_option('lme_area_descriptions');
+	}
+	static function UpgradeOptionsFromVersion2() {
+		if (get_option('local-market-explorer'))
+			return;
+		
+			$options = array();
+	}
+	static function CreateDefaultOptions() {
+	}
+	static function FlushRewriteRules() {
+		global $wp_rewrite;
+		$wp_rewrite->flush_rules();
+	}
+	
+	static function InitWidgets() {
+		register_widget("LME_ListAreasWidget");
+	}
+}
 
 function set_lme_options() {
 	add_option('lme_panels_show_market_stats', '1', '', 'yes');
@@ -51,17 +93,6 @@ function set_lme_options() {
 	add_option('lme_panels_show_teachstreet', '1', '', 'yes');
 	add_option('lme_panels_show_yelp', '1', '', 'yes');
 	
-	add_option('lme_apikey_zillow', '', '', 'yes');
-	add_option('lme_apikey_flickr', '', '', 'yes');
-	add_option('lme_apikey_walkscore', '', '', 'yes');
-	add_option('lme_apikey_yelp', '', '', 'yes');
-	
-	add_option('lme_username_zillow', '', '', 'yes');
-	add_option('lme_zillow_mylistings_widget', '', '', 'yes');
-	add_option('lme_sold_listings_to_show', '', '', 'yes');
-	
-	add_option('lme_areas', '', '', 'yes');
-	
 	add_option('lme_module_order', array(
 		'market-statistics'	=> 1,
 		'about-area'		=> 2,
@@ -69,29 +100,8 @@ function set_lme_options() {
 		'schools'			=> 4,
 		'walk-score'		=> 5,
 		'yelp'				=> 6,
-		'teachstreet'		=> 7
+		'teachstreet'		=> 7,
+		'idx-link'			=> 8
 	));
-}
-function upgrade_lme_options() {
-	if (get_option('lme_areas'))
-		return;
-	
-	$lme_areas = array();
-	$lme_area_cities = unserialize(get_option('lme_area_cities'));
-	$lme_area_states = unserialize(get_option('lme_area_states'));
-	$lme_area_descriptions = unserialize(get_option('lme_area_descriptions'));
-	
-	for ($i = 0; $i < sizeOf($lme_area_cities); $i++) {
-		$lme_areas[$i] = array();
-		$lme_areas[$i]['city'] = $lme_area_cities[$i];
-		$lme_areas[$i]['state'] = $lme_area_states[$i];
-		$lme_areas[$i]['description'] = $lme_area_descriptions[$i];
-	}
-	
-	update_option('lme_areas', $lme_areas);
-	
-	delete_option('lme_area_cities');
-	delete_option('lme_area_states');
-	delete_option('lme_area_descriptions');
 }
 ?>
