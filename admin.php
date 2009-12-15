@@ -66,7 +66,7 @@ HTML;
 					</td>
 				</tr>
 				<tr>
-					<th style="width: 100px;">
+					<th>
 						<label for="local-market-explorer[api-keys][flickr]">Flickr API key:</label>
 					</th>
 					<td>
@@ -74,7 +74,7 @@ HTML;
 					</td>
 				</tr>
 				<tr>
-					<th style="width: 100px;">
+					<th>
 						<label for="local-market-explorer[api-keys][walk-score]">Walk Score API key:</label>
 					</th>
 					<td>
@@ -82,7 +82,7 @@ HTML;
 					</td>
 				</tr>
 				<tr>
-					<th style="width: 100px;">
+					<th>
 						<label for="local-market-explorer[api-keys][yelp]">Yelp API key:</label>
 					</th>
 					<td>
@@ -90,7 +90,7 @@ HTML;
 					</td>
 				</tr>
 				<tr>
-					<th style="width: 100px;">
+					<th>
 						<label for="local-market-explorer[api-keys][teachstreet]">Teachstreet API key:</label>
 					</th>
 					<td>
@@ -101,7 +101,6 @@ HTML;
 			<p class="submit">
 				<input type="submit" class="button-primary" name="Submit" value="Save API Keys" />
 			</p>
-			
 <?php
 		if ($diagnostics) {
 ?>
