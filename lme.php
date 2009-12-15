@@ -24,6 +24,7 @@ Author: Andrew Mattie & Jonathan Mabe
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+register_activation_hook(__FILE__, "LME::InitializeAreasSchema");
 register_activation_hook(__FILE__, "LME::UpgradeOptionsFromVersion1");
 register_activation_hook(__FILE__, "LME::UpgradeOptionsFromVersion2");
 register_activation_hook(__FILE__, "LME::FlushRewriteRules");
@@ -31,6 +32,7 @@ add_action("widgets_init", "LME::InitWidgets");
 
 $LME_PluginUrl = WP_PLUGIN_URL . "/" . str_replace(".php", "", basename(__FILE__)) . "/";
 $LME_PluginPath = str_replace("\\", "/", WP_PLUGIN_DIR . "/" . str_replace(".php", "", basename(__FILE__)) . "/");
+$LME_DbVersion = "1.0";
 
 require_once("widget-saved-areas.php");
 require_once("rewrite.php");
@@ -42,6 +44,29 @@ if (is_admin()) {
 }
 
 class dsSearchAgent {
+	static function InitializeAreasSchema() {
+		global $wpdb;
+		
+		$options = get_option("local-market-explorer");
+		
+		if (!$options || $options["db-version"] != $LME_DbVersion) {
+			$table_name = $wpdb->prefix . "lme_areas";
+			if ($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name) {
+				$sql = "CREATE TABLE " . $table_name . " (
+					id MEDIUMINT NOT NULL AUTO_INCREMENT,
+					city VARCHAR(100),
+					state CHAR(2),
+					zip CHAR(5),
+					neighborhood VARCHAR(100),
+					description TEXT,
+					idx_link VARCHAR(200),
+					PRIMARY KEY  (id)
+				);";
+				require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+				dbDelta($sql);
+			}
+		}
+	}
 	static function UpgradeOptionsFromVersion1() {
 		if (get_option("lme_areas"))
 			return;
@@ -67,8 +92,9 @@ class dsSearchAgent {
 		if (get_option("local-market-explorer"))
 			return;
 		
+		global $wpdb;
+		
 		$options = array();
-		$options["areas"] = get_option("lme_areas");
 		$options["api-keys"] = array(
 			"zillow"			=> get_option("lme_apikey_zillow"),
 			"flickr"			=> get_option("lme_apikey_flickr"),
