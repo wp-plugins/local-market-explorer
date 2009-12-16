@@ -140,12 +140,11 @@ var LocalMarketExplorer = {
 
 				var map = new google.maps.Map(document.getElementById("lme-yelp-map"), {
 			      mapTypeId: google.maps.MapTypeId.ROADMAP,
-			      mapTypeControl: false
+			      mapTypeControl: false,
+			      scrollwheel: false
 			    });
 			    
 			    var bounds = new google.maps.LatLngBounds();
-				
-				map.scrollwheel = false;
 			    
 			    for(var i=0;i< LocalMarketExplorer.Yelp.Data.businesses.length;i++){
 			    	var business = LocalMarketExplorer.Yelp.Data.businesses[i];
@@ -186,7 +185,7 @@ var LocalMarketExplorer = {
 				    bounds.extend(latLng);
 			    }
 			    
-			    map.set_center(bounds.getCenter());
+			    map.setCenter(bounds.getCenter());
 			    map.fitBounds(bounds);
 			}
 		}

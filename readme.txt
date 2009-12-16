@@ -5,7 +5,7 @@ User Voice forum link: http://localmarketexplorer.uservoice.com/
 Tags: zillow, flickr, walk score, schools, education.com, real estate, local information, city data, yelp, teachstreet
 Requires at least: 2.8
 Tested up to: 2.8
-Stable tag: 2.1
+Stable tag: 2.1.1
 
 This plugin allows WordPress to load data from a number of real estate and neighborhood APIs to be presented all within a single
 page in WordPress.
@@ -46,6 +46,10 @@ If you'd like to contribute a feature suggestion or need to document a bug, plea
 5. Visit each of the API key links and get your API keys. After you put in each API key, the data will load for the corresponding modules.
 
 == Changelog ==
+
+= 2.1.1 =
+* Fixed Yelp map that broke to due an API change with Google Maps
+* Fixed Market Stats module values that broke due to an API change with Zillow
 
 = 2.1 =
 * Added option to link to an IDX page per area

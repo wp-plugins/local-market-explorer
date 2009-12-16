@@ -433,19 +433,20 @@ LME_CONTENT;
 		$zillow_chart = $this->get_url_data_as_xml($zillow_chart_url, true);
 		
 		$node = $zillow_chart->xpath("response"); $region_chart = array($node[0]);
-		$node = $zillow_xml->xpath("response/charts/chart[name='Average Home Value']"); $avg_home_value = array($node[0]);
-		$node = $zillow_xml->xpath("response/charts/chart[name='Average Condo Value']"); $avg_condo_value = array($node[0]);
+		
+		$node = $zillow_xml->xpath("response/charts/chart[name='Median Home Value']"); $avg_home_value = array($node[0]);
+		$node = $zillow_xml->xpath("response/charts/chart[name='Median Condo Value']"); $avg_condo_value = array($node[0]);
 		$node = $zillow_xml->xpath("response/links/affordability"); $affordability_link = array($node[0]);
 
-		$node = $zillow_xml->xpath("response/pages/page[name='Affordability']/tables/table[name='Affordability Data']/data/attribute[name='Zillow Home Value Index']/values"); $zillow_home_value = array($node[0]);
-		$node = $zillow_xml->xpath("response/pages/page[name='Affordability']/tables/table[name='Affordability Data']/data/attribute[name='1-Yr. Change']/values"); $one_yr_change = array($node[0]);
-		$node = $zillow_xml->xpath("response/pages/page[name='Affordability']/tables/table[name='Affordability Data']/data/attribute[name='Median Condo Value']/values"); $median_condo_value = array($node[0]);
-		$node = $zillow_xml->xpath("response/pages/page[name='Affordability']/tables/table[name='Affordability Data']/data/attribute[name='Median Single Family Home Value']/values"); $median_single_family = array($node[0]);
+		$node = $zillow_xml->xpath("response/pages/page[name='Affordability']/attribute[name='Zillow Home Value Index']/values"); $zillow_home_value = array($node[0]);
+		$node = $zillow_xml->xpath("response/pages/page[name='Affordability']/attribute/values[name='1-Yr. Change']"); $one_yr_change = array($node[0]);
+		$node = $zillow_xml->xpath("response/pages/page[name='Affordability']/attribute[name='Median Condo Value']/values"); $median_condo_value = array($node[0]);
+		$node = $zillow_xml->xpath("response/pages/page[name='Affordability']/attribute[name='Median Single Family Home Value']/values"); $median_single_family = array($node[0]);
 		
-		$node = $zillow_xml->xpath("response/market/attribute[name='Median List Price']/values"); $market_median_list_price = array($node[0]);
-		$node = $zillow_xml->xpath("response/market/attribute[name='Median Sale Price']/values"); $market_median_sale_price = array($node[0]);
-		$node = $zillow_xml->xpath("response/market/attribute[name='Median List Price Per Sq Ft']/values"); $market_median_list_ppsf = array($node[0]);
-		$node = $zillow_xml->xpath("response/market/attribute[name='Homes For Sale']/values"); $market_homes_for_sale = array($node[0]);
+		$node = $zillow_xml->xpath("response/pages/page[name='Affordability']/attribute[name='Median List Price']/values"); $market_median_list_price = array($node[0]);
+		$node = $zillow_xml->xpath("response/pages/page[name='Affordability']/attribute[name='Median Sale Price']/values"); $market_median_sale_price = array($node[0]);
+		$node = $zillow_xml->xpath("response/pages/page[name='Affordability']/attribute[name='Median List Price Per Sq Ft']/values"); $market_median_list_ppsf = array($node[0]);
+		$node = $zillow_xml->xpath("response/pages/page[name='Affordability']/attribute[name='Homes For Sale']/values"); $market_homes_for_sale = array($node[0]);
 		
 		if ($this->neighborhood != '') {
 			$local_node_name = 'neighborhood';
@@ -467,7 +468,7 @@ LME_CONTENT;
 		$national_year_change_percent = (string)$one_yr_change[0]->nation->value[0];
 		
 		$formatted_national_home_value = "$" . number_format($national_home_value);
-		$formatted_national_year_change = "$" . number_format($national_home_value - ($national_home_value * (1 - $national_year_change_percent)));
+		$formatted_national_year_change = "n/a"; //$" . number_format($national_home_value - ($national_home_value * (1 - $national_year_change_percent)));
 		$formatted_national_condo_value = "$" . number_format($median_condo_value[0]->nation->value);
 		$formatted_national_sfr_value = "$" . number_format($median_single_family[0]->nation->value);
 		
@@ -534,9 +535,6 @@ LME_CONTENT;
 					<th>Local</th>
 					<th>National</th>
 				</tr>
-HTML;
-		if (!$this->zip)
-			$html .= <<<HTML
 				<tr class="lme_primary">
 					<td>Zillow Home Value Index</td>
 					<td class="lme_number lme_primary_value">{$formatted_local_home_value}</td>
@@ -557,8 +555,6 @@ HTML;
 					<td class="lme_number lme_primary_value">{$formatted_local_sfr_value}</td>
 					<td class="lme_number">{$formatted_national_sfr_value}</td>
 				</tr>
-HTML;
-		$html .= <<<HTML
 				<tr class="lme_primary">
 					<td>Median List Price</td>
 					<td class="lme_number lme_primary_value">{$market_median_list_price_local}</td>
