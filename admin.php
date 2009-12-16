@@ -1,210 +1,118 @@
-<?
-add_action('admin_head', 'lme_admin_head'); 
-add_action('admin_menu', 'lme_admin_menu');
-function lme_admin_head(){
-	$wpurl = get_bloginfo('wpurl');
-	echo <<<HTML
-		<script type="text/javascript" src="{$wpurl}/wp-content/plugins/local-market-explorer/includes/lme-admin.js"></script>
-		<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.0r4/build/yahoo/yahoo-min.js&2.8.0r4/build/get/get-min.js"></script>
-		<script>LocalMarketExplorerAdmin.BlogUrl = '$wpurl';</script>
-		<style type="text/css">
-			.lme_notification_area {
-				background-color:#EEEEEE;
-				border:1px solid #CCCCCC;
-				font-weight:bold;
-				margin-top:10px;
-				padding:15px;
-				text-align:center;
-				width:525px;
-			}
-		</style>
+<?php
+add_action("admin_init", "LME_Admin::Initialize");
+add_action("admin_menu", "LME_Admin::AddMenu");
+
+if(!defined('PHP_VERSION_ID'))
+{
+    $version = explode('.',PHP_VERSION);
+    define('PHP_VERSION_ID', ($version[0] * 10000 + $version[1] * 100 + $version[2]));
+}
+
+class LME_Admin {
+	static function AddMenu() {
+		$optionsPage = add_options_page(
+			"Local Market Explorer Options",
+			"Local Market Explorer",
+			"manage_options",
+			"lme",
+			"dsSearchAgent_Admin::EditOptions"
+		);
+		add_action("admin_print_scripts-{$optionsPage}", "dsSearchAgent_Admin::LoadHeader");
+	}
+	static function Initialize() {
+		register_setting("lme", "local-market-explorer", "LME::SanitizeOptions");
+	}
+	static function LoadHeader() {
+		global $LME_PluginUrl;
+		
+		echo <<<HTML
+			<script type="text/javascript" src="{$LME_PluginUrl}includes/lme-admin.js"></script>
+			<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.0r4/build/yahoo/yahoo-min.js&2.8.0r4/build/get/get-min.js"></script>
 HTML;
-}
-
-function lme_admin_menu() {
-   if (function_exists('add_options_page')) {
-        add_options_page('LME Options Page', 'Local Market Explorer', 8, basename(__FILE__), 'lme_plugin_options');
 	}
-}
-
-function lme_plugin_options(){
-	?>
+	static function EditOptions() {
+		$options = get_option("local-market-explorer");
+		
+?>
 	<div class="wrap">
-		<h2>Local Market Explorer</h2><?
-	if($_REQUEST['Submit']){
-		update_lme_options();
-	}
-	
-	print_lme_options();
-	?></div><?
-}
-
-function update_lme_options(){
-	if($_REQUEST['lme_apikey_zillow']){
-		update_option('lme_apikey_zillow', $_REQUEST['lme_apikey_zillow']);
-	}
-	if($_REQUEST['lme_username_zillow']){
-		update_option('lme_username_zillow', $_REQUEST['lme_username_zillow']);
-	}
-	if($_REQUEST['lme_panels_show_market_stats']){
-		update_option('lme_panels_show_market_stats', $_REQUEST['lme_panels_show_market_stats']);
-	} else {
-		update_option('lme_panels_show_market_stats', '0');
-	}
-	
-	if($_REQUEST['lme_panels_show_aboutarea']){
-		update_option('lme_panels_show_aboutarea', $_REQUEST['lme_panels_show_aboutarea']);
-	} else {
-		update_option('lme_panels_show_aboutarea', '0');
-	}
-	if($_REQUEST['lme_panels_show_flickr']){
-		update_option('lme_panels_show_flickr', $_REQUEST['lme_panels_show_flickr']);
-	} else {
-		update_option('lme_panels_show_flickr', '0');
-	}
-	if($_REQUEST['lme_apikey_flickr']){
-		update_option('lme_apikey_flickr', $_REQUEST['lme_apikey_flickr']);
-	}
-	
-	if($_REQUEST['lme_panels_show_marketactivity']){
-		update_option('lme_panels_show_marketactivity', $_REQUEST['lme_panels_show_marketactivity']);
-	} else {
-		update_option('lme_panels_show_marketactivity', '0');
-	}
-	
-	if($_REQUEST['lme_sold_listings_to_show']) {
-		update_option('lme_sold_listings_to_show', $_REQUEST['lme_sold_listings_to_show']);
-	} else {
-		update_option('lme_sold_listings_to_show', '0');
-	}
-	
-	if($_REQUEST['lme_panels_show_educationcom']){
-		update_option('lme_panels_show_educationcom', $_REQUEST['lme_panels_show_educationcom']);
-	} else {
-		update_option('lme_panels_show_educationcom', '0');
-	}
-	
-	if($_REQUEST['lme_panels_show_walkscore']){
-		update_option('lme_panels_show_walkscore', $_REQUEST['lme_panels_show_walkscore']);
-	} else {
-		update_option('lme_panels_show_walkscore', '0');
-	}
-	if($_REQUEST['lme_apikey_walkscore']){
-		update_option('lme_apikey_walkscore', $_REQUEST['lme_apikey_walkscore']);
-	}
-	
-	if($_REQUEST['lme_panels_show_yelp']){
-		update_option('lme_panels_show_yelp', $_REQUEST['lme_panels_show_yelp']);
-	} else {
-		update_option('lme_panels_show_yelp', '0');
-	}
-	if($_REQUEST['lme_apikey_yelp']){
-		update_option('lme_apikey_yelp', $_REQUEST['lme_apikey_yelp']);
-	}
-	
-	if($_REQUEST['lme_panels_show_teachstreet']){
-		update_option('lme_panels_show_teachstreet', $_REQUEST['lme_panels_show_teachstreet']);
-	} else {
-		update_option('lme_panels_show_teachstreet', '0');
-	}
-	if($_REQUEST['lme_apikey_teachstreet']){
-		update_option('lme_apikey_teachstreet', $_REQUEST['lme_apikey_teachstreet']);
-	}
-	
-	$lme_areas = array();
-	
-	foreach ( $_REQUEST as $key => $value ) { 
-		if (strpos($key, 'lme_areas_') === false)
-			continue;
-		
-		$area_data = substr($key, 10);
-		$index = substr($area_data, 0, strpos($area_data, '_'));
-		$type = substr($area_data, strpos($area_data, '_') + 1);
-
-		if (!$lme_areas[$index])
-			$lme_areas[$index] = array();
-
-		$lme_areas[$index][$type] = str_replace('\"', '"', htmlspecialchars_decode($value, ENT_NOQUOTES));
-	}
-
-	$lme_area_new_neighborhood = $_REQUEST['lme_area_new_neighborhood'];
-	$lme_area_new_city = $_REQUEST['lme_area_new_city'];
-	$lme_area_new_state = $_REQUEST['lme_area_new_state'];
-	$lme_area_new_zip = $_REQUEST['lme_area_new_zip'];
-	$lme_area_new_description = $_REQUEST['lme_area_new_description'];
-	
-	if ($lme_area_new_description != '') {
-		$new_index = sizeof($lme_areas);
-		$lme_areas[$new_index] = array();
-		
-		if ($lme_area_new_neighborhood != '')
-			$lme_areas[$new_index]['neighborhood'] = $lme_area_new_neighborhood;
-		if ($lme_area_new_city != '')
-			$lme_areas[$new_index]['city'] = $lme_area_new_city;
-		if ($lme_area_new_state != '')
-			$lme_areas[$new_index]['state'] = $lme_area_new_state;
-		if ($lme_area_new_zip != '')
-			$lme_areas[$new_index]['zip'] = $lme_area_new_zip;
-		$lme_areas[$new_index]['description'] = $lme_area_new_description;
-	}
-	
-	foreach ($lme_areas as $key => $value) {
-		if (empty($value["idx_link"]) && empty($value["description"])) {
-			unset($lme_areas[$key]);
-		}
-	}
-	update_option('lme_areas', $lme_areas);
-	
-	$moduleOrder = array();
-	foreach ( $_REQUEST as $key => $value ) {
-		if (strpos($key, 'lme-order-') === false)
-			continue;
-		
-		$moduleOrder[substr($key, 10)] = $value;
-	}
-	update_option('lme_module_order', $moduleOrder);
+		<div class="icon32" id="icon-options-general"><br/></div>
+		<h2>Local Market Explorer Options</h2>
+		<form method="post" action="options.php">
+			<?php settings_fields("local-market-explorer"); ?>
 			
-	?><div id="message" class="updated fade"><p><strong>Options Saved</p></strong></div><?
+			<div class="lme-notification-area">
+				<p>This plugin is open-source donationware. I'm willing to accept and integrate well-written patches into the code,
+				but the continued development of the module (new features, bug fixes, etc) by the plugin author is funded by
+				donations. If you'd like to donate, please <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=10178626">donate via PayPal</a>.</p>
+	
+				<p>If you'd like to contribute a feature suggestion or need to document a bug, please use the <a href="http://localmarketexplorer.uservoice.com/">User Voice forum</a> set
+				up specifically for that purpose. With User Voice, each user gets a fixed number of votes that they can cast for
+				any particular bug or feature. The higher the number of votes for an item, the higher the priority will be for
+				that item as development commences on the plugin itself.</p>
+			</div>
+		
+			<h3>API Keys</h3>
+			<p>
+				In order for Local Market Explorer to load the data for the different panels, you'll need to collect a few API
+				keys around the web and plug them in here.
+			</p>
+			<table class="form-table">
+				<tr>
+					<th style="width: 100px;">
+						<label for="local-market-explorer[api-keys][zillow]">Zillow API key:</label>
+					</th>
+					<td>
+						<input type="text" id="local-market-explorer[api-keys][zillow]" name="local-market-explorer[api-keys][zillow]" value="<?php echo $options["api-keys"]["zillow"] ?>" />
+					</td>
+				</tr>
+				<tr>
+					<th>
+						<label for="local-market-explorer[api-keys][flickr]">Flickr API key:</label>
+					</th>
+					<td>
+						<input type="text" id="local-market-explorer[api-keys][flickr]" name="local-market-explorer[api-keys][flickr]" value="<?php echo $options["api-keys"]["flickr"] ?>" />
+					</td>
+				</tr>
+				<tr>
+					<th>
+						<label for="local-market-explorer[api-keys][walk-score]">Walk Score API key:</label>
+					</th>
+					<td>
+						<input type="text" id="local-market-explorer[api-keys][walk-score]" name="local-market-explorer[api-keys][walk-score]" value="<?php echo $options["api-keys"]["walk-score"] ?>" />
+					</td>
+				</tr>
+				<tr>
+					<th>
+						<label for="local-market-explorer[api-keys][yelp]">Yelp API key:</label>
+					</th>
+					<td>
+						<input type="text" id="local-market-explorer[api-keys][yelp]" name="local-market-explorer[api-keys][yelp]" value="<?php echo $options["api-keys"]["yelp"] ?>" />
+					</td>
+				</tr>
+				<tr>
+					<th>
+						<label for="local-market-explorer[api-keys][teachstreet]">Teachstreet API key:</label>
+					</th>
+					<td>
+						<input type="text" id="local-market-explorer[api-keys][teachstreet]" name="local-market-explorer[api-keys][teachstreet]" value="<?php echo $options["api-keys"]["teachstreet"] ?>" />
+					</td>
+				</tr>
+			</table>
+			<p class="submit">
+				<input type="submit" class="button-primary" name="Submit" value="Save API Keys" />
+			</p>
+		</form>
+	</div>
+<?php
+	}
+	static function SanitizeOptions($options) {
+		return $options;
+	}
 }
+?>
 
-function print_lme_options() {
-	$lme_panels_show_market_stats = get_option('lme_panels_show_market_stats');
-	$lme_apikey_zillow = get_option('lme_apikey_zillow');
-	$lme_username_zillow = get_option('lme_username_zillow');
-	$lme_zillow_mylistings_widget = get_option('lme_zillow_mylistings_widget');
-	
-	$lme_panels_show_aboutarea = get_option('lme_panels_show_aboutarea');
-	$lme_panels_show_flickr = get_option('lme_panels_show_flickr');
-	$lme_apikey_flickr = get_option('lme_apikey_flickr');
-	
-	$lme_panels_show_marketactivity = get_option('lme_panels_show_marketactivity');
-	$lme_sold_listings_to_show = get_option('lme_sold_listings_to_show');
-	
-	$lme_panels_show_educationcom = get_option('lme_panels_show_educationcom');
-	
-	$lme_panels_show_walkscore = get_option('lme_panels_show_walkscore');
-	$lme_apikey_walkscore = get_option('lme_apikey_walkscore');
-	
-	$lme_panels_show_yelp = get_option('lme_panels_show_yelp');
-	$lme_apikey_yelp = get_option('lme_apikey_yelp');
-	
-	$lme_panels_show_teachstreet = get_option('lme_panels_show_teachstreet');
-	
-	$moduleOrder = get_option('lme_module_order');
-
-	$lme_areas = get_option('lme_areas');
 	?>
 			
-		<div class="lme_notification_area" style="margin: 0 auto; font-weight: normal;">
-			<p>This plugin is open-source donationware. I'm willing to accept and integrate well-written patches into the code,
-			but the continued development of the module (new features, bug fixes, etc) by the plugin author is funded by
-			donations. If you'd like to donate, please <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=10178626">donate via PayPal</a>.</p>
-
-			<p>If you'd like to contribute a feature suggestion or need to document a bug, please use the <a href="http://localmarketexplorer.uservoice.com/">User Voice forum</a> set
-			up specifically for that purpose. With User Voice, each user gets a fixed number of votes that they can cast for
-			any particular bug or feature. The higher the number of votes for an item, the higher the priority will be for
-			that item as development commences on the plugin itself.</p>
-		</div>
 		
 		<form method="post" id="lme_options_form">
 			<h3>Zillow Home Value Index</h3>
