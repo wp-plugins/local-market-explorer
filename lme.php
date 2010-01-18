@@ -3,7 +3,7 @@
 Plugin Name: Local Market Explorer
 Plugin URI: http://wordpress.org/extend/plugins/local-market-explorer/
 Description: This plugin allows WordPress to load data from a number of real estate and neighborhood APIs to be presented all within a single page in WordPress.
-Version: 2.1
+Version: 2.1.1
 Author: Andrew Mattie & Jonathan Mabe
 */
 
@@ -24,119 +24,75 @@ Author: Andrew Mattie & Jonathan Mabe
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-DEFINE("LME_DB_VERSION", 1.0);
-DEFINE("LME_OPTION_KEY", "local-market-explorer");
+include('lme-widget.php');
+add_action('widgets_init', create_function('', 'return register_widget("LMEWidget");'));
 
-register_activation_hook(__FILE__, "LME::InitializeAreasSchema");
-register_activation_hook(__FILE__, "LME::UpgradeOptionsFromVersion1");
-register_activation_hook(__FILE__, "LME::UpgradeOptionsFromVersion2");
-register_activation_hook(__FILE__, "LME::FlushRewriteRules");
-add_action("widgets_init", "LME::InitWidgets");
-
-$LME_PluginUrl = WP_PLUGIN_URL . "/" . basename(__FILE__, ".php") . "/";
-$LME_PluginPath = dirname(__FILE__) . "/";
-
-require_once($LME_PluginPath . "widget-saved-areas.php");
-require_once($LME_PluginPath . "rewrite.php");
-
-if (is_admin()) {
-	require_once($LME_PluginPath . "admin.php");
+if(is_admin()) {
+	include('lme-admin.php');
+	add_action('admin_head', 'lme_admin_head'); 
+	add_action('admin_menu', 'lme_admin_menu');
 } else {
-	require_once($LME_PluginPath . "client.php");
+	include('lme-client.php');
+	//add_action('init', widget_lme_register);
+	new LMEPage;
 }
 
-class dsSearchAgent {
-	static function InitializeAreasSchema() {
-		global $wpdb;
-		
-		$options = get_option(LME_OPTION_KEY);
-		
-		if ($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name || $options["db-version"] != LME_DB_VERSION) {
-			require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-			
-			$table_name = $wpdb->prefix . "lme_areas";
-			$sql = "CREATE TABLE " . $table_name . " (
-				id MEDIUMINT NOT NULL AUTO_INCREMENT,
-				city VARCHAR(100),
-				state CHAR(2),
-				zip CHAR(5),
-				neighborhood VARCHAR(100),
-				description TEXT,
-				idx_link VARCHAR(200),
-				PRIMARY KEY  (id)
-			);";
-			dbDelta($sql);
-			
-			$options["db-version"] = LME_DB_VERSION;
-			update_option(LME_OPTION_KEY, $options);
-		}
-	}
-	static function UpgradeOptionsFromVersion1() {
-		if (get_option("lme_areas"))
-			return;
-		
-		$lme_areas = array();
-		$lme_area_cities = unserialize(get_option("lme_area_cities"));
-		$lme_area_states = unserialize(get_option("lme_area_states"));
-		$lme_area_descriptions = unserialize(get_option("lme_area_descriptions"));
-		
-		for ($i = 0; $i < sizeOf($lme_area_cities); $i++) {
-			$lme_areas[$i] = array();
-			$lme_areas[$i]["city"] = $lme_area_cities[$i];
-			$lme_areas[$i]["state"] = $lme_area_states[$i];
-			$lme_areas[$i]["description"] = $lme_area_descriptions[$i];
-		}
-		
-		update_option("lme_areas", $lme_areas);
-		delete_option("lme_area_cities");
-		delete_option("lme_area_states");
-		delete_option("lme_area_descriptions");
-	}
-	static function UpgradeOptionsFromVersion2() {
-		if (get_option("local-market-explorer"))
-			return;
-		
-		global $wpdb;
-		
-		$options = array();
-		$options["api-keys"] = array(
-			"zillow"			=> get_option("lme_apikey_zillow"),
-			"flickr"			=> get_option("lme_apikey_flickr"),
-			"educationdotcom"	=> "bd23bb5cb91e37c39282f6bf75d56fb9",
-			"walk-score"		=> get_option("lme_apikey_walkscore"),
-			"yelp"				=> get_option("lme_apikey_yelp"),
-			"teachstreet"		=> get_option("lme_apikey_teachstreet")
-		);
-		$options["panels"] = array_merge(array(), get_option("lme_module_order"));
-		
-		if (!get_option("lme_panels_show_market_stats") && $options["panels"]["market-statistics"])
-			unset($options["panels"]["market-statistics"]);
-			
-		if (!get_option("lme_panels_show_aboutarea") && $options["panels"]["about-area"])
-			unset($options["panels"]["about-area"]);
-			
-		if (!get_option("lme_panels_show_zillow_marketactivity") && $options["panels"]["market-activity"])
-			unset($options["panels"]["market-activity"]);
-			
-		if (!get_option("lme_panels_show_educationcom") && $options["panels"]["schools"])
-			unset($options["panels"]["schools"]);
-			
-		if (!get_option("lme_panels_show_walkscore") && $options["panels"]["walk-score"])
-			unset($options["panels"]["walk-score"]);
-			
-		if (!get_option("lme_panels_show_yelp") && $options["panels"]["yelp"])
-			unset($options["panels"]["yelp"]);
-			
-		if (!get_option("lme_panels_show_teachstreet") && $options["panels"]["teachstreet"])
-			unset($options["panels"]["teachstreet"]);
-	}
-	static function FlushRewriteRules() {
-		global $wp_rewrite;
-		$wp_rewrite->flush_rules();
+register_activation_hook(__FILE__, 'set_lme_options');
+register_activation_hook(__FILE__, 'upgrade_lme_options');
+
+function set_lme_options() {
+	add_option('lme_panels_show_market_stats', '1', '', 'yes');
+	add_option('lme_panels_show_zillow_homevalue', '1', '', 'yes');
+	add_option('lme_panels_show_educationcom', '1', '', 'yes');
+	add_option('lme_panels_show_zillow_marketactivity', '1', '', 'yes');
+	add_option('lme_panels_show_aboutarea', '1', '', 'yes');
+	add_option('lme_panels_show_flickr', '1', '', 'yes');
+	add_option('lme_panels_show_walkscore', '1', '', 'yes');
+	add_option('lme_panels_show_teachstreet', '1', '', 'yes');
+	add_option('lme_panels_show_yelp', '1', '', 'yes');
+	
+	add_option('lme_apikey_zillow', '', '', 'yes');
+	add_option('lme_apikey_flickr', '', '', 'yes');
+	add_option('lme_apikey_walkscore', '', '', 'yes');
+	add_option('lme_apikey_yelp', '', '', 'yes');
+	
+	add_option('lme_username_zillow', '', '', 'yes');
+	add_option('lme_zillow_mylistings_widget', '', '', 'yes');
+	add_option('lme_sold_listings_to_show', '', '', 'yes');
+	
+	add_option('lme_areas', '', '', 'yes');
+	
+	add_option('lme_module_order', array(
+		'market-statistics'	=> 1,
+		'about-area'		=> 2,
+		'market-activity'	=> 3,
+		'schools'			=> 4,
+		'walk-score'		=> 5,
+		'yelp'				=> 6,
+		'teachstreet'		=> 7,
+		'idx-link'			=> 8
+	));
+}
+function upgrade_lme_options() {
+	if (get_option('lme_areas'))
+		return;
+	
+	$lme_areas = array();
+	$lme_area_cities = unserialize(get_option('lme_area_cities'));
+	$lme_area_states = unserialize(get_option('lme_area_states'));
+	$lme_area_descriptions = unserialize(get_option('lme_area_descriptions'));
+	
+	for ($i = 0; $i < sizeOf($lme_area_cities); $i++) {
+		$lme_areas[$i] = array();
+		$lme_areas[$i]['city'] = $lme_area_cities[$i];
+		$lme_areas[$i]['state'] = $lme_area_states[$i];
+		$lme_areas[$i]['description'] = $lme_area_descriptions[$i];
 	}
 	
-	static function InitWidgets() {
-		register_widget("LME_ListAreasWidget");
-	}
+	update_option('lme_areas', $lme_areas);
+	
+	delete_option('lme_area_cities');
+	delete_option('lme_area_states');
+	delete_option('lme_area_descriptions');
 }
 ?>
