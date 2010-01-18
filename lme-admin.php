@@ -1,4 +1,4 @@
-<?
+<?php
 function lme_admin_head(){
 	$wpurl = get_bloginfo('wpurl');
 	echo <<<HTML
@@ -28,13 +28,13 @@ function lme_admin_menu() {
 function lme_plugin_options(){
 	?>
 	<div class="wrap">
-		<h2>Local Market Explorer</h2><?
+		<h2>Local Market Explorer</h2><?php
 	if($_REQUEST['Submit']){
 		update_lme_options();
 	}
 	
 	print_lme_options();
-	?></div><?
+	?></div><?php
 }
 
 function update_lme_options(){
@@ -162,7 +162,7 @@ function update_lme_options(){
 	}
 	update_option('lme_module_order', $moduleOrder);
 			
-	?><div id="message" class="updated fade"><p><strong>Options Saved</p></strong></div><?
+	?><div id="message" class="updated fade"><p><strong>Options Saved</p></strong></div><?php
 }
 
 function print_lme_options() {
@@ -212,7 +212,7 @@ function print_lme_options() {
 						<label for="lme_apikey_zillow">API Key</label>
 					</th>
 					<td>
-						<input id="lme_apikey_zillow" class="regular-text code" type="text" value="<?= $lme_apikey_zillow ?>" name="lme_apikey_zillow"/>
+						<input id="lme_apikey_zillow" class="regular-text code" type="text" value="<?php echo  $lme_apikey_zillow ?>" name="lme_apikey_zillow"/>
 						<span class="setting-description">Get your key here: <a href="https://www.zillow.com/webservice/Registration.htm" target="_blank">https://www.zillow.com/webservice/Registration.htm</a></span>
 					</td>
 				</tr>
@@ -221,14 +221,14 @@ function print_lme_options() {
 						<label for="lme_username_zillow">Zillow Username</label>
 					</th>
 					<td>
-						<input id="lme_username_zillow" class="regular-text code" type="text" value="<?= $lme_username_zillow ?>" name="lme_username_zillow"/>
+						<input id="lme_username_zillow" class="regular-text code" type="text" value="<?php echo  $lme_username_zillow ?>" name="lme_username_zillow"/>
 						<span class="setting-description">Filling in this option will co-brand the Zillow experience on clickthrough</span>
 					</td>
 				</tr>
 				<tr>
 					<th class="th-full" colspan="2" scope="row">
 						<label for="lme_panels_show_market_stats">
-							<input id="lme_panels_show_market_stats" type="checkbox" <?= $lme_panels_show_market_stats == '1' ? 'checked="checked"' : ''?> value="1" name="lme_panels_show_market_stats"/>
+							<input id="lme_panels_show_market_stats" type="checkbox" <?php echo  $lme_panels_show_market_stats == '1' ? 'checked="checked"' : ''?> value="1" name="lme_panels_show_market_stats"/>
 							Show Market Stats Panel
 						</label>
 					</th>
@@ -240,7 +240,7 @@ function print_lme_options() {
 				<tr>
 					<th class="th-full" colspan="2" scope="row">
 						<label for="lme_panels_show_aboutarea">
-							<input id="lme_panels_show_aboutarea" type="checkbox" <?= $lme_panels_show_aboutarea == '1' ? 'checked="checked"' : ''?> value="1" name="lme_panels_show_aboutarea"/>
+							<input id="lme_panels_show_aboutarea" type="checkbox" <?php echo  $lme_panels_show_aboutarea == '1' ? 'checked="checked"' : ''?> value="1" name="lme_panels_show_aboutarea"/>
 							Show "About Area" Panel
 						</label>
 					</th>
@@ -248,7 +248,7 @@ function print_lme_options() {
 				<tr>
 					<th class="th-full" colspan="2" scope="row">
 						<label for="lme_panels_show_flickr">
-							<input id="lme_panels_show_flickr" type="checkbox" <?= $lme_panels_show_flickr == '1' ? 'checked="checked"' : ''?> value="1" name="lme_panels_show_flickr"/>
+							<input id="lme_panels_show_flickr" type="checkbox" <?php echo  $lme_panels_show_flickr == '1' ? 'checked="checked"' : ''?> value="1" name="lme_panels_show_flickr"/>
 							Show Flickr Panel
 						</label>
 					</th>
@@ -258,7 +258,7 @@ function print_lme_options() {
 						<label for="lme_apikey_flickr">Flickr API Key</label>
 					</th>
 					<td>
-						<input id="lme_apikey_flickr" class="regular-text code" type="text" value="<?= $lme_apikey_flickr ?>" name="lme_apikey_flickr"/>
+						<input id="lme_apikey_flickr" class="regular-text code" type="text" value="<?php echo  $lme_apikey_flickr ?>" name="lme_apikey_flickr"/>
 						<span class="setting-description">Get your key here: <a href="http://www.flickr.com/services/api/keys/apply/" target="_blank">http://www.flickr.com/services/api/keys/apply/</a></span>
 					</td>
 				</tr>
@@ -269,7 +269,7 @@ function print_lme_options() {
 				<tr>
 					<th class="th-full" colspan="2" scope="row">
 						<label for="lme_panels_show_educationcom">
-							<input id="lme_panels_show_educationcom" type="checkbox" <?= $lme_panels_show_educationcom == '1' ? 'checked="checked"' : ''?> value="1" name="lme_panels_show_educationcom"/>
+							<input id="lme_panels_show_educationcom" type="checkbox" <?php echo  $lme_panels_show_educationcom == '1' ? 'checked="checked"' : ''?> value="1" name="lme_panels_show_educationcom"/>
 							Show Education.com Panel
 						</label>
 					</th>
@@ -285,7 +285,7 @@ function print_lme_options() {
 						from the "API Request Type" drop down box.</p>
 						<br />
 						<label for="lme_panels_show_marketactivity">
-							<input id="lme_panels_show_marketactivity" type="checkbox" <?= $lme_panels_show_marketactivity == '1' ? 'checked="checked"' : ''?> value="1" name="lme_panels_show_marketactivity"/>
+							<input id="lme_panels_show_marketactivity" type="checkbox" <?php echo  $lme_panels_show_marketactivity == '1' ? 'checked="checked"' : ''?> value="1" name="lme_panels_show_marketactivity"/>
 							Show Market Activity Panel
 						</label>
 					</th>
@@ -295,7 +295,7 @@ function print_lme_options() {
 						<label for="lme_sold_listings_to_show"># of Sold Listings</label>
 					</th>
 					<td>
-						<input id="lme_sold_listings_to_show" class="regular-text code" type="text" value="<?= $lme_sold_listings_to_show ?>" name="lme_sold_listings_to_show" maxlength="2" style="width:40px;"/>
+						<input id="lme_sold_listings_to_show" class="regular-text code" type="text" value="<?php echo  $lme_sold_listings_to_show ?>" name="lme_sold_listings_to_show" maxlength="2" style="width:40px;"/>
 						<span class="setting-description">Set this to a value between 0 and 20 to define how many sold listings the plugin should display</span>
 					</td>
 				</tr>
@@ -306,7 +306,7 @@ function print_lme_options() {
 				<tr>
 					<th class="th-full" colspan="2" scope="row">
 						<label for="lme_panels_show_walkscore">
-							<input id="lme_panels_show_walkscore" type="checkbox" <?= $lme_panels_show_walkscore == '1' ? 'checked="checked"' : ''?> value="1" name="lme_panels_show_walkscore"/>
+							<input id="lme_panels_show_walkscore" type="checkbox" <?php echo  $lme_panels_show_walkscore == '1' ? 'checked="checked"' : ''?> value="1" name="lme_panels_show_walkscore"/>
 							Show Walk Score&trade; Panel
 						</label>
 					</th>
@@ -316,7 +316,7 @@ function print_lme_options() {
 						<label for="lme_apikey_walkscore">Walk Score API Key</label>
 					</th>
 					<td>
-						<input id="lme_apikey_walkscore" class="regular-text code" type="text" value="<?= $lme_apikey_walkscore ?>" name="lme_apikey_walkscore"/>
+						<input id="lme_apikey_walkscore" class="regular-text code" type="text" value="<?php echo  $lme_apikey_walkscore ?>" name="lme_apikey_walkscore"/>
 						<span class="setting-description">Get your key here: <a href="http://www.walkscore.com/request-tile-key.php" target="_blank">http://www.walkscore.com/request-tile-key.php</a></span>
 					</td>
 				</tr>
@@ -327,7 +327,7 @@ function print_lme_options() {
 				<tr>
 					<th class="th-full" colspan="2" scope="row">
 						<label for="lme_panels_show_yelp">
-							<input id="lme_panels_show_yelp" type="checkbox" <?= $lme_panels_show_yelp == '1' ? 'checked="checked"' : ''?> value="1" name="lme_panels_show_yelp"/>
+							<input id="lme_panels_show_yelp" type="checkbox" <?php echo  $lme_panels_show_yelp == '1' ? 'checked="checked"' : ''?> value="1" name="lme_panels_show_yelp"/>
 							Show Yelp Panel
 						</label>
 					</th>
@@ -337,27 +337,27 @@ function print_lme_options() {
 						<label for="lme_apikey_yelp">Yelp API Key</label>
 					</th>
 					<td>
-						<input id="lme_apikey_yelp" class="regular-text code" type="text" value="<?= $lme_apikey_yelp ?>" name="lme_apikey_yelp"/>
+						<input id="lme_apikey_yelp" class="regular-text code" type="text" value="<?php echo  $lme_apikey_yelp ?>" name="lme_apikey_yelp"/>
 						<span class="setting-description">Get your key here: <a href="http://www.yelp.com/developers/getting_started/api_access" target="_blank">http://www.yelp.com/developers/getting_started/api_access</a></span>
 					</td>
 				</tr>
 			</table>
 			
 			<h3>TeachStreet (Local Classes)</h3>
-		<?
+		<?php
 		if (function_exists('json_decode')) {
 		?>
 			<table class="form-table">
 				<tr>
 					<th class="th-full" colspan="2" scope="row">
 						<label for="lme_panels_show_teachstreet">
-							<input id="lme_panels_show_teachstreet" type="checkbox" <?= $lme_panels_show_teachstreet == '1' ? 'checked="checked"' : ''?> value="1" name="lme_panels_show_teachstreet"/>
+							<input id="lme_panels_show_teachstreet" type="checkbox" <?php echo  $lme_panels_show_teachstreet == '1' ? 'checked="checked"' : ''?> value="1" name="lme_panels_show_teachstreet"/>
 							Show TeachStreet Panel
 						</label>
 					</th>
 				</tr>
 			</table>
-		<?
+		<?php
 		} else {
 		?>
 			<p>
@@ -365,7 +365,7 @@ function print_lme_options() {
 				We highly recommend that you ask your web host to upgrade their version of PHP on the server that your website is on as it is buggy and more
 				than 3 years old.
 			</p> 
-		<?
+		<?php
 		}
 		?>
 			
@@ -378,35 +378,35 @@ function print_lme_options() {
 			<table class="form-table">
 				<tr>
 					<td width="100"><label for="lme-order-market-statistics">Market Statistics</label></td>
-					<td><input name="lme-order-market-statistics" type="text" value="<?= $moduleOrder['market-statistics'] ?>" style="width: 20px" /></td>
+					<td><input name="lme-order-market-statistics" type="text" value="<?php echo  $moduleOrder['market-statistics'] ?>" style="width: 20px" /></td>
 				</tr>
 				<tr>
 					<td><label for="lme-order-about-area">About Area</label></td>
-					<td><input name="lme-order-about-area" type="text" value="<?= $moduleOrder['about-area'] ?>" style="width: 20px" /></td>
+					<td><input name="lme-order-about-area" type="text" value="<?php echo  $moduleOrder['about-area'] ?>" style="width: 20px" /></td>
 				</tr>
 				<tr>
 					<td><label for="lme-order-market-activity">Market Activity</label></td>
-					<td><input name="lme-order-market-activity" type="text" value="<?= $moduleOrder['market-activity'] ?>" style="width: 20px" /></td>
+					<td><input name="lme-order-market-activity" type="text" value="<?php echo  $moduleOrder['market-activity'] ?>" style="width: 20px" /></td>
 				</tr>
 				<tr>
 					<td><label for="lme-order-schools">Schools</label></td>
-					<td><input name="lme-order-schools" type="text" value="<?= $moduleOrder['schools'] ?>" style="width: 20px" /></td>
+					<td><input name="lme-order-schools" type="text" value="<?php echo  $moduleOrder['schools'] ?>" style="width: 20px" /></td>
 				</tr>
 				<tr>
 					<td><label for="lme-order-walk-score">Walk Score</label></td>
-					<td><input name="lme-order-walk-score" type="text" value="<?= $moduleOrder['walk-score'] ?>" style="width: 20px" /></td>
+					<td><input name="lme-order-walk-score" type="text" value="<?php echo  $moduleOrder['walk-score'] ?>" style="width: 20px" /></td>
 				</tr>
 				<tr>
 					<td><label for="lme-order-yelp">Yelp</label></td>
-					<td><input name="lme-order-yelp" type="text" value="<?= $moduleOrder['yelp'] ?>" style="width: 20px" /></td>
+					<td><input name="lme-order-yelp" type="text" value="<?php echo  $moduleOrder['yelp'] ?>" style="width: 20px" /></td>
 				</tr>
 				<tr>
 					<td><label for="lme-order-teachstreet">Teachstreet</label></td>
-					<td><input name="lme-order-teachstreet" type="text" value="<?= $moduleOrder['teachstreet'] ?>" style="width: 20px" /></td>
+					<td><input name="lme-order-teachstreet" type="text" value="<?php echo  $moduleOrder['teachstreet'] ?>" style="width: 20px" /></td>
 				</tr>
 				<tr>
 					<td><label for="lme-order-idx-link">IDX Link</label></td>
-					<td><input name="lme-order-idx-link" type="text" value="<?= $moduleOrder['idx-link'] ?>" style="width: 20px" /></td>
+					<td><input name="lme-order-idx-link" type="text" value="<?php echo  $moduleOrder['idx-link'] ?>" style="width: 20px" /></td>
 				</tr>
 			</table>
 			
@@ -417,38 +417,38 @@ function print_lme_options() {
 			<h3>Target Areas</h3>
 			<p>(please note that you DO NOT need to create / save an area below if you don't want to add a description --
 			you can simply link to the area in your blog)</p>
-		<?
+		<?php
 		if(is_array($lme_areas)){
 			for ($i = 0; $i < sizeOf($lme_areas); $i++){
 			?>
-				<table class="form-table" id="lme_area_table__<?= $i ?>">
+				<table class="form-table" id="lme_area_table__<?php echo  $i ?>">
 					<tr valign="top">
 						<th scope="row">
-							<label for="lme_areas_<?= $i ?>_city">City, State</label>
+							<label for="lme_areas_<?php echo  $i ?>_city">City, State</label>
 						</th>
 						<td>
-							<input class="lme_area_city regular-text code" type="text" value="<?= $lme_areas[$i]['city'] ?>" name="lme_areas_<?= $i ?>_city" style="width: 200px" />,
-							<input class="lme_area_state regular-text code" type="text" value="<?= $lme_areas[$i]['state'] ?>" name="lme_areas_<?= $i ?>_state" style="width: 25px" />
+							<input class="lme_area_city regular-text code" type="text" value="<?php echo  $lme_areas[$i]['city'] ?>" name="lme_areas_<?php echo  $i ?>_city" style="width: 200px" />,
+							<input class="lme_area_state regular-text code" type="text" value="<?php echo  $lme_areas[$i]['state'] ?>" name="lme_areas_<?php echo  $i ?>_state" style="width: 25px" />
 						</td>
 					</tr>
 					<tr valign="top">
 						<th scope="row">
-							<label for="lme_areas_<?= $i ?>_neighborhood">Neighborhood</label>
+							<label for="lme_areas_<?php echo  $i ?>_neighborhood">Neighborhood</label>
 						</th>
 						<td>
-							<select class="lme_area_neighborhood" id="lme_areas_<?= $i ?>_neighborhood" name="lme_areas_<?= $i ?>_neighborhood" disabled="true">
-								<option value="<?= $lme_areas[$i]['neighborhood'] ?>"><?= $lme_areas[$i]['neighborhood'] ?></option>
+							<select class="lme_area_neighborhood" id="lme_areas_<?php echo  $i ?>_neighborhood" name="lme_areas_<?php echo  $i ?>_neighborhood" disabled="true">
+								<option value="<?php echo  $lme_areas[$i]['neighborhood'] ?>"><?php echo  $lme_areas[$i]['neighborhood'] ?></option>
 							</select>
-							<input class="lme_area_neighborhood_hidden" type="hidden" name="lme_areas_<?= $i ?>_neighborhood" value="<?= $lme_areas[$i]['neighborhood'] ?>" />
+							<input class="lme_area_neighborhood_hidden" type="hidden" name="lme_areas_<?php echo  $i ?>_neighborhood" value="<?php echo  $lme_areas[$i]['neighborhood'] ?>" />
 							<a href="javascript:void(0);" onclick="LocalMarketExplorerAdmin.LoadNeighborhoods(this);" class="lme_area_neighborhood_loader">(load available neighborhoods)</a>
 						</td>
 					</tr>
 					<tr valign="top">
 						<th scope="row">
-							<label for="lme_areas_<?= $i ?>_zip">Zip</label>
+							<label for="lme_areas_<?php echo  $i ?>_zip">Zip</label>
 						</th>
 						<td>
-							<input class="lme_area_zip regular-text code" type="text" value="<?= $lme_areas[$i]['zip'] ?>" name="lme_areas_<?= $i ?>_zip" style="width: 70px" />
+							<input class="lme_area_zip regular-text code" type="text" value="<?php echo  $lme_areas[$i]['zip'] ?>" name="lme_areas_<?php echo  $i ?>_zip" style="width: 70px" />
 						</td>
 					</tr>
 					<tr>
@@ -457,30 +457,30 @@ function print_lme_options() {
 					</tr>
 					<tr valign="top">
 						<th scope="row">
-							<label for="lme_areas_<?= $i ?>_idx_link">IDX link for this area</label>
+							<label for="lme_areas_<?php echo  $i ?>_idx_link">IDX link for this area</label>
 						</th>
 						<td>
-							<input class="regular-text code" type="text" value="<?= $lme_areas[$i]['idx_link'] ?>" name="lme_areas_<?= $i ?>_idx_link" style="width: 200px" />
+							<input class="regular-text code" type="text" value="<?php echo  $lme_areas[$i]['idx_link'] ?>" name="lme_areas_<?php echo  $i ?>_idx_link" style="width: 200px" />
 						</td>
 					</tr>
 					<tr valign="top">
 						<th scope="row">
-							<label for="lme_areas_<?= $i ?>_description">Description</label>
+							<label for="lme_areas_<?php echo  $i ?>_description">Description</label>
 						</th>
 						<td>
-							<textarea class="regular-text code" name="lme_areas_<?= $i ?>_description" style="width: 325px; height: 200px;" wrap="soft"><?= htmlentities($lme_areas[$i]['description'], ENT_NOQUOTES) ?></textarea>
+							<textarea class="regular-text code" name="lme_areas_<?php echo  $i ?>_description" style="width: 325px; height: 200px;" wrap="soft"><?php echo  htmlentities($lme_areas[$i]['description'], ENT_NOQUOTES) ?></textarea>
 						</td>
 					</tr>
 					<tr>
 						<td colspan="2">
-							<input class="button-secondary" type="button" onclick="LocalMarketExplorerAdmin.RemoveArea(<?= $i ?>)" value="Remove Target Area" />
+							<input class="button-secondary" type="button" onclick="LocalMarketExplorerAdmin.RemoveArea(<?php echo  $i ?>)" value="Remove Target Area" />
 						</td>
 					</tr>
 					<tr>
 						<td colspan="2"><hr /></td>
 					</tr>
 				</table>
-			<?
+			<?php
 			}
 		}
 		?>
@@ -540,7 +540,7 @@ function print_lme_options() {
 				Neighborhood lookup provided courtesy of <a href="http://www.diversesolutions.com/?r=lme-blog-admin" target="_blank">Diverse Solutions</a>.
 				<br /><br />
 				<a href="http://www.diversesolutions.com/?r=lme-blog-admin" target="_blank">
-				<img src="<?= get_bloginfo('wpurl') ?>/wp-content/plugins/local-market-explorer/images/diverse-solutions-logo.gif" alt="Diverse Solutions - Real Estate Technology Made Easy" />
+				<img src="<?php echo  get_bloginfo('wpurl') ?>/wp-content/plugins/local-market-explorer/images/diverse-solutions-logo.gif" alt="Diverse Solutions - Real Estate Technology Made Easy" />
 				</a>
 			</div>
 			
@@ -548,6 +548,6 @@ function print_lme_options() {
 				<input class="button-primary" type="submit" value="Save Changes" name="Submit"/>
 			</p>
 		</form>
-	<?
+	<?php
 }
 ?>

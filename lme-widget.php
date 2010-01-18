@@ -1,4 +1,4 @@
-<?
+<?php
 class LMEWidget extends WP_Widget {
 	function LMEWidget() {        
 		parent::WP_Widget(false, $name = 'Local Market Explorer');	
@@ -17,30 +17,30 @@ class LMEWidget extends WP_Widget {
         $badge = esc_attr($instance['badge']);
 		
 		echo $before_widget;
-		?><div class="lme-widget"><?
+		?><div class="lme-widget"><?php
 		
 		if($title) { echo $before_title . $title . $after_title; }
-		if($badge) { ?> <img src="<?= $badge ?>" /> <? }
+		if($badge) { ?> <img src="<?php echo  $badge ?>" /> <?php }
 		
-		for($i=0;$i<sizeOf($areas);$i++){
-			if ($areas[$i]['zip']) {
-				$title = $areas[$i]['zip'];
-				$link = $areas[$i]['zip'];
+		foreach ($areas as $area) {
+			if ($area['zip']) {
+				$title = $area['zip'];
+				$link = $area['zip'];
 			} else {
 				if ($areas[$i]['neighborhood']) {
-					$title = $areas[$i]['neighborhood'] . ', ' . $areas[$i]['city'] . ', '. $areas[$i]['state'];
-					$link = $areas[$i]['neighborhood'] . '/' . $areas[$i]['city'] . '/' . $areas[$i]['state'];
+					$title = $area['neighborhood'] . ', ' . $area['city'] . ', '. $area['state'];
+					$link = $area['neighborhood'] . '/' . $area['city'] . '/' . $area['state'];
 				} else {
-					$title = $areas[$i]['city'] .', '. $areas[$i]['state'];
-					$link = $areas[$i]['city'] .'/'. $areas[$i]['state'];
+					$title = $area['city'] .', '. $area['state'];
+					$link = $area['city'] .'/'. $area['state'];
 				}
 			}
 			
 			$link = strtolower(str_replace(' ', '-', $link));
-			?><a href="<?= $wpurl .'/'. $slug .'/'. $link ?>"><?= $title ?></a><br /><?
+			?><a href="<?php echo  $wpurl .'/'. $slug .'/'. $link ?>"><?php echo  $title ?></a><br /><?php
 		}
 		
-		?></div><?
+		?></div><?php
 		echo $after_widget;
 	}
 
@@ -57,7 +57,7 @@ class LMEWidget extends WP_Widget {
             <p><label for="<?php echo $this->get_field_id('badge'); ?>"><?php _e('Badge:'); ?> <input class="widefat" id="<?php echo $this->get_field_id('badge'); ?>" name="<?php echo $this->get_field_name('badge'); ?>" type="text" value="<?php echo $badge; ?>" /></label></p>
             <select id="<?php echo $this->get_field_id('badge'); ?>_selector" onchange="LocalMarketExplorerAdmin.SelectWidgetBadge('<?php echo $this->get_field_id('badge'); ?>')">
 				<option selected="selected" value="">Custom or None</option>
-			<?
+			<?php
 			$wpurl = get_bloginfo('wpurl');
 			$dir = "../wp-content/plugins/local-market-explorer/images/badges/";
 			if(is_dir($dir))
@@ -69,8 +69,8 @@ class LMEWidget extends WP_Widget {
 						if($file != "." && $file != ".." && $file != "Thumbs.db"/*pesky windows, images..*/)
 						{
 							?>									
-				<option value="<?= $wpurl ?>/wp-content/plugins/local-market-explorer/images/badges/<?= $file ?>"><?= $file ?></option>
-							<?
+				<option value="<?php echo  $wpurl ?>/wp-content/plugins/local-market-explorer/images/badges/<?php echo  $file ?>"><?php echo  $file ?></option>
+							<?php
 						}
 					}
 					closedir($handle);
@@ -80,7 +80,7 @@ class LMEWidget extends WP_Widget {
 			?>
 			</select>
 			<span class="setting-description">Choose a premade badge for your sidebar widget, or enter your own URL</span>
-			<div id="<?php echo $this->get_field_id('badge'); ?>_preview" style="margin:5px;display:<?= $badge == '' ? 'none' : 'block' ?>"><img src="<?= $badge ?>" /></div>
+			<div id="<?php echo $this->get_field_id('badge'); ?>_preview" style="margin:5px;display:<?php echo  $badge == '' ? 'none' : 'block' ?>"><img src="<?php echo  $badge ?>" /></div>
         <?php 
 	}
 	
