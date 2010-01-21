@@ -1,9 +1,9 @@
-<?
+<?php
 /*
 Plugin Name: Local Market Explorer
 Plugin URI: http://wordpress.org/extend/plugins/local-market-explorer/
 Description: This plugin allows WordPress to load data from a number of real estate and neighborhood APIs to be presented all within a single page in WordPress.
-Version: 2.1
+Version: 3.0
 Author: Andrew Mattie & Jonathan Mabe
 */
 
@@ -24,48 +24,59 @@ Author: Andrew Mattie & Jonathan Mabe
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-register_activation_hook(__FILE__, "LME::InitializeAreasSchema");
-register_activation_hook(__FILE__, "LME::UpgradeOptionsFromVersion1");
-register_activation_hook(__FILE__, "LME::UpgradeOptionsFromVersion2");
+global $wp_version;
+
+require_once(ABSPATH . "wp-admin/includes/plugin.php");
+$pluginData = get_plugin_data(__FILE__);
+
+define("LME_OPTION_NAME", "local-market-explorer");
+define("LME_MIN_VERSION_PHP", "5.2.0");
+define("LME_MIN_VERSION_WORDPRESS", "2.8.5");
+define("LME_PLUGIN_URL", WP_PLUGIN_URL . "/local-market-explorer/");
+define("LME_PLUGIN_VERSION", $pluginData["Version"]);
+define("LME_PLUGIN_DB_VERSION", "1.0");
+
+//register_activation_hook(__FILE__, "LME::InitializeAreasSchema");
+//register_activation_hook(__FILE__, "LME::UpgradeOptionsFromVersion1");
+//register_activation_hook(__FILE__, "LME::UpgradeOptionsFromVersion2");
 register_activation_hook(__FILE__, "LME::FlushRewriteRules");
 add_action("widgets_init", "LME::InitWidgets");
-
-$LME_PluginUrl = WP_PLUGIN_URL . "/" . str_replace(".php", "", basename(__FILE__)) . "/";
-$LME_PluginPath = str_replace("\\", "/", WP_PLUGIN_DIR . "/" . str_replace(".php", "", basename(__FILE__)) . "/");
-$LME_DbVersion = "1.0";
 
 require_once("widget-saved-areas.php");
 require_once("rewrite.php");
 
 if (is_admin()) {
-	require_once($dsSearchAgent_PluginPath . "admin.php");
+	require_once(str_replace("\\", "/", WP_PLUGIN_DIR) . "/local-market-explorer/admin.php");
 } else {
 	require_once("client.php");
 }
 
-class dsSearchAgent {
+class LME {
 	static function InitializeAreasSchema() {
 		global $wpdb;
 		
-		$options = get_option("local-market-explorer");
+		$options = get_option(LME_OPTION_NAME);
+		if (!$options)
+			$options = array();
 		
-		if (!$options || $options["db-version"] != $LME_DbVersion) {
-			$table_name = $wpdb->prefix . "lme_areas";
-			if ($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name) {
-				$sql = "CREATE TABLE " . $table_name . " (
-					id MEDIUMINT NOT NULL AUTO_INCREMENT,
-					city VARCHAR(100),
-					state CHAR(2),
-					zip CHAR(5),
-					neighborhood VARCHAR(100),
-					description TEXT,
-					idx_link VARCHAR(200),
-					PRIMARY KEY  (id)
-				);";
-				require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-				dbDelta($sql);
-			}
-		}
+		if ($options["db-version"] == LME_PLUGIN_DB_VERSION)
+			return;
+		
+		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+		$tableAreas = $wpdb->prefix . "lme_areas";
+		
+		$sql = "CREATE TABLE {$tableAreas} (
+			id mediumint(9) NOT NULL AUTO_INCREMENT,
+			city VARCHAR(30),
+			neighborhood VARCHAR(70),
+			zip CHAR(5),
+			state CHAR(2),
+			PRIMARY KEY  (id)
+		);";
+		dbDelta($sql);
+		
+		$options["db-version"] = LME_PLUGIN_DB_VERSION;
+		update_option(LME_OPTION_NAME, $options);
 	}
 	static function UpgradeOptionsFromVersion1() {
 		if (get_option("lme_areas"))
@@ -132,7 +143,7 @@ class dsSearchAgent {
 	}
 	
 	static function InitWidgets() {
-		register_widget("LME_ListAreasWidget");
+		register_widget("LMEWidget");
 	}
 }
 ?>

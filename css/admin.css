@@ -1,0 +1,36 @@
+
+.lme-notification-area {
+	background-color:#EEEEEE;
+	border:1px solid #CCCCCC;
+	font-weight:bold;
+	margin-top:10px;
+	padding:15px;
+	text-align:center;
+	width:525px;
+}
+.lme-api-keys th {
+	width: 150px;
+}
+.lme-api-key {
+	width: 230px;
+}
+#lme-modules-to-display {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	width: 360px;
+}
+#lme-modules-to-display li {
+	margin: 0 3px 3px 3px;
+	padding: 4px 4px 4px 19px;
+	height: 18px;
+	cursor: pointer;
+}
+#lme-modules-to-display li .ui-icon {
+	position: absolute;
+	margin-left: -16px;
+}
+#lme-modules-to-display li .lme-small {
+	font-weight: normal;
+	font-size: 10px;
+}

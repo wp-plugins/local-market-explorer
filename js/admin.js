@@ -106,3 +106,5 @@ jQuery(function() {
 		.keyup()
 	;
 });
+
+jQuery('#lme-modules-to-display').sortable();
