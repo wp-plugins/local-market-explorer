@@ -187,6 +187,7 @@ FOOTER;
 		$lme_panels_show_walkscore = get_option('lme_panels_show_walkscore');
 		$lme_panels_show_yelp = get_option('lme_panels_show_yelp');
 		$lme_panels_show_teachstreet = get_option('lme_panels_show_teachstreet');
+		$lme_panels_show_nileguide = get_option('lme_panels_show_nileguide');
 		
 		if ($lme_panels_show_teachstreet && !function_exists('json_decode'))
 			$lme_panels_show_teachstreet = FALSE;
@@ -222,6 +223,8 @@ LME_CONTENT;
 			$lme_navigation['yelp'] = '<a href="#lme-yelp">Yelp Local Reviews</a> | ';
 		if ($lme_panels_show_teachstreet)
 			$lme_navigation['teachstreet'] = '<a href="#lme-teachstreet">Local Classes</a> | ';
+		if ($lme_panels_show_nileguide)
+			$lme_navigation['nile-guide'] = '<a href="#lme-nileguide">Nile Guide</a> | ';
 		
 		
 		foreach ($moduleOrder as $key => $value) {
@@ -352,6 +355,26 @@ LME_CONTENT;
 		
 		if ($lme_panels_show_teachstreet) {
 			$teachstreet_data = $this->get_teachstreet_data();
+			$lme_content['teachstreet'] = <<<LME_CONTENT
+				<!-- TEACHSTREET SECTION -->
+				<a name="lme-teachstreet"></a>
+				<div class="lme_container">
+					<div class="lme_container_top lme_container_cap">
+						<div class="lme_container_top_left lme_container_left"></div>
+						<h3>New Classes in {$this->location_for_display} (via TeachStreet)</h3>
+						<div class="lme_container_top_right lme_container_right"></div>
+					</div>
+					<div id="lme_teachstreet" class="lme_container_body">{$teachstreet_data}</div>
+					<div class="lme_container_bottom lme_container_cap">
+						<div class="lme_container_bottom_left lme_container_left"></div>
+						<div class="lme_container_bottom_right lme_container_right"></div>
+					</div>
+				</div>
+LME_CONTENT;
+		}
+		
+		if ($lme_panels_show_nileguide) {
+			$teachstreet_data = $this->get_nileguide_data();
 			$lme_content['teachstreet'] = <<<LME_CONTENT
 				<!-- TEACHSTREET SECTION -->
 				<a name="lme-teachstreet"></a>
