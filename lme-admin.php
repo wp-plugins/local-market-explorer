@@ -109,6 +109,12 @@ function update_lme_options(){
 		update_option('lme_apikey_teachstreet', $_REQUEST['lme_apikey_teachstreet']);
 	}
 	
+	if($_REQUEST['lme_panels_show_nileguide']){
+		update_option('lme_panels_show_nileguide', $_REQUEST['lme_panels_show_nileguide']);
+	} else {
+		update_option('lme_panels_show_nileguide', '0');
+	}
+	
 	$lme_areas = array();
 	
 	foreach ( $_REQUEST as $key => $value ) { 
@@ -187,6 +193,8 @@ function print_lme_options() {
 	$lme_apikey_yelp = get_option('lme_apikey_yelp');
 	
 	$lme_panels_show_teachstreet = get_option('lme_panels_show_teachstreet');
+	
+	$lme_panels_show_nileguide = get_option('lme_panels_show_nileguide');
 	
 	$moduleOrder = get_option('lme_module_order');
 
@@ -343,6 +351,18 @@ function print_lme_options() {
 				</tr>
 			</table>
 			
+			<h3>Nile Guide</h3>
+			<table class="form-table">
+				<tr>
+					<th class="th-full" colspan="2" scope="row">
+						<label for="lme_panels_show_nileguide">
+							<input id="lme_panels_show_nileguide" type="checkbox" <?php echo  $lme_panels_show_nileguide == '1' ? 'checked="checked"' : ''?> value="1" name="lme_panels_show_nileguide"/>
+							Show Nile Guide Panel
+						</label>
+					</th>
+				</tr>
+			</table>
+			
 			<h3>TeachStreet (Local Classes)</h3>
 		<?php
 		if (function_exists('json_decode')) {
@@ -403,6 +423,10 @@ function print_lme_options() {
 				<tr>
 					<td><label for="lme-order-teachstreet">Teachstreet</label></td>
 					<td><input name="lme-order-teachstreet" type="text" value="<?php echo  $moduleOrder['teachstreet'] ?>" style="width: 20px" /></td>
+				</tr>
+				<tr>
+					<td><label for="lme-order-nileguide">Nile Guide</label></td>
+					<td><input name="lme-order-nileguide" type="text" value="<?php echo  $moduleOrder['nileguide'] ?>" style="width: 20px" /></td>
 				</tr>
 				<tr>
 					<td><label for="lme-order-idx-link">IDX Link</label></td>

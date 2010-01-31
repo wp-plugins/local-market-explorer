@@ -149,7 +149,7 @@ FOOTER;
 		return $posts;
 	}
 	
-	function get_url_data($url, $nocache = false) {
+	function get_url_data($url, $nocache = false, $addlSendHeaders = null) {
 		if ($url && !$nocache) {
 			$cacheKey = "lme-" & sha1($url);
 			$cacheValue = get_transient($cacheKey);
@@ -161,6 +161,9 @@ FOOTER;
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_HEADER, false);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		if (is_array($addlSendHeaders)) {
+			curl_setopt($ch, CURLOPT_HTTPHEADER, $addlSendHeaders);
+		}
 		$raw = curl_exec($ch);
 		
 		if ($raw && $url && !$nocache)
@@ -224,7 +227,7 @@ LME_CONTENT;
 		if ($lme_panels_show_teachstreet)
 			$lme_navigation['teachstreet'] = '<a href="#lme-teachstreet">Local Classes</a> | ';
 		if ($lme_panels_show_nileguide)
-			$lme_navigation['nile-guide'] = '<a href="#lme-nileguide">Nile Guide</a> | ';
+			$lme_navigation['nileguide'] = '<a href="#lme-nileguide">Nile Guide</a> | ';
 		
 		
 		foreach ($moduleOrder as $key => $value) {
@@ -375,16 +378,16 @@ LME_CONTENT;
 		
 		if ($lme_panels_show_nileguide) {
 			$teachstreet_data = $this->get_nileguide_data();
-			$lme_content['teachstreet'] = <<<LME_CONTENT
-				<!-- TEACHSTREET SECTION -->
-				<a name="lme-teachstreet"></a>
+			$lme_content['nileguide'] = <<<LME_CONTENT
+				<!-- NILEGUIDE SECTION -->
+				<a name="lme-nileguide"></a>
 				<div class="lme_container">
 					<div class="lme_container_top lme_container_cap">
 						<div class="lme_container_top_left lme_container_left"></div>
-						<h3>New Classes in {$this->location_for_display} (via TeachStreet)</h3>
+						<h3>Things To Do (via Nile Guide)</h3>
 						<div class="lme_container_top_right lme_container_right"></div>
 					</div>
-					<div id="lme_teachstreet" class="lme_container_body">{$teachstreet_data}</div>
+					<div id="lme_nileguide" class="lme_container_body">{$nileguide_data}</div>
 					<div class="lme_container_bottom lme_container_cap">
 						<div class="lme_container_bottom_left lme_container_left"></div>
 						<div class="lme_container_bottom_right lme_container_right"></div>
@@ -1062,6 +1065,48 @@ HTML;
 	function get_teachstreet_data() {
 		$api_url = 'http://www.teachstreet.com/lme/classes.json?where=' . urlencode($this->city) . ',' . urlencode($this->state);
 		$api_data = $this->get_url_data($api_url);
+		$api_data_decoded = json_decode($api_data);
+		$html = '';
+
+		for ($i = 0; $i < sizeof($api_data_decoded->items); $i++) {
+			$description = $api_data_decoded->items[$i]->description;
+			$title = $api_data_decoded->items[$i]->title;
+			$url = $api_data_decoded->items[$i]->url;
+			$image = $api_data_decoded->items[$i]->image;
+			
+			$teacher_name = $api_data_decoded->items[$i]->teacher->name;
+			$teacher_url = $api_data_decoded->items[$i]->teacher->url;
+			
+			$category_name = $api_data_decoded->items[$i]->category->name;
+			$category_url = $api_data_decoded->items[$i]->category->url;
+			
+			$html .= <<<HTML
+				<div class="ts_item">
+					<div class="ts_item_image">
+						<a href="$url" target="_blank"><img alt="$title" src="$image" /></a>
+					</div>
+					<div class="ts_item_details">
+						<p><a href="$url" target="_blank">$title</a></p>
+						<p>Taught by $teacher_name</p>
+						<p>More <a href="$category_url" target="_blank">$category_name classes in {$this->location_for_display}</a></p>
+					</div>
+					<div class="clear"></div> 
+				</div>
+HTML;
+		}
+		
+		$html .= <<<HTML
+			<div class="ts_footer">
+				<a href="{$api_data_decoded->region_browse_url}" target="_blank">Find more classes and teachers in {$this->location_for_display}</a>
+			</div>
+HTML;
+		
+		return $html;
+	}
+	
+	function get_nileguide_data() {
+		$api_url = "http://www.nileguide.com/service/place?category=seedo&latLong={$this->center_lat},{$this->center_long}&maxDistance=5";
+		$api_data = $this->get_url_data($api_url, false, "application/json");
 		$api_data_decoded = json_decode($api_data);
 		$html = '';
 
