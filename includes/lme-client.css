@@ -179,6 +179,12 @@ td.lme_number{
 td.lme_primary_value{
 	color: #C16D16;
 }
+.local_market_explorer h3 {
+	border-bottom:1px solid #CCCCCC;
+	font-size:17px;
+	font-weight:bold;
+	margin:35px 0 10px;
+}
 
 /* ZILLOW HOME VALUE INDEX */
 #lme_zillow_header
@@ -450,6 +456,17 @@ ul.lme_schools_list{
 }
 .local_market_explorer .ts_footer{
 	text-align: center;
+}
+
+/* NILEGUIDE */
+.local_market_explorer .nileguide_item {
+	margin-bottom: 15px;
+}
+.local_market_explorer .nileguide_title {
+	font-weight: bold;
+}
+.local_market_explorer .nileguide_description {
+	margin-left: 30px;
 }
 
 /* IDX LINK */
