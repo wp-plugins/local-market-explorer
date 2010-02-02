@@ -98,37 +98,48 @@ HTML;
 				<input type="submit" class="button-primary" name="Submit" value="Save API Keys" />
 			</p>
 
-			<h3>Modules to Display</h3>
+			<h3>Modules to Display and Module Order</h3>
+			<p>
+				Place a check in the checkbox for all of the modules you want to display on the pre-constructed, Local Market
+				Explorer "virtual" pages that this plugin allows for. You can also reorder the modules by simply dragging /
+				dropping them to the desired order.
+			</p>
 			<ul id="lme-modules-to-display">
 				<li class="ui-state-default">
 					<span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+					<input type="checkbox" id="show-market-stats" />
 					Market statistics <span class="lme-small">(area statistics from Zillow)</span>
 				</li>
 				<li class="ui-state-default">
 					<span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+					<input type="checkbox" id="show-about-area" />
 					About area <span class="lme-small">(your own description)</span>
 				</li>
 				<li class="ui-state-default">
 					<span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+					<input type="checkbox" id="show-market-activity" />
 					Market activity <span class="lme-small">(recent sales from Zillow)</span>
 				</li>
 				<li class="ui-state-default">
 					<span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+					<input type="checkbox" id="show-schools" />
 					Schools <span class="lme-small">(from Education.com)</span>
 				</li>
 				<li class="ui-state-default">
 					<span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+					<input type="checkbox" id="show-walk-score" />
 					Walk Score
 				</li>
 				<li class="ui-state-default">
 					<span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
-					Place reviews <span class="lme-small">(from Yelp)</span>
+					<input type="checkbox" id="show-yelp-reviews" />
+					Yelp reviews <span class="lme-small">(from Yelp)</span>
 				</li>
 				<li class="ui-state-default">
 					<span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+					<input type="checkbox" id="show-classes" />
 					Classes <span class="lme-small">(from Teachstreet)</span>
 				</li>
-
 			</ul>
 		</form>
 	</div>
