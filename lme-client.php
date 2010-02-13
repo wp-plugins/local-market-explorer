@@ -359,7 +359,7 @@ LME_CONTENT;
 				<div class="lme_container">
 					<div class="lme_container_top lme_container_cap">
 						<div class="lme_container_top_left lme_container_left"></div>
-						<h3>Trips and Things To Do (via Nile Guide)</h3>
+						<h3>Things to Do and Suggested Trip Itineraries (from NileGuide)</h3>
 						<div class="lme_container_top_right lme_container_right"></div>
 					</div>
 					<div id="lme_nileguide" class="lme_container_body">{$nileguide_data}</div>
@@ -1082,8 +1082,10 @@ HTML;
 	function get_nileguide_data() {
 		$api_url = "http://www.nileguide.com/service/cat?service=" . urlencode("/service/place?searchTerms=destinationLatLong:{$this->center_lat},{$this->center_long}&latLong={$this->center_lat},{$this->center_long}&count=15&category=seedo&maxDistance=1") . "&service=" . urlencode("/service/trip?searchTerms=destinationLatLong:{$this->center_lat},{$this->center_long}&count=15");
 		$api_data_decoded = $this->get_url_data_as_xml($api_url, false);
+		$ns = $api_data_decoded->getNameSpaces(true);
 		$html = '';
 		$displayed = 0;
+		$points = array();
 
 		$html .= "<h3>Things to see and do</h3>";
 		foreach ($api_data_decoded->entry as $entry) {
@@ -1095,12 +1097,23 @@ HTML;
 			$title = strip_tags($entry->title);
 			$linkAttrs = $entry->link->attributes();
 			$url = $linkAttrs["href"];
+			$iconImage = $entry->children($ns["ng"])->image;
+			$point[] = explode(" ", $entry->children($ns["georss"])->point);
+			
+			if ($iconImage)
+				$iconImage = "<a href=\"$url\"><img src=\"{$iconImage}\" class=\"nileguide_thumb\" /></a>";
+			else
+				$iconImage = "";
 
 			$html .= <<<HTML
 				<div class="nileguide_item">
 					<p class="nileguide_title"><a href="$url" target="_blank">$title</a></p>
-					<p class="nileguide_description">$description</p>
+					<p class="nileguide_description">
+						$iconImage
+						$description
+					</p>
 				</div>
+				<div class="clear"></div>
 HTML;
 			$displayed++;
 			if ($displayed == 15)
@@ -1118,18 +1131,28 @@ HTML;
 			$title = strip_tags($entry->title);
 			$linkAttrs = $entry->link->attributes();
 			$url = $linkAttrs["href"];
+			$iconImage = $entry->children($ns["ng"])->image;
+			
+			if ($iconImage)
+				$iconImage = "<a href=\"$url\"><img src=\"{$iconImage}\" class=\"nileguide_thumb\" /></a>";
+			else
+				$iconImage = "";
 
 			$html .= <<<HTML
 				<div class="nileguide_item">
 					<p class="nileguide_title"><a href="$url" target="_blank">$title</a></p>
-					<p class="nileguide_description">$description</p>
+					<p class="nileguide_description">
+						$iconImage
+						$description
+					</p>
 				</div>
+				<div class="clear"></div>
 HTML;
 			$displayed++;
 			if ($displayed == 15)
 				break;
 		}
-
+ 
 		return $html;
 	}
 

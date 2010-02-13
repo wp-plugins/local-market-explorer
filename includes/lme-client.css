@@ -184,6 +184,7 @@ td.lme_primary_value{
 	font-size:17px;
 	font-weight:bold;
 	margin:35px 0 10px;
+	clear: both;
 }
 
 /* ZILLOW HOME VALUE INDEX */
@@ -461,6 +462,7 @@ ul.lme_schools_list{
 /* NILEGUIDE */
 .local_market_explorer .nileguide_item {
 	margin-bottom: 15px;
+	clear: both;
 }
 .local_market_explorer .nileguide_title {
 	font-weight: bold;
@@ -468,6 +470,10 @@ ul.lme_schools_list{
 .local_market_explorer .nileguide_description {
 	margin-left: 30px;
 }
+.local_market_explorer .nileguide_description .nileguide_thumb {
+	float: left;
+}
+
 
 /* IDX LINK */
 #lme-idx-link-container h4
