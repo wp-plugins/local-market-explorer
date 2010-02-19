@@ -42,6 +42,8 @@
 .local_market_explorer fieldset,
 .local_market_explorer img {
 	border: 0;
+	background-image: none;
+	background-color: transparent;
 }
 
 .local_market_explorer li {
@@ -178,6 +180,13 @@ td.lme_number{
 }
 td.lme_primary_value{
 	color: #C16D16;
+}
+.local_market_explorer h3 {
+	border-bottom:1px solid #CCCCCC;
+	font-size:17px;
+	font-weight:bold;
+	margin:35px 0 10px;
+	clear: both;
 }
 
 /* ZILLOW HOME VALUE INDEX */
@@ -395,10 +404,10 @@ ul.lme_schools_list{
 #lme-yelp-map{
 	width: 428px;
 	height: 300px;
+	margin: 0 auto;
 	border:1px solid #999999;
 	background-color: white;
 }
-
 .lme-yelp-preview{
 	text-align: left;
 	min-height: 100px;
@@ -451,6 +460,42 @@ ul.lme_schools_list{
 .local_market_explorer .ts_footer{
 	text-align: center;
 }
+
+/* NILEGUIDE */
+.local_market_explorer .nileguide_item {
+	margin-bottom: 15px;
+	clear: both;
+}
+.local_market_explorer .nileguide_title {
+	font-weight: bold;
+}
+.local_market_explorer .nileguide_description {
+	margin-left: 30px;
+}
+.local_market_explorer .nileguide_description .nileguide_thumb {
+	float: left;
+}
+#lme-nileguide-map{
+	width: 428px;
+	height: 300px;
+	margin: 0 auto;
+	border:1px solid #999999;
+	background-color: white;
+}
+.lme-nileguide-map-info {
+	text-align: center;
+	height: 75px;
+}
+.lme-nileguide-map-info img {
+	float: left;
+	border: 1px solid #999;
+	padding: 0;
+	margin: 0 10px 0 0;
+}
+.lme-nileguide-map-info-text {
+	padding-top: 15px !important;
+}
+
 
 /* IDX LINK */
 #lme-idx-link-container h4

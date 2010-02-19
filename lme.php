@@ -3,7 +3,7 @@
 Plugin Name: Local Market Explorer
 Plugin URI: http://wordpress.org/extend/plugins/local-market-explorer/
 Description: This plugin allows WordPress to load data from a number of real estate and neighborhood APIs to be presented all within a single page in WordPress.
-Version: 2.1.2
+Version: 2.2
 Author: Andrew Mattie & Jonathan Mabe
 */
 
@@ -29,7 +29,7 @@ add_action('widgets_init', create_function('', 'return register_widget("LMEWidge
 
 if(is_admin()) {
 	include('lme-admin.php');
-	add_action('admin_head', 'lme_admin_head'); 
+	add_action('admin_head', 'lme_admin_head');
 	add_action('admin_menu', 'lme_admin_menu');
 } else {
 	include('lme-client.php');
@@ -39,7 +39,34 @@ if(is_admin()) {
 
 register_activation_hook(__FILE__, 'set_lme_options');
 register_activation_hook(__FILE__, 'upgrade_lme_options');
+register_activation_hook(__FILE__, 'lme_flush_rewrite');
 
+add_filter("rewrite_rules_array", "lme_insert_rules");
+add_filter("query_vars", "lme_save_query_vars");
+
+function lme_insert_rules($incomingRules) {
+	$lmeRules = array(
+		"local/([^/]+)/([^/]+)/(\\w{2})/?$" => 'index.php?lme-active=1&lme-neighborhood=$matches[1]&lme-city=$matches[2]&lme-state=$matches[3]',
+		"local/([^/]+)/(\\w{2})/?$" => 'index.php?lme-active=1&lme-city=$matches[1]&lme-state=$matches[2]',
+		"local/(\\d{5})/?$" => 'index.php?lme-active=1&lme-zip=$matches[1]'
+	);
+
+	return $lmeRules + $incomingRules;
+}
+function lme_save_query_vars($queryVars) {
+	$queryVars[] = "lme-active";
+	$queryVars[] = "lme-neighborhood";
+	$queryVars[] = "lme-city";
+	$queryVars[] = "lme-state";
+	$queryVars[] = "lme-zip";
+
+	return $queryVars;
+}
+
+function lme_flush_rewrite() {
+	global $wp_rewrite;
+	$wp_rewrite->flush_rules();
+}
 function set_lme_options() {
 	add_option('lme_panels_show_market_stats', '1', '', 'yes');
 	add_option('lme_panels_show_zillow_homevalue', '1', '', 'yes');
@@ -49,19 +76,20 @@ function set_lme_options() {
 	add_option('lme_panels_show_flickr', '1', '', 'yes');
 	add_option('lme_panels_show_walkscore', '1', '', 'yes');
 	add_option('lme_panels_show_teachstreet', '1', '', 'yes');
+	add_option('lme_panels_show_nileguide', '1', '', 'yes');
 	add_option('lme_panels_show_yelp', '1', '', 'yes');
-	
+
 	add_option('lme_apikey_zillow', '', '', 'yes');
 	add_option('lme_apikey_flickr', '', '', 'yes');
 	add_option('lme_apikey_walkscore', '', '', 'yes');
 	add_option('lme_apikey_yelp', '', '', 'yes');
-	
+
 	add_option('lme_username_zillow', '', '', 'yes');
 	add_option('lme_zillow_mylistings_widget', '', '', 'yes');
 	add_option('lme_sold_listings_to_show', '', '', 'yes');
-	
+
 	add_option('lme_areas', '', '', 'yes');
-	
+
 	add_option('lme_module_order', array(
 		'market-statistics'	=> 1,
 		'about-area'		=> 2,
@@ -70,27 +98,28 @@ function set_lme_options() {
 		'walk-score'		=> 5,
 		'yelp'				=> 6,
 		'teachstreet'		=> 7,
-		'idx-link'			=> 8
+		'nileguide'			=> 8,
+		'idx-link'			=> 9
 	));
 }
 function upgrade_lme_options() {
 	if (get_option('lme_areas'))
 		return;
-	
+
 	$lme_areas = array();
 	$lme_area_cities = unserialize(get_option('lme_area_cities'));
 	$lme_area_states = unserialize(get_option('lme_area_states'));
 	$lme_area_descriptions = unserialize(get_option('lme_area_descriptions'));
-	
+
 	for ($i = 0; $i < sizeOf($lme_area_cities); $i++) {
 		$lme_areas[$i] = array();
 		$lme_areas[$i]['city'] = $lme_area_cities[$i];
 		$lme_areas[$i]['state'] = $lme_area_states[$i];
 		$lme_areas[$i]['description'] = $lme_area_descriptions[$i];
 	}
-	
+
 	update_option('lme_areas', $lme_areas);
-	
+
 	delete_option('lme_area_cities');
 	delete_option('lme_area_states');
 	delete_option('lme_area_descriptions');

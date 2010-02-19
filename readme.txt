@@ -47,6 +47,12 @@ If you'd like to contribute a feature suggestion or need to document a bug, plea
 
 == Changelog ==
 
+= 2.2 =
+* Added support for Nile Guide data
+* Increased compatibility across the board w/ different blog settings and different plugins
+* Added support for WordPress's canonical URL feature to ensure that the correct URL gets indexed
+* Fixed issues with the "recent posts" widget not working with plugin
+
 = 2.1.1 =
 * Fixed Yelp map that broke to due an API change with Google Maps
 * Fixed Market Stats module values that broke due to an API change with Zillow
