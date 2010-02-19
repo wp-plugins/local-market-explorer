@@ -42,6 +42,8 @@
 .local_market_explorer fieldset,
 .local_market_explorer img {
 	border: 0;
+	background-image: none;
+	background-color: transparent;
 }
 
 .local_market_explorer li {
@@ -402,10 +404,10 @@ ul.lme_schools_list{
 #lme-yelp-map{
 	width: 428px;
 	height: 300px;
+	margin: 0 auto;
 	border:1px solid #999999;
 	background-color: white;
 }
-
 .lme-yelp-preview{
 	text-align: left;
 	min-height: 100px;
@@ -472,6 +474,26 @@ ul.lme_schools_list{
 }
 .local_market_explorer .nileguide_description .nileguide_thumb {
 	float: left;
+}
+#lme-nileguide-map{
+	width: 428px;
+	height: 300px;
+	margin: 0 auto;
+	border:1px solid #999999;
+	background-color: white;
+}
+.lme-nileguide-map-info {
+	text-align: center;
+	height: 75px;
+}
+.lme-nileguide-map-info img {
+	float: left;
+	border: 1px solid #999;
+	padding: 0;
+	margin: 0 10px 0 0;
+}
+.lme-nileguide-map-info-text {
+	padding-top: 15px !important;
 }
 
 

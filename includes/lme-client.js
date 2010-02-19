@@ -122,12 +122,61 @@ var LocalMarketExplorer = {
 
 		return returnObj;
 	}(),
-	WalkScore: function() {
+	NileGuide: function() {
 		var returnObj;
 
 		returnObj = {
-		}
+			loadMap: function() {
+			var openedWindow = null;
 
+			var map = new google.maps.Map(document.getElementById("lme-nileguide-map"), {
+		      mapTypeId: google.maps.MapTypeId.ROADMAP,
+		      mapTypeControl: false,
+		      scrollwheel: false
+		    });
+		    
+		    var bounds = new google.maps.LatLngBounds();
+		    
+		    for (var i = 0, j = LocalMarketExplorer.NileGuide.Data.length; i < j; ++i){
+		    	var item = LocalMarketExplorer.NileGuide.Data[i];
+				
+				if (!item.point)
+					continue;
+				
+		    	var latLng = new google.maps.LatLng(item.point[0], item.point[1]);
+		    	
+		    	var marker = new google.maps.Marker({
+			        position: latLng, 
+			        map: map,
+			        icon: 'http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/ltblu-pushpin.png',
+			        title: item.name
+			    });
+
+			    var infowindow = new google.maps.InfoWindow({
+			        content: "<div class='lme-nileguide-map-info'><img src='" + item.image + "' />"+
+			        	"<div class='lme-nileguide-map-info-text'><a href='" + item.link + "' target='_blank'>" + item.name + "</a></div></div>"
+			    });
+			    
+			    (function(map,marker,infowindow){
+				    google.maps.event.addListener(marker, 'click', function() {
+				    	if(openedWindow != null) openedWindow.close();
+						infowindow.open(map, marker);
+						openedWindow = infowindow;
+				    });
+			    })(map,marker,infowindow);
+			    
+			    bounds.extend(latLng);
+		    }
+		    
+		    map.setCenter(bounds.getCenter());
+		    map.fitBounds(bounds);
+		}
+	}
+
+	$j(function() {
+		if($j('#lme_yelp').length > 0) returnObj.loadMap();
+	})
+		
 		return returnObj;
 	}(),
 	Yelp: function(){

@@ -420,7 +420,7 @@ LME_CONTENT;
 		$zillow_xml_url = "http://www.zillow.com/webservice/GetDemographics.htm?zws-id=$lme_apikey_zillow$location_for_api";
 		$zillow_chart_url = "http://www.zillow.com/webservice/GetRegionChart.htm?zws-id=$lme_apikey_zillow$location_for_api&unit-type=percent&width=400&height=200";
 
-		$zillow_xml = $this->get_url_data_as_xml($zillow_xml_url, true);
+		$zillow_xml = $this->get_url_data_as_xml($zillow_xml_url);
 		$node = $zillow_xml->xpath("response/region/latitude");
 		$this->center_lat = $node[0];
 		$node = $zillow_xml->xpath("response/region/longitude");
@@ -431,7 +431,7 @@ LME_CONTENT;
 		if (!$lme_panels_show_market_stats)
 			return '';
 
-		$zillow_chart = $this->get_url_data_as_xml($zillow_chart_url, true);
+		$zillow_chart = $this->get_url_data_as_xml($zillow_chart_url);
 
 		$node = $zillow_chart->xpath("response"); $region_chart = array($node[0]);
 
@@ -738,7 +738,7 @@ HTML;
 			$recent_sales_url .= urlencode("$this->city,$this->state");
 		}
 
-		$zillow_fmr = $this->get_url_data_as_xml($recent_sales_url, true);
+		$zillow_fmr = $this->get_url_data_as_xml($recent_sales_url);
 
 		$lme_username_zillow = get_option('lme_username_zillow');
 		if (strlen($lme_username_zillow) > 0)
@@ -1085,7 +1085,7 @@ HTML;
 		$ns = $api_data_decoded->getNameSpaces(true);
 		$html = '';
 		$displayed = 0;
-		$points = array();
+		$mapItems = array();
 
 		$html .= "<h3>Things to see and do</h3>";
 		foreach ($api_data_decoded->entry as $entry) {
@@ -1098,7 +1098,12 @@ HTML;
 			$linkAttrs = $entry->link->attributes();
 			$url = $linkAttrs["href"];
 			$iconImage = $entry->children($ns["ng"])->image;
-			$point[] = explode(" ", $entry->children($ns["georss"])->point);
+			$mapItems[] = array(
+				"name"	=> $title,
+				"link"	=> (string)$url,
+				"image" => (string)$iconImage,
+				"point"	=> explode(" ", $entry->children($ns["georss"])->point)
+			);
 			
 			if ($iconImage)
 				$iconImage = "<a href=\"$url\"><img src=\"{$iconImage}\" class=\"nileguide_thumb\" /></a>";
@@ -1119,6 +1124,8 @@ HTML;
 			if ($displayed == 15)
 				break;
 		}
+		$html .= "<div id=\"lme-nileguide-map\"></div>";
+		$html .= "<script>LocalMarketExplorer.NileGuide.Data = " . json_encode($mapItems) . "</script>";
 
 		$displayed = 0;
 		$html .= "<h3>Trips to take</h3>";
