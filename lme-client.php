@@ -17,8 +17,30 @@ class LMEPage
 	var $zillow_for_sale_link = '';
 
 	function LMEPage() {
+		add_action("pre_get_posts", array(&$this, "preActivate"));
 		add_filter("posts_request", array(&$this, "query_override_for_lme"));
 		add_filter("the_posts", array(&$this, "get_post"));
+	}
+
+	// this is a roundabout way to make sure that any other plugin / widget / etc that uses the WP_Query object doesn't get our data
+	// in their query. since we don't actually get the query itself in the "the_posts" filter, we have to step around the issue by
+	// checking it BEFORE it gets to the the_posts filter. later, in the the_posts filter, we restore the previous state of things.
+	function preActivate($q) {
+		global $wp_query;
+
+		if (!is_array($wp_query->query) || !is_array($q->query) || isset($wp_query->query["suppress_filters"]) || isset($q->query["suppress_filters"])) {
+			return;
+		}
+
+		if (isset($wp_query->query["lme-active"])) {
+			if (!isset($q->query["lme-active"])) {
+				$wp_query->query["lme-active-swap"] = $wp_query->query["lme-active"];
+				unset($wp_query->query["lme-active"]);
+			} else {
+				$q->query_vars["caller_get_posts"] = true;
+			}
+		}
+
 	}
 
 	// this will speed up requests by making the query to MySQL SUPER simple
@@ -34,6 +56,13 @@ class LMEPage
 	// hooked filters
 	function get_post($posts) {
 		global $wp_query;
+
+		// see comment above PreActivate
+		if (is_array($wp_query->query) && isset($wp_query->query["lme-active-swap"])) {
+			$wp_query->query["lme-active"] = $wp_query->query["lme-active-swap"];
+			unset($wp_query->query["lme-active-swap"]);
+			return $posts;
+		}
 
 		if (!is_array($wp_query->query) || !isset($wp_query->query["lme-active"]))
 			return $posts;
@@ -63,15 +92,22 @@ class LMEPage
 		remove_filter("the_content", "wpautop");
 		remove_filter("the_content", "prepend_attachment");
 
+		add_filter("page_link", array(&$this, "getPermalink")); // for any plugin that needs it
+
+		// we don't support RSS feeds just yet
+		remove_action("wp_head", "feed_links");
+		remove_action("wp_head", "feed_links_extra");
+
 		$wp_query->found_posts = 0;
 		$wp_query->max_num_pages = 0;
 		$wp_query->is_page = 1;
 		$wp_query->is_home = null;
 		$wp_query->is_singular = 1;
 
-		set_query_var("name", "lme-data"); // at least a few themes require _something_ to be set here to display a good <title> tag
+		set_query_var("name", "local-market-explorer"); // at least a few themes require _something_ to be set here to display a good <title> tag
+		set_query_var("pagename", "local-market-explorer"); // setting pagename in case someone wants to do a custom theme file for this "page"
 		$posts = array((object)array(
-			"ID"				=> 0,
+			"ID"				=> -1,
 			"comment_count"		=> 0,
 			"comment_status"	=> "closed",
 			"ping_status"		=> "closed",
@@ -86,6 +122,25 @@ class LMEPage
 			"post_type"			=> "page"
 		));
 		return $posts;
+	}
+	function getPermalink($incomingLink) {
+		global $wp_query;
+
+		if (!preg_match("/lme-data/", $incomingLink))
+			return $incomingLink;
+		
+		$blogUrl = get_bloginfo("url");
+		$urlNeighborhood = strtolower(urlencode($wp_query->query["lme-neighborhood"]));
+		$urlCity = strtolower(urlencode($wp_query->query["lme-city"]));
+		$urlState = strtolower(urlencode($wp_query->query["lme-state"]));
+		$urlZip = strtolower(urlencode($wp_query->query["lme-zip"]));
+
+		if (isset($wp_query->query["lme-zip"]))
+			return "{$blogUrl}/local/{$urlZip}/";
+		else if (isset($wp_query->query["lme-neighborhood"]))
+			return "{$blogUrl}/local/{$urlNeighborhood}/{$urlCity}/{$urlState}/";
+		else
+			return "{$blogUrl}/local/{$urlCity}/{$urlState}/";
 	}
 
 	function get_head() {
