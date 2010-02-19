@@ -2,7 +2,7 @@
 Contributors: amattie, jmabe
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=10178626
 User Voice forum link: http://localmarketexplorer.uservoice.com/
-Tags: zillow, flickr, walk score, schools, education.com, real estate, local information, city data, yelp, teachstreet
+Tags: zillow, flickr, walk score, schools, education.com, real estate, local information, city data, yelp, teachstreet, nileguide
 Requires at least: 2.8
 Tested up to: 2.9.1
 Stable tag: 2.2
@@ -22,6 +22,7 @@ This plugin allows for WordPress to load in data from the following APIs:
 * [Walk Score](http://www.walkscore.com)
 * [Yelp](http://www.yelp.com)
 * [TeachStreet](http://www.teachstreet.com)
+* [NileGuide](http://www.nileguide.com)
 
 The data from the different APIs is then presented on a single page that is dynamically created on the server depending on the
 specially-crafted URL that is being accessed. The format of the URL to load the plugin is as follows:
