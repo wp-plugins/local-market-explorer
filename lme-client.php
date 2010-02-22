@@ -152,7 +152,7 @@ class LMEPage
 			<script type="text/javascript">
 				var \$j = jQuery.noConflict();
 			</script>
-			<script type="text/javascript" src="{$wpurl}/wp-content/plugins/local-market-explorer/includes/lme-client.js"></script>
+			<script type="text/javascript" src="{$wpurl}/wp-content/plugins/local-market-explorer/includes/lme-client.js?v=2.2.1"></script>
 			<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
 HEAD;
 	}
@@ -1135,7 +1135,7 @@ HTML;
 	}
 
 	function get_nileguide_data() {
-		$api_url = "http://www.nileguide.com/service/cat?service=" . urlencode("/service/place?searchTerms=destinationLatLong:{$this->center_lat},{$this->center_long}&latLong={$this->center_lat},{$this->center_long}&count=15&category=seedo&maxDistance=1") . "&service=" . urlencode("/service/trip?searchTerms=destinationLatLong:{$this->center_lat},{$this->center_long}&count=15");
+		$api_url = "http://www.nileguide.com/service/cat?service=" . urlencode("/service/place?searchTerms=destinationLatLong:{$this->center_lat},{$this->center_long}&searchTerms=latLong:{$this->center_lat},{$this->center_long}&searchTerms=category:seedo&searchTerms=maxDistance:5&count=15") . "&service=" . urlencode("/service/trip?searchTerms=destinationLatLong:{$this->center_lat},{$this->center_long}&count=15");
 		$api_data_decoded = $this->get_url_data_as_xml($api_url, false);
 		$ns = $api_data_decoded->getNameSpaces(true);
 		$html = '';
