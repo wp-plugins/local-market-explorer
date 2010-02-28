@@ -127,8 +127,13 @@ var LocalMarketExplorer = {
 
 		returnObj = {
 			loadMap: function() {
+				if (!LocalMarketExplorer.NileGuide.Data || !LocalMarketExplorer.NileGuide.Data.length) {
+					document.getElementById("lme-nileguide-map").style.display = 'none';
+					return;
+				}
+				
 				var openedWindow = null;
-	
+				
 				var map = new google.maps.Map(document.getElementById("lme-nileguide-map"), {
 			      mapTypeId: google.maps.MapTypeId.ROADMAP,
 			      mapTypeControl: false,

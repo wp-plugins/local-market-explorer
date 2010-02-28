@@ -152,7 +152,7 @@ class LMEPage
 			<script type="text/javascript">
 				var \$j = jQuery.noConflict();
 			</script>
-			<script type="text/javascript" src="{$wpurl}/wp-content/plugins/local-market-explorer/includes/lme-client.js?v=2.2.1"></script>
+			<script type="text/javascript" src="{$wpurl}/wp-content/plugins/local-market-explorer/includes/lme-client.js?v=2.2.2"></script>
 			<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
 HEAD;
 	}
@@ -935,7 +935,7 @@ HTML;
 			$educationdotcom_url .= "&zip=$this->zip";
 		} else {
 			if ($this->neighborhood != "") {
-				$educationdotcom_url .= "&latitude={$this->center_lat}&longtude={$this->center_long}";
+				$educationdotcom_url .= "&latitude={$this->center_lat}&longitude={$this->center_long}&distance=1.5";
 			} else {
 				$educationdotcom_url .= '&city='. urlencode($this->city) .'&state='. urlencode($this->state);
 			}
