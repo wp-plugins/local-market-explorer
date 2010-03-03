@@ -1056,7 +1056,7 @@ HTML;
 					<a href="http://www.education.com/schoolfinder/us/{$full_state}/{$city_for_link}/" target="_blank">See more info on {$this->location_for_display} schools</a>
 				</div>
 				<div id="lme_educationdotcom_logo">
-					<a href="http://www.education.com/schoolfinder/tools" target="_blank"><img src="http://www.education.com/i/logo/edu-logo-150x32.jpg" /></a>
+					<a href="http://www.education.com/schoolfinder" target="_blank"><img src="http://www.education.com/i/logo/edu-logo-150x32.jpg" /></a>
 				</div>
 			</div>
 			<div class="clear"></div>
