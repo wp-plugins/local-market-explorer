@@ -17,7 +17,7 @@ page in WordPress.
 This plugin allows for WordPress to load in data from the following APIs:
 
 * [Zillow](http://www.zillow.com)
-* [Education.com](http://www.education.com)
+* [Education.com](http://www.education.com/schoolfinder/)
 * [Flickr](http://www.flickr.com)
 * [Walk Score](http://www.walkscore.com)
 * [Yelp](http://www.yelp.com)
