@@ -5,7 +5,7 @@ User Voice forum link: http://localmarketexplorer.uservoice.com/
 Tags: zillow, flickr, walk score, schools, education.com, real estate, local information, city data, yelp, teachstreet, nileguide
 Requires at least: 2.8
 Tested up to: 2.9.2
-Stable tag: 2.2.2
+Stable tag: 2.2.3
 
 This plugin allows WordPress to load data from a number of real estate and neighborhood APIs to be presented all within a single
 page in WordPress.
@@ -47,6 +47,9 @@ If you'd like to contribute a feature suggestion or need to document a bug, plea
 5. Visit each of the API key links and get your API keys. After you put in each API key, the data will load for the corresponding modules.
 
 == Changelog ==
+
+= 2.2.3 =
+* Fixed Education.com's "Powered by" link per their request
 
 = 2.2.1 =
 * Fixed small bugs with Nile Guide and Yelp where map wasn't loading at times
