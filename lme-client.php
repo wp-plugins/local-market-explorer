@@ -128,7 +128,7 @@ class LMEPage
 
 		if (!preg_match("/lme-data/", $incomingLink))
 			return $incomingLink;
-		
+
 		$blogUrl = get_bloginfo("url");
 		$urlNeighborhood = strtolower(urlencode($wp_query->query["lme-neighborhood"]));
 		$urlCity = strtolower(urlencode($wp_query->query["lme-city"]));
@@ -1056,7 +1056,7 @@ HTML;
 					<a href="http://www.education.com/schoolfinder/us/{$full_state}/{$city_for_link}/" target="_blank">See more info on {$this->location_for_display} schools</a>
 				</div>
 				<div id="lme_educationdotcom_logo">
-					<a href="http://www.education.com/schoolfinder" target="_blank"><img src="http://www.education.com/i/logo/edu-logo-150x32.jpg" /></a>
+					<a href="http://www.education.com/schoolfinder/" target="_blank"><img src="http://www.education.com/i/logo/edu-logo-150x32.jpg" /></a>
 				</div>
 			</div>
 			<div class="clear"></div>
@@ -1159,7 +1159,7 @@ HTML;
 				"image" => (string)$iconImage,
 				"point"	=> explode(" ", $entry->children($ns["georss"])->point)
 			);
-			
+
 			if ($iconImage)
 				$iconImage = "<a href=\"$url\"><img src=\"{$iconImage}\" class=\"nileguide_thumb\" /></a>";
 			else
@@ -1194,7 +1194,7 @@ HTML;
 			$linkAttrs = $entry->link->attributes();
 			$url = $linkAttrs["href"];
 			$iconImage = $entry->children($ns["ng"])->image;
-			
+
 			if ($iconImage)
 				$iconImage = "<a href=\"$url\"><img src=\"{$iconImage}\" class=\"nileguide_thumb\" /></a>";
 			else
@@ -1214,7 +1214,7 @@ HTML;
 			if ($displayed == 15)
 				break;
 		}
- 
+
 		return $html;
 	}
 
