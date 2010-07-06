@@ -1,110 +1,122 @@
-var LocalMarketExplorerAdmin = {
-	RemoveArea : function(index){
-		if(confirm("Are you sure you wish to remove this target area?")){
-			var AreaTables = jQuery('#lme_area_table__' + index);
-			AreaTables.remove();
-		}
-	},
+var lmeadmin = {};
+
+lmeadmin.newAreaId = 0;
+lmeadmin.processAreaDescriptionNode = function() {
+	var neighborhoodNode = jQuery(this).find('.lme-areas-neighborhood');
+	var clickTarget = jQuery(document.createElement('div'));
 	
-	SelectWidgetBadge : function(context){
-		var url = jQuery('#'+context+'_selector').val();
-		
-		jQuery('#'+context).val(url);
-		
-		jQuery('#'+context+'_preview').show();
-		jQuery('#'+context+'_preview img').attr('src', url);
-	},
+	clickTarget
+		.click(lmeadmin.loadNeighborhoodsOnClick)
+		.width(neighborhoodNode.outerWidth())
+		.height(neighborhoodNode.outerHeight())
+		.css({ 'position': 'absolute', 'left': neighborhoodNode.get(0).offsetLeft + 'px', 'top': neighborhoodNode.get(0).offsetTop + 'px' });
+	neighborhoodNode.get(0).parentNode.appendChild(clickTarget.get(0));
 	
-	LoadNeighborhoods: function(el) {
-		el = jQuery(el);
-		
-		var city, state, originalNeighborhood;
-		var parentTable = el.closest('.form-table');
-		var requiredFields = parentTable.find('.lme_area_city,.lme_area_state').filter(function() {
-			var requiredField = jQuery(this);
-			if (requiredField.hasClass('lme_area_city'))
-				city = this.value.toLowerCase();
-			else if (requiredField.hasClass('lme_area_state'))
-				state = this.value.toLowerCase();
-			return !!this.value;
-		});
-		var neighborhoodEl;
-		var apiUrl = 'http://idx.diversesolutions.com/API/Locations.ashx?m=zillow-neighborhoods&c=' + encodeURIComponent(city) + '&s=' + encodeURIComponent(state);
-		
-		neighborhoodEl = parentTable.find('.lme_area_neighborhood').eq(0);
-		if (requiredFields.length == 0) {
-			neighborhoodEl.html('<option value="">Fill in city and state to enable neighborhood selection</option>').attr('disabled', 'true')
-			return;
-		}
-		parentTable.find('.lme_area_neighborhood_loader').remove();
-		originalNeighborhood = neighborhoodEl.val();
-		
-		YAHOO.util.Get.script(apiUrl, { 
-			onSuccess: function() {
-				var z = ZillowNeighborhoods,
-					zn = z.Neighborhoods;
-				
-				if (z.City != city || z.State != state) {
-					neighborhoodEl.html('<option value="">Fill in city and state to enable neighborhood selection</option>').attr('disabled', 'true')
-				}
-				
-				neighborhoodEl.html('<option value="">- None -</option>').removeAttr('disabled');
-				for (var i = 0, j = zn.length; i < j; ++i) {
-					var neighborhoodToAdd = zn[i];
-					
-					if (neighborhoodToAdd.toLowerCase() == originalNeighborhood.toLowerCase())
-						neighborhoodEl.append('<option value="' + neighborhoodToAdd + '" selected="true">' + neighborhoodToAdd + '</option>')
-					else
-						neighborhoodEl.append('<option value="' + neighborhoodToAdd + '">' + neighborhoodToAdd + '</option>')
-				}
-				parentTable.find('.lme_area_neighborhood_hidden').remove();
-			}
-		});
-	},
+	jQuery(this).find('.lme-areas-remove').click(lmeadmin.removeAreaDescriptionNode);
+	jQuery(this).find('.lme-areas-city, .lme-areas-state').blur(lmeadmin.loadNeighborhoodsOnBlur);
+}
+lmeadmin.addAreaDescriptionNode = function() {
+	var nodeToCopy = document.getElementById('lme-areas-new');
+	var newNode = nodeToCopy.cloneNode(true);
 	
-	UpdateLink: function(el) {
-		el = jQuery(el);
-		
-		var parentTable = el.closest('.form-table');
-		var city = parentTable.find('.lme_area_city').val();
-		var state = parentTable.find('.lme_area_state').val();
-		var zip = parentTable.find('.lme_area_zip').val();
-		var neighborhood = parentTable.find('.lme_area_neighborhood').val();
-		var cityStateLink, zipLink;
-		
-		if (!!city && !!state) {
-			cityStateLink = '/local/';
-			if (!!neighborhood)
-				cityStateLink += neighborhood.replace(/ /g, '-') + '/';
-			cityStateLink += city.replace(/ /g, '-') + '/' + state.replace(/ /g, '-');
-			
-			cityStateLink = LocalMarketExplorerAdmin.BlogUrl + cityStateLink.toLowerCase();
-		}
-		if (!!zip) {
-			zipLink = LocalMarketExplorerAdmin.BlogUrl + '/local/' + zip;
-		}
-		
-		parentTable.find('.lme_area_link_display').html('');
-		if (!!cityStateLink)
-			parentTable.find('.lme_area_link_display').append('<a target="_blank" href="' + cityStateLink + '">' + cityStateLink + '</a>');
-		if (!!zipLink)
-			parentTable.find('.lme_area_link_display').append('<br /><a target="_blank" href="' + zipLink + '">' + zipLink + '</a>');
+	newNode.id = '';
+	newNode.innerHTML = newNode.innerHTML.replace(/lme\-areas\[new\]/g, 'lme-areas[new' + lmeadmin.newAreaId++ + ']')
+	lmeadmin.processAreaDescriptionNode.call(jQuery(newNode));
+	
+	nodeToCopy.parentNode.insertBefore(newNode, nodeToCopy);
+}
+lmeadmin.removeAreaDescriptionNode = function(event) {
+	jQuery(event.target).closest('li').detach();
+}
+lmeadmin.loadNeighborhoodsOnBlur = function(event) {
+	var parentListEl = jQuery(event.target).closest('li');
+	var city = parentListEl.find('.lme-areas-city').val();
+	var state = parentListEl.find('.lme-areas-state').val();
+	var neighborhoodDropDown = parentListEl.find('.lme-areas-neighborhood');
+	
+	if (!city || !state)
+		return;
+	lmeadmin.loadNeighborhoods(neighborhoodDropDown, city, state);
+}
+lmeadmin.loadNeighborhoodsOnClick = function(event) {
+	var parentListEl = jQuery(event.target).closest('li');
+	var neighborhoodDropDown = jQuery(event.target).siblings('.lme-areas-neighborhood');
+	var city = parentListEl.find('.lme-areas-city').val();
+	var state = parentListEl.find('.lme-areas-state').val();
+
+	lmeadmin.loadNeighborhoods(neighborhoodDropDown, city, state);
+	event.target.parentNode.removeChild(event.target);
+}
+lmeadmin.loadNeighborhoods = function(neighborhoodDropDown, city, state) {
+	if (neighborhoodDropDown.attr('data-city') == city && neighborhoodDropDown.attr('data-state') == state)
+		return;
+	
+	neighborhoodDropDown
+		.attr('data-city', city)
+		.attr('data-state', state)
+		.attr('disabled', 'disabled');
+	
+	var apiParams = {};
+	var api = 'GetRegionChildren';
+	var callback = function(response) { lmeadmin.loadNeighborhoodsCallback(neighborhoodDropDown, response); };
+	
+	apiParams['zws-id'] = jQuery('#local-market-explorer\\[api-keys\\]\\[zillow\\]').val();
+	apiParams['city'] = city;
+	apiParams['state'] = state;
+	apiParams['childtype'] = 'neighborhood';
+	
+	neighborhoodDropDown.html('<option>Loading, please wait...</option>');
+	jQuery.get(ajaxurl, {
+		'action': 'lme-proxy_zillow_api_call',
+		'api': 'GetRegionChildren',
+		'apiParams': apiParams
+	}, callback);
+}
+lmeadmin.loadNeighborhoodsCallback = function(neighborhoodDropDown, response) {
+	var apiData = eval('(' + response + ')'); // we trust zillow data
+
+	if (apiData.message.code == '2') {
+		neighborhoodDropDown
+			.html('<option value="">(Invalid Zillow API key)</option>')
+			.attr('data-city', '')
+			.attr('data-state', '');
+		return;
 	}
+	if (!apiData.response || !apiData.response.list || !apiData.response.list.region) {
+		neighborhoodDropDown.html('<option value="">(no neighborhoods found)</option>');
+		return;
+	}
+	
+	var neighborhoods = apiData.response.list.region;
+	var neighborhoodSelections = [];
+	
+	neighborhoods.sort(function(n1, n2) {
+		return n1.name > n2.name ? -1 : 1;
+	});
+	for (var i = neighborhoods.length - 1; i--;)
+		neighborhoodSelections.push('<option value="' + neighborhoods[i].name + '">' + neighborhoods[i].name + '</option>');
+	
+	neighborhoodDropDown
+		.html(neighborhoodSelections.join(''))
+		.attr('disabled', '');
 }
 
-jQuery(function() {
-	jQuery('#lme_options_form .lme_area_city,#lme_options_form .lme_area_state').blur(function(e) {
-		LocalMarketExplorerAdmin.LoadNeighborhoods(this);
+lmeadmin.preSaveOptions = function(event) {
+	var orderedModules = [];
+	var formSerializedModules = document.createElement('input');
+	
+	jQuery('#lme-modules-to-display li input').each(function() {
+		orderedModules.push(this.name.match(/local\-market\-explorer\[global-modules\]\[(.+)\]/)[1]);
 	});
-	jQuery('#lme_options_form .lme_area_neighborhood').change(function(e) {
-		LocalMarketExplorerAdmin.UpdateLink(this);
-	});
-	jQuery('#lme_options_form .lme_area_city,#lme_options_form .lme_area_state,#lme_options_form .lme_area_zip')
-		.keyup(function(e) {
-			LocalMarketExplorerAdmin.UpdateLink(this);
-		})
-		.keyup()
-	;
-});
+	
+	formSerializedModules.type = 'hidden';
+	formSerializedModules.name = 'local-market-explorer[global-module-orders]';
+	formSerializedModules.value = orderedModules.join(',');
+	jQuery(event.target).closest('form').append(formSerializedModules);
+}
 
-jQuery('#lme-modules-to-display').sortable();
+// gotta do this because events don't fire when elements are disabled
+jQuery('#lme-areas-descriptions li[id!="lme-areas-new"').each(lmeadmin.processAreaDescriptionNode);
+jQuery('#lme-areas-add').click(lmeadmin.addAreaDescriptionNode);
+jQuery('#lme-save-options').click(lmeadmin.preSaveOptions);
+jQuery('#lme-modules-to-display').sortable({ axis: 'y' });

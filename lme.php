@@ -7,7 +7,7 @@ Version: 3.0
 Author: Andrew Mattie & Jonathan Mabe
 */
 
-/*  Copyright 2009, Andrew Mattie & Jonathan Mabe
+/*  Copyright 2009-2010, Andrew Mattie & Jonathan Mabe
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@ Author: Andrew Mattie & Jonathan Mabe
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-global $wp_version;
+global $wp_version, $wpdb;
 
 require_once(ABSPATH . "wp-admin/includes/plugin.php");
 $pluginData = get_plugin_data(__FILE__);
@@ -35,12 +35,13 @@ define("LME_MIN_VERSION_WORDPRESS", "2.8.5");
 define("LME_PLUGIN_URL", WP_PLUGIN_URL . "/local-market-explorer/");
 define("LME_PLUGIN_VERSION", $pluginData["Version"]);
 define("LME_PLUGIN_DB_VERSION", "1.0");
+define("LME_AREAS_TABLE", $wpdb->prefix . "lme_areas");
 
-//register_activation_hook(__FILE__, "LME::InitializeAreasSchema");
-//register_activation_hook(__FILE__, "LME::UpgradeOptionsFromVersion1");
-//register_activation_hook(__FILE__, "LME::UpgradeOptionsFromVersion2");
-register_activation_hook(__FILE__, "LME::FlushRewriteRules");
-add_action("widgets_init", "LME::InitWidgets");
+register_activation_hook(__FILE__, array("LME", "InitializeAreasSchema"));
+//register_activation_hook(__FILE__, array("LME", "UpgradeOptionsFromVersion1"));
+//register_activation_hook(__FILE__, array("LME", "UpgradeOptionsFromVersion2"));
+register_activation_hook(__FILE__, array("LME", "FlushRewriteRules"));
+add_action("widgets_init", array("LME", "InitWidgets"));
 
 require_once("widget-saved-areas.php");
 require_once("rewrite.php");
@@ -63,14 +64,14 @@ class LME {
 			return;
 		
 		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-		$tableAreas = $wpdb->prefix . "lme_areas";
 		
-		$sql = "CREATE TABLE {$tableAreas} (
+		$sql = "CREATE TABLE " . LME_AREAS_TABLE . " (
 			id mediumint(9) NOT NULL AUTO_INCREMENT,
 			city VARCHAR(30),
 			neighborhood VARCHAR(70),
 			zip CHAR(5),
 			state CHAR(2),
+			description TEXT,
 			PRIMARY KEY  (id)
 		);";
 		dbDelta($sql);
@@ -111,8 +112,7 @@ class LME {
 			"flickr"			=> get_option("lme_apikey_flickr"),
 			"educationdotcom"	=> "bd23bb5cb91e37c39282f6bf75d56fb9",
 			"walk-score"		=> get_option("lme_apikey_walkscore"),
-			"yelp"				=> get_option("lme_apikey_yelp"),
-			"teachstreet"		=> get_option("lme_apikey_teachstreet")
+			"yelp"				=> get_option("lme_apikey_yelp")
 		);
 		$options["panels"] = array_merge(array(), get_option("lme_module_order"));
 		
