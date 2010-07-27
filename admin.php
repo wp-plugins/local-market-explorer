@@ -41,40 +41,40 @@ HTML;
 		);
 		
 		$listItemHtml = <<<HTML
-				<li id="lme-areas-#{id}">
-					<div class="lme-areas-citystate-container">
-						<div>
-							<label>City, State:</label>
-							<input type="text" class="lme-areas-city" name="lme-areas[#{id}][city]" value="#{city}" />,
-							<input type="text" class="lme-areas-state" name="lme-areas[#{id}][state]" value="#{state}" />
-						</div>
-						
-						<div style="clear: both;">
-							<label>
-								Neighborhood <span class="lme-small">(optional)</span>:
-							</label>
-							<select class="lme-areas-neighborhood" name="lme-areas[#{id}][neighborhood]" disabled="disabled">
-								#{neighborhoodOptions}
-							</select>
-						</div>
+			<li id="lme-areas-#{id}">
+				<div class="lme-areas-citystate-container">
+					<div>
+						<label>City, State:</label>
+						<input type="text" class="lme-areas-city" name="lme-areas[#{id}][city]" value="#{city}" />,
+						<input type="text" class="lme-areas-state" name="lme-areas[#{id}][state]" value="#{state}" />
 					</div>
 					
-					<div class="lme-areas-or">- or -</div>
-					
-					<div class="lme-areas-zip-container">
-						<label>Zip:</label>
-						<input type="text" class="lme-areas-zip" name="lme-areas[#{id}][zip]" value="#{zip}" />
+					<div style="clear: both;">
+						<label>
+							Neighborhood <span class="lme-small">(optional)</span>:
+						</label>
+						<select class="lme-areas-neighborhood" name="lme-areas[#{id}][neighborhood]" disabled="disabled">
+							#{neighborhoodOptions}
+						</select>
 					</div>
-					
-					<div class="lme-areas-description-container">
-						<label>Description <span class="lme-small">(HTML allowed)</span>:</label><br />
-						<textarea name="lme-areas[#{id}][description]">#{description}</textarea>
-					</div>
-					
-					<div class="lme-araes-remove-container">
-						<input type="button" class="lme-areas-remove button-secondary" value="Remove this area's description" />
-					</div>
-				</li>
+				</div>
+				
+				<div class="lme-areas-or">- or -</div>
+				
+				<div class="lme-areas-zip-container">
+					<label>Zip:</label>
+					<input type="text" class="lme-areas-zip" name="lme-areas[#{id}][zip]" value="#{zip}" />
+				</div>
+				
+				<div class="lme-areas-description-container">
+					<label>Description <span class="lme-small">(HTML allowed)</span>:</label><br />
+					<textarea name="lme-areas[#{id}][description]">#{description}</textarea>
+				</div>
+				
+				<div class="lme-araes-remove-container">
+					<input type="button" class="lme-areas-remove button-secondary" value="Remove this area's description" />
+				</div>
+			</li>
 HTML;
 		$moduleOrderHtml = <<<HTML
 			<li class="ui-state-default">
@@ -92,7 +92,6 @@ HTML;
 		<form method="post" action="options.php">
 			<?php
 			settings_fields(LME_OPTION_NAME);
-			settings_fields("lme-areas");
 			?>
 
 			<h3>API Keys</h3>
@@ -215,6 +214,9 @@ HTML;
 	}
 	static function SanitizeOptions($options) {
 		$areas = $_POST["lme-areas"];
+		
+		$options["global-modules"] = explode(",", $options["global-module-orders"]);
+		unset($options["global-module-orders"]);
 		
 		print_r("<pre>");
 		print_r($options);

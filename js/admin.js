@@ -105,7 +105,7 @@ lmeadmin.preSaveOptions = function(event) {
 	var orderedModules = [];
 	var formSerializedModules = document.createElement('input');
 	
-	jQuery('#lme-modules-to-display li input').each(function() {
+	jQuery('#lme-modules-to-display li input:checked').each(function() {
 		orderedModules.push(this.name.match(/local\-market\-explorer\[global-modules\]\[(.+)\]/)[1]);
 	});
 	
