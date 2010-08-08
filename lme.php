@@ -37,22 +37,19 @@ define("LME_PLUGIN_VERSION", $pluginData["Version"]);
 define("LME_PLUGIN_DB_VERSION", "1.0");
 define("LME_AREAS_TABLE", $wpdb->prefix . "lme_areas");
 
-register_activation_hook(__FILE__, array("LME", "InitializeAreasSchema"));
-//register_activation_hook(__FILE__, array("LME", "UpgradeOptionsFromVersion1"));
-//register_activation_hook(__FILE__, array("LME", "UpgradeOptionsFromVersion2"));
-register_activation_hook(__FILE__, array("LME", "FlushRewriteRules"));
-add_action("widgets_init", array("LME", "InitWidgets"));
-
-require_once("widget-saved-areas.php");
-require_once("rewrite.php");
+register_activation_hook(__FILE__, array("Lme", "InitializeAreasSchema"));
+//register_activation_hook(__FILE__, array("Lme", "UpgradeOptionsFromVersion1"));
+//register_activation_hook(__FILE__, array("Lme", "UpgradeOptionsFromVersion2"));
+register_activation_hook(__FILE__, array("Lme", "FlushRewriteRules"));
 
 if (is_admin()) {
-	require_once(str_replace("\\", "/", WP_PLUGIN_DIR) . "/local-market-explorer/admin.php");
+	require_once(WP_PLUGIN_DIR . "/local-market-explorer/admin.php");
 } else {
-	require_once("client.php");
+	require_once("modules-page.php");
 }
+require_once("modules-page-rewrite.php");
 
-class LME {
+class Lme {
 	static function InitializeAreasSchema() {
 		global $wpdb;
 		
@@ -109,7 +106,6 @@ class LME {
 		$options = array();
 		$options["api-keys"] = array(
 			"zillow"			=> get_option("lme_apikey_zillow"),
-			"flickr"			=> get_option("lme_apikey_flickr"),
 			"educationdotcom"	=> "bd23bb5cb91e37c39282f6bf75d56fb9",
 			"walk-score"		=> get_option("lme_apikey_walkscore"),
 			"yelp"				=> get_option("lme_apikey_yelp")
@@ -140,10 +136,6 @@ class LME {
 	static function FlushRewriteRules() {
 		global $wp_rewrite;
 		$wp_rewrite->flush_rules();
-	}
-	
-	static function InitWidgets() {
-		register_widget("LMEWidget");
 	}
 }
 ?>

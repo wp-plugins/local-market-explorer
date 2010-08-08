@@ -20,7 +20,7 @@ lmeadmin.addAreaDescriptionNode = function() {
 	var newNode = nodeToCopy.cloneNode(true);
 	
 	newNode.id = '';
-	newNode.innerHTML = newNode.innerHTML.replace(/lme\-areas\[new\]/g, 'lme-areas[new' + lmeadmin.newAreaId++ + ']')
+	newNode.innerHTML = newNode.innerHTML.replace(/lme\-areas\[new\]/g, 'lme-areas[new' + lmeadmin.newAreaId++ + ']');
 	lmeadmin.processAreaDescriptionNode.call(jQuery(newNode));
 	
 	nodeToCopy.parentNode.insertBefore(newNode, nodeToCopy);
@@ -67,7 +67,7 @@ lmeadmin.loadNeighborhoods = function(neighborhoodDropDown, city, state) {
 	
 	neighborhoodDropDown.html('<option>Loading, please wait...</option>');
 	jQuery.get(ajaxurl, {
-		'action': 'lme-proxy_zillow_api_call',
+		'action': 'proxyZillowApiRequest',
 		'api': 'GetRegionChildren',
 		'apiParams': apiParams
 	}, callback);
@@ -100,7 +100,6 @@ lmeadmin.loadNeighborhoodsCallback = function(neighborhoodDropDown, response) {
 		.html(neighborhoodSelections.join(''))
 		.attr('disabled', '');
 }
-
 lmeadmin.preSaveOptions = function(event) {
 	var orderedModules = [];
 	var formSerializedModules = document.createElement('input');
@@ -120,3 +119,11 @@ jQuery('#lme-areas-descriptions li[id!="lme-areas-new"').each(lmeadmin.processAr
 jQuery('#lme-areas-add').click(lmeadmin.addAreaDescriptionNode);
 jQuery('#lme-save-options').click(lmeadmin.preSaveOptions);
 jQuery('#lme-modules-to-display').sortable({ axis: 'y' });
+
+YUI().use('tabview', function(Y) {
+    var tabview = new Y.TabView({
+        srcNode: '#lme-options'
+    });
+ 
+    tabview.render();
+});
