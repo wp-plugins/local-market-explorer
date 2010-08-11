@@ -1,0 +1,96 @@
+.lme-module-heading {
+	background-color: #eee;
+	display: block;
+	padding-left: 10px;
+	margin-bottom: 0 !important;
+}
+.lme-module {
+	border: 1px solid #eee;
+	padding: 10px;
+	overflow: auto;
+	margin-bottom: 30px;
+}
+
+.lme-zhvi {
+	text-align: center;
+}
+.lme-market-charts-container {
+	margin: 0 auto 20px;
+	width: 470px;
+	overflow: auto;
+}
+.lme-zhvi-chart {
+	float: left;
+	width: 235px;
+}
+.lme-market-charts {
+	float: left;
+	width: 220px;
+	margin-left: 15px;
+	text-align: center;
+}
+.lme-market-chart-supplemental {
+	float: left;
+	width: 225px;
+	margin-top: 20px;
+	text-align: center;
+}
+.lme-market-location-url {
+	width: 300px;
+	float: left;
+	text-align: center;
+}
+.lme-market-logo {
+	float: right;
+}
+
+.lme-recently-sold {
+	clear: both;
+	overflow: auto;
+}
+.lme-recently-sold img {
+	float: left;
+	margin: 5px 15px 5px 0 !important;
+}
+.lme-recently-sold .lme-data {
+	float: left;
+}
+
+.lme-schools .lme-left, .lme-schools .lme-right {
+	height: 400px;
+	overflow: auto;
+	margin-bottom: 15px;
+	border-top: 1px solid #eee;
+	border-bottom: 1px solid #eee;
+}
+.lme-schools .lme-left {
+	border-left: 1px solid #eee;
+	float: left;
+	width: 66%;
+}
+.lme-school {
+	margin-bottom: 25px;
+}
+.lme-school h4 {
+	font-weight: bold;
+	margin-bottom: 0 !important;
+	padding-bottom: 0 !important;
+}
+.lme-schools .lme-right {
+	background-color: #eee;
+	border-right: 1px solid #eee;
+	float: right;
+	width: 33%;
+}
+.lme-schools .lme-filter {
+	margin: 15px auto;
+	width: 160px;
+}
+.lme-schools .lme-right input {
+	margin: 0 0 0 15px;
+}
+
+.lme-yelp .lme-map {
+	height: 300px;
+	border: 1px solid #eee;
+}

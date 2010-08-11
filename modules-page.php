@@ -6,8 +6,11 @@ add_action("pre_get_posts", array("LmeModulesPage", "preActivate"));
 add_filter("posts_request", array("LmeModulesPage", "clearQuery"));
 add_filter("the_posts", array("LmeModulesPage", "activate"));
 
-require_once("modules/api-requester.php");
+require_once("api-requester.php");
 require_once("modules/market-stats.php");
+require_once("modules/market-activity.php");
+require_once("modules/schools.php");
+require_once("modules/yelp.php");
 
 class LmeModulesPage {
 	// this is a roundabout way to make sure that any other plugin / widget / etc that uses the WP_Query object doesn't get our IDX data
@@ -43,6 +46,8 @@ class LmeModulesPage {
 			return $posts;
 		}
 
+		wp_enqueue_style("lme", LME_PLUGIN_URL . "css/client.css", null, LME_PLUGIN_VERSION);
+		
 		// keep wordpress from mucking up our HTML
 		remove_filter("the_content", "wptexturize");
 		remove_filter("the_content", "convert_smilies");
@@ -50,7 +55,7 @@ class LmeModulesPage {
 		remove_filter("the_content", "wpautop");
 		remove_filter("the_content", "prepend_attachment");
 
-		add_filter("page_link", array("LmeModulesPage", "GetPermalink")); // for any plugin that needs it
+		add_filter("page_link", array("LmeModulesPage", "getPermalink")); // for any plugin that needs it
 
 		// no RSS feeds
 		remove_action("wp_head", "feed_links");
@@ -79,6 +84,7 @@ class LmeModulesPage {
 			"post_title"		=> self::getPageTitle(),
 			"post_type"			=> "page"
 		));
+		return $posts;
 	}
 	static function clearQuery($query) {
 		global $wp_query;
@@ -89,6 +95,8 @@ class LmeModulesPage {
 		return "";
 	}
 	static function getPageTitle() {
+		global $wp_query;
+		
 		$neighborhood = ucwords(str_replace(array("-", "_"), array(" ", "-"), $wp_query->query["lme-neighborhood"]));
 		$city = ucwords(str_replace(array("-", "_"), array(" ", "-"), $wp_query->query["lme-city"]));
 		$state = strtoupper($wp_query->query["lme-state"]);
@@ -106,8 +114,26 @@ class LmeModulesPage {
 		return "{$title} Local Area Information";
 	}
 	static function getPageContent() {
+		$options = get_option(LME_OPTION_NAME);
 		$modules = self::getFinalApiUrls();
+		$content = "";
 		LmeApiRequester::gatherContent(&$modules);
+		
+		foreach ($options["global-modules"] as $order => $module) {
+			if ($module == "market-stats")
+				$content .= LmeModuleMarketStats::getModuleHtml($modules["market-stats"]);
+			if ($module == "market-activity")
+				$content .= LmeModuleMarketActivity::getModuleHtml($modules["market-activity"]);
+			if ($module == "schools")
+				$content .= LmeModuleSchools::getModuleHtml($modules["schools"]);
+			if ($module == "yelp")
+				$content .= LmeModuleYelp::getModuleHtml($modules["yelp"]);
+		}
+		
+		return $content;
+	}
+	static function getPermalink($permalink) {
+		return $permalink;
 	}
 	static function getFinalApiUrls() {
 		global $wp_query;
@@ -123,6 +149,12 @@ class LmeModulesPage {
 		foreach ($options["global-modules"] as $order => $module) {
 			if ($module == "market-stats")
 				$modules[$module] = LmeModuleMarketStats::getApiUrls($neighborhood, $city, $state, $zip);
+			if ($module == "market-activity")
+				$modules[$module] = LmeModuleMarketActivity::getApiUrls($neighborhood, $city, $state, $zip);
+			if ($module == "schools")
+				$modules[$module] = LmeModuleSchools::getApiUrls($neighborhood, $city, $state, $zip);
+			if ($module == "yelp")
+				$modules[$module] = LmeModuleYelp::getApiUrls($neighborhood, $city, $state, $zip);
 		}
 		return $modules;
 	}

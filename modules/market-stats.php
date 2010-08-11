@@ -1,0 +1,125 @@
+<?php
+
+class LmeModuleMarketStats {
+	static function getApiUrls($opt_neighborhood, $opt_city, $opt_state, $opt_zip) {
+		$options = get_option(LME_OPTION_NAME);
+		$apiKey = $options["api-keys"]["zillow"];
+		$urlBase = "http://www.zillow.com/webservice/";
+		
+		if (isset($opt_zip)) {
+			$locationParams = "zip={$opt_zip}";
+		} else {
+			$encodedCity = urlencode($opt_city);
+			$locationParams = "city={$encodedCity}&state={$opt_state}"; 
+			if (strlen($opt_neighborhood) > 0) {
+				$encodedNeighborhood = urlencode($opt_neighborhood);
+				$locationParams .= "&neighborhood={$encodedNeighborhood}";
+			}
+		}
+		
+		return array(
+			"demographics"	=> "{$urlBase}GetDemographics.htm?zws-id={$apiKey}&{$locationParams}",
+			"region-chart"	=> "{$urlBase}GetRegionChart.htm?zws-id={$apiKey}&{$locationParams}&unit-type=percent&width=235&height=250"
+		);
+	}
+	static function getModuleHtml($apiResponses) {
+		$demographics = simplexml_load_string($apiResponses["demographics"])->response;
+		$regionChart = simplexml_load_string($apiResponses["region-chart"])->response;
+		$zillowRegion = $demographics->region;
+		$locationName;
+		
+		if (isset($zillowRegion->neighborhood)) {
+			$localNodeName = "neighborhood";
+			$location = "{$zillowRegion->neighborhood}, {$zillowRegion->city}";
+		} else if (isset($zillowRegion->zip)) {
+			$localNodeName = "zip";
+			$location = "{$zillowRegion->zip}";
+		} else {
+			$localNodeName = "city";
+			$location = "{$zillowRegion->city}";
+		}
+		$zillowLocationUrl = $demographics[0]->links->main;
+		
+		$affordabilityData = $demographics[0]->xpath("pages/page[name='Affordability']/tables/table[name='Affordability Data']/data");
+		$zhvi = $affordabilityData[0]->xpath("attribute[name='Zillow Home Value Index']/values/{$localNodeName}/value");
+		$zhvi = number_format($zhvi[0]);
+		
+		$zhviDistributionChart = $demographics[0]->xpath("charts/chart[name='Zillow Home Value Index Distribution']/url");
+		$homeSizeChart = $demographics[0]->xpath("charts/chart[name='Home Size in Square Feet']/url");
+		$ownersRentersChart = $demographics[0]->xpath("charts/chart[name='Owners vs. Renters']/url");
+		$yearBuiltChart = $demographics[0]->xpath("charts/chart[name='Year Built']/url");
+		
+		$content = <<<HTML
+			<h2 class="lme-module-heading">Real Estate Market Stats</h2>
+			<div class="lme-module">
+				<h3 class="lme-zhvi"><a href="{$demographics->links->main}">Zillow Home Value Index: \${$zhvi}</a></h3>
+				<div class="lme-market-charts-container">
+					<img src="{$regionChart->url}" class="lme-zhvi-chart" />
+					<div class="lme-market-charts">
+						<div>
+							<h4>Zillow Home Value Index</h4>
+							<img src="{$zhviDistributionChart[0]}" />
+						</div>
+						<div>
+							<h4>Owners vs. Renters</h4>
+							<img src="{$ownersRentersChart[0]}" />
+						</div>
+					</div>
+					<div class="lme-market-chart-supplemental" style="clear: both;">
+						<h4>Home Size in Square Feet</h4>
+						<img src="{$homeSizeChart[0]}" />
+					</div>
+					<div class="lme-market-chart-supplemental">
+						<h4>Year Built</h4>
+						<img src="{$yearBuiltChart[0]}" />
+					</div>
+				</div>
+				
+				<table>
+					<tr>
+						<td></td>
+						<th>Local</th>
+						<th>National</th>
+					</tr>
+HTML;
+		foreach ($affordabilityData[0]->attribute as $attribute) {
+			if (empty($attribute->values->{$localNodeName}))
+				continue;
+			
+			$name = htmlentities($attribute->name);
+			$value = (array)$attribute->values->{$localNodeName}->value;
+			$nationalValue = (array)$attribute->values->nation->value;
+			
+			if ($value["@attributes"]["type"] == "USD") {
+				$value = "$" . number_format(intval($value["0"]));
+				$nationalValue = "$" . number_format(intval($nationalValue["0"]));
+			} else if ($value["@attributes"]["type"] == "percent") {
+				$value = ($value["0"] * 100) . "%";
+				$nationalValue = ($nationalValue["0"] * 100) . "%";
+			} else {
+				$value = number_format(intval($value["0"]));
+				$nationalValue = number_format(intval($nationalValue["0"]));
+			}
+			
+			$content .= <<<HTML
+					<tr>
+						<th>{$name}</th>
+						<td>{$value}</td>
+						<td>{$nationalValue}</td>
+					</tr>
+HTML;
+		}
+		
+		$content .= <<<HTML
+				</table>
+				<div class="lme-market-location-url">
+					<a href="{$zillowLocationUrl}">See {$location} home values at Zillow.com</a>
+				</div>
+				<img class="lme-market-logo" src="http://www.zillow.com/static/logos/Zillowlogo_150x40.gif" />
+			</div>
+HTML;
+		return $content;
+	}
+}
+
+?>
