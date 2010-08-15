@@ -11,6 +11,7 @@ require_once("modules/market-stats.php");
 require_once("modules/market-activity.php");
 require_once("modules/schools.php");
 require_once("modules/yelp.php");
+require_once("modules/walk-score.php");
 
 class LmeModulesPage {
 	// this is a roundabout way to make sure that any other plugin / widget / etc that uses the WP_Query object doesn't get our IDX data
@@ -95,13 +96,10 @@ class LmeModulesPage {
 		return "";
 	}
 	static function getPageTitle() {
-		global $wp_query;
-		
-		$neighborhood = ucwords(str_replace(array("-", "_"), array(" ", "-"), $wp_query->query["lme-neighborhood"]));
-		$city = ucwords(str_replace(array("-", "_"), array(" ", "-"), $wp_query->query["lme-city"]));
-		$state = strtoupper($wp_query->query["lme-state"]);
-		$zip = $wp_query->query["lme-zip"];
-		$title = null;
+		$neighborhood = self::getNeighborhood();
+		$city = self::getCity();
+		$state = self::getState();
+		$zip = self::getZip();
 	
 		if (!empty($zip)) {
 			$title = $zip;
@@ -111,6 +109,8 @@ class LmeModulesPage {
 				$title = "{$neighborhood}, {$title}";
 			}
 		}
+		$title = ucwords($title);
+		
 		return "{$title} Local Area Information";
 	}
 	static function getPageContent() {
@@ -118,6 +118,11 @@ class LmeModulesPage {
 		$modules = self::getFinalApiUrls();
 		$content = "";
 		LmeApiRequester::gatherContent(&$modules);
+		
+		$neighborhood = self::getNeighborhood();
+		$city = self::getCity();
+		$state = self::getState();
+		$zip = self::getZip();
 		
 		foreach ($options["global-modules"] as $order => $module) {
 			if ($module == "market-stats")
@@ -128,6 +133,8 @@ class LmeModulesPage {
 				$content .= LmeModuleSchools::getModuleHtml($modules["schools"]);
 			if ($module == "yelp")
 				$content .= LmeModuleYelp::getModuleHtml($modules["yelp"]);
+			if ($module == "walk-score")
+				$content .= LmeModuleWalkScore::getModuleHtml($neighborhood, $city, $state, $zip);
 		}
 		
 		return $content;
@@ -136,12 +143,10 @@ class LmeModulesPage {
 		return $permalink;
 	}
 	static function getFinalApiUrls() {
-		global $wp_query;
-		
-		$neighborhood = str_replace(array("-", "_"), array(" ", "-"), $wp_query->query["lme-neighborhood"]);
-		$city = str_replace(array("-", "_"), array(" ", "-"), $wp_query->query["lme-city"]);
-		$state = $wp_query->query["lme-state"];
-		$zip = $wp_query->query["lme-zip"];
+		$neighborhood = self::getNeighborhood();
+		$city = self::getCity();
+		$state = self::getState();
+		$zip = self::getZip();
 		
 		$options = get_option(LME_OPTION_NAME);
 		$modules = array();
@@ -157,6 +162,22 @@ class LmeModulesPage {
 				$modules[$module] = LmeModuleYelp::getApiUrls($neighborhood, $city, $state, $zip);
 		}
 		return $modules;
+	}
+	static function getNeighborhood() {
+		global $wp_query;
+		return str_replace(array("-", "_"), array(" ", "-"), $wp_query->query["lme-neighborhood"]);
+	}
+	static function getCity() {
+		global $wp_query;
+		return str_replace(array("-", "_"), array(" ", "-"), $wp_query->query["lme-city"]);
+	}
+	static function getState() {
+		global $wp_query;
+		return $wp_query->query["lme-state"];
+	}
+	static function getZip() {
+		global $wp_query;
+		return $wp_query->query["lme-zip"];
 	}
 }
 ?>

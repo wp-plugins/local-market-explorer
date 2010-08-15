@@ -51,6 +51,7 @@
 .lme-recently-sold img {
 	float: left;
 	margin: 5px 15px 5px 0 !important;
+	border: 1px solid #999;
 }
 .lme-recently-sold .lme-data {
 	float: left;
@@ -93,4 +94,28 @@
 .lme-yelp .lme-map {
 	height: 300px;
 	border: 1px solid #eee;
+	margin-bottom: 15px;
 }
+.lme-yelp .lme-businesses {
+	height: 325px;
+	overflow: auto;
+	margin-bottom: 15px;
+}
+.lme-yelp .lme-review {
+	clear: both;
+}
+.lme-yelp .lme-photo {
+	float: left;
+	margin: 5px 15px 5px 0 !important;
+	border: 1px solid #999;
+}
+.lme-yelp img.lme-rating {
+	vertical-align: middle !important;
+}
+
+.lme-walk-score-iframe {
+	width: 100%;
+	height: 310px;
+	border-style: none;
+}
+

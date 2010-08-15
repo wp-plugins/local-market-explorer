@@ -37,7 +37,8 @@ HTML;
 			"schools"			=> array("name" => "Schools",			"description" => "from Education.com"),
 			"walk-score"		=> array("name" => "Walk Score",		"description" => "see www.walkscore.com"),
 			"yelp"				=> array("name" => "Yelp reviews",		"description" => "from Yelp"),
-			"classes"			=> array("name" => "Classes",			"description" => "from Teachstreet")
+			"classes"			=> array("name" => "Classes",			"description" => "from Teachstreet"),
+			"nileguide"			=> array("name" => "Things to do",		"description" => "from NileGuide")
 		);
 		
 		$listItemHtml = <<<HTML

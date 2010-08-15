@@ -4,7 +4,7 @@ class LmeModuleYelp {
 	static function getApiUrls($opt_neighborhood, $opt_city, $opt_state, $opt_zip) {
 		$options = get_option(LME_OPTION_NAME);
 		$apiKey = $options["api-keys"]["yelp"];
-		$url = "http://api.yelp.com/business_review_search?ywsid={$apiKey}&limit=10&category=active+food+localflavor+nightlife+restaurants&location=";
+		$url = "http://api.yelp.com/business_review_search?ywsid={$apiKey}&limit=20&category=active+food+localflavor+nightlife+restaurants&location=";
 		
 		if (isset($opt_zip)) {
 			$locationParams = "{$opt_zip}";
@@ -55,20 +55,50 @@ class LmeModuleYelp {
 		$jsonResultsSerialized = json_encode($jsonResults);
 		$content = <<<HTML
 			<script>
-				var lme.yelpData = lme.yelpData || [];
-				lme.yelpData.push({"{$resultsId}":{$jsonResultsSerialized}});
+				var lme = lme || {};
+				lme.yelpData = lme.yelpData || {};
+				lme.yelpData['{$resultsId}'] = {$jsonResultsSerialized};
 			</script>
 			<h2 class="lme-module-heading">Yelp</h2>
 			<div class="lme-module lme-yelp">
-				<div class="lme-map lme-map-{$resultsId}"></div>
+				<div class="lme-map" data-resultsid="{$resultsId}"></div>
 				<div class="lme-businesses">
 HTML;
-		$content .= <<<HTML
-					
+		foreach ($yelpResponse as $review) {
+			$categories = "";
+			foreach ($review->categories as $category)
+				$categories .= ", " . $category->name;
+			$categories = trim($categories, ", ");
+			
+			$address = $review->address1;
+			if (!empty($review->address2))
+				$address .= ", {$review->address2}";
+			if (!empty($review->address3))
+				$address .= ", {$review->address3}";
+			$address .= ", {$review->city}";
+			$address = trim($address, ", ");
+			
+			if (!empty($review->photo_url_small))
+				$reviewImgHtml = "<a href=\"{$review->url}\"><img src=\"{$review->photo_url}\" class=\"lme-photo\" /></a>";
+			
+			$content .= <<<HTML
+					<div class="lme-review">
+						$reviewImgHtml
+						<div class="lme-data">
+							<a href="{$review->url}">{$review->name}</a>
+							<div>
+								<img src="{$review->rating_img_url}" class="lme-rating" />
+								based on {$review->review_count} reviews - <a href="{$review->url}">read reviews</a>
+							</div>
+							<div>Categories: {$categories}</div>
+							<div>{$address}</div>
+						</div>
+					</div>
 HTML;
+		}
 		$content .= <<<HTML
 				</div>
-				<img class="lme-market-logo" src="http://media2.px.yelpcdn.com/static/20091130149848283/i/developers/yelp_logo_75x38.png" />
+				<a href="http://www.yelp.com"><img class="lme-market-logo" src="http://media2.px.yelpcdn.com/static/20091130149848283/i/developers/yelp_logo_75x38.png" /></a>
 			</div>
 HTML;
 		return $content;

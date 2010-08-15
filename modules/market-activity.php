@@ -54,7 +54,7 @@ HTML;
 			
 			$content .= <<<HTML
 				<div class="lme-recently-sold">
-					<a href="{$soldProperty->detailPageLink}"><img src="{$soldProperty->largeImageLink}" />
+					<a href="{$soldProperty->detailPageLink}"><img src="{$soldProperty->largeImageLink}" /></a>
 					<div class="lme-data">
 						<div>
 							<a href="{$soldProperty->detailPageLink}">{$soldProperty->address->street},
