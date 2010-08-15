@@ -115,7 +115,7 @@ HTML;
 				<div class="lme-market-location-url">
 					<a href="{$zillowLocationUrl}">See {$location} home values at Zillow.com</a>
 				</div>
-				<img class="lme-market-logo" src="http://www.zillow.com/static/logos/Zillowlogo_150x40.gif" />
+				<a href="http://www.zillow.com"><img class="lme-market-logo" src="http://www.zillow.com/static/logos/Zillowlogo_150x40.gif" /></a>
 			</div>
 HTML;
 		return $content;

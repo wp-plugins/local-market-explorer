@@ -12,6 +12,8 @@ require_once("modules/market-activity.php");
 require_once("modules/schools.php");
 require_once("modules/yelp.php");
 require_once("modules/walk-score.php");
+require_once("modules/teachstreet.php");
+require_once("modules/about-area.php");
 
 class LmeModulesPage {
 	// this is a roundabout way to make sure that any other plugin / widget / etc that uses the WP_Query object doesn't get our IDX data
@@ -104,12 +106,11 @@ class LmeModulesPage {
 		if (!empty($zip)) {
 			$title = $zip;
 		} else {
-			$title = "{$city}, {$state}";
+			$title = ucwords($city) . ", " . strtoupper($state);
 			if (!empty($neighborhood)) {
-				$title = "{$neighborhood}, {$title}";
+				$title = ucwords($neighborhood) . ", " . $title;
 			}
 		}
-		$title = ucwords($title);
 		
 		return "{$title} Local Area Information";
 	}
@@ -135,6 +136,10 @@ class LmeModulesPage {
 				$content .= LmeModuleYelp::getModuleHtml($modules["yelp"]);
 			if ($module == "walk-score")
 				$content .= LmeModuleWalkScore::getModuleHtml($neighborhood, $city, $state, $zip);
+			if ($module == "teachstreet")
+				$content .= LmeModuleTeachStreet::getModuleHtml($modules["teachstreet"]);
+			if ($module == "about")
+				$content .= LmeModuleAboutArea::getModuleHtml($neighborhood, $city, $state, $zip);
 		}
 		
 		return $content;
@@ -160,6 +165,8 @@ class LmeModulesPage {
 				$modules[$module] = LmeModuleSchools::getApiUrls($neighborhood, $city, $state, $zip);
 			if ($module == "yelp")
 				$modules[$module] = LmeModuleYelp::getApiUrls($neighborhood, $city, $state, $zip);
+			if ($module == "teachstreet")
+				$modules[$module] = LmeModuleTeachStreet::getApiUrls($neighborhood, $city, $state, $zip);
 		}
 		return $modules;
 	}

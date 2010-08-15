@@ -119,3 +119,23 @@
 	border-style: none;
 }
 
+.lme-teachstreet .lme-classes {
+	margin-bottom: 15px;
+}
+.lme-teachstreet .lme-class {
+	clear: both;
+}
+.lme-teachstreet .lme-photo {
+	float: left;
+	margin: 5px 15px 5px 0 !important;
+	border: 1px solid #999;
+}
+.lme-teachstreet .lme-branding {
+	width: 300px;
+	float: left;
+	text-align: center;
+}
+.lme-teachstreet .lme-logo {
+	float: right;
+}
+

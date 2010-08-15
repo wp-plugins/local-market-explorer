@@ -22,7 +22,7 @@ class LmeModuleWalkScore {
 		
 		return <<<HTML
 			<h2 class="lme-module-heading">Walk Score</h2>
-			<div class="lme-module">
+			<div class="lme-module lme-walk-score">
 				<iframe src="{$iframeSrc}" frameborder="0" class="lme-walk-score-iframe"></iframe>
 			</div>
 HTML;
