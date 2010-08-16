@@ -44,6 +44,7 @@ HTML;
 		$moduleInfo = array(
 			"about"				=> array("name" => "About area",		"description" => "your own description"),
 			"market-stats"		=> array("name" => "Market statistics",	"description" => "area statistics from Zillow"),
+			"neighborhoods"		=> array("name" => "Neighborhoods",		"description" => "neighborhoods (only for cities)"),
 			"market-activity"	=> array("name" => "Market activity",	"description" => "recent sales from Zillow"),
 			"local-photos"		=> array("name" => "Local photos",		"description" => "from Panoramio"),
 			"schools"			=> array("name" => "Schools",			"description" => "from Education.com"),
@@ -191,17 +192,19 @@ HTML;
 							<ul id="lme-modules-to-display">
 <?php
 		$moduleOrderReplacements = array("#{internal-name}", "#{checked}", "#{name}", "#{short-description}");
-		foreach ($options["global-modules"] as $module) {
-			$moduleOrderValues = array(
-				$module,
-				"checked='checked'",
-				$moduleInfo[$module]["name"],
-				$moduleInfo[$module]["description"]
-			);
-			echo str_replace($moduleOrderReplacements, $moduleOrderValues, $moduleOrderHtml);
+		if (count($options["global-modules"])) {
+			foreach ($options["global-modules"] as $module) {
+				$moduleOrderValues = array(
+					$module,
+					"checked='checked'",
+					$moduleInfo[$module]["name"],
+					$moduleInfo[$module]["description"]
+				);
+				echo str_replace($moduleOrderReplacements, $moduleOrderValues, $moduleOrderHtml);
+			}
 		}
 		foreach (array_keys($moduleInfo) as $module) {
-			if (in_array($module, $options["global-modules"]))
+			if (is_array($options["global-modules"]) && in_array($module, $options["global-modules"]))
 				continue;
 			$moduleOrderValues = array(
 				$module,
@@ -263,9 +266,9 @@ HTML;
 								</p>
 								<ul style="margin-left: 20px;">
 									<li><a href="<?php echo $blogUrl ?>/local/downtown/los-angeles/ca/"><?php echo $blogUrl ?>/local/downtown/los-angeles/ca/</a></li>
-									<li><a href="<?php echo $blogUrl ?>/local/downtown/los-angeles/ca/"><?php echo $blogUrl ?>/local/queen-anne/seattle/wa/</a></li>
+									<li><a href="<?php echo $blogUrl ?>/local/queen-anne/seattle/wa/"><?php echo $blogUrl ?>/local/queen-anne/seattle/wa/</a></li>
 									<li><a href="<?php echo $blogUrl ?>/local/los-angeles/ca/"><?php echo $blogUrl ?>/local/los-angeles/ca/</a></li>
-									<li><a href="<?php echo $blogUrl ?>/local/los-angeles/ca/"><?php echo $blogUrl ?>/local/seattle/wa/</a></li>
+									<li><a href="<?php echo $blogUrl ?>/local/seattle/wa/"><?php echo $blogUrl ?>/local/seattle/wa/</a></li>
 									<li><a href="<?php echo $blogUrl ?>/local/92651/"><?php echo $blogUrl ?>/local/92651/</a></li>
 								</ul>
 								<p>

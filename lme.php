@@ -56,6 +56,7 @@ require_once("modules/yelp.php");
 require_once("modules/walk-score.php");
 require_once("modules/teachstreet.php");
 require_once("modules/about-area.php");
+require_once("modules/neighborhoods.php");
 require_once("shortcodes.php");
 
 class Lme {

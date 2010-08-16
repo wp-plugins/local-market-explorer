@@ -130,6 +130,8 @@ class LmeModulesPage {
 				$content .= LmeModuleTeachStreet::getModuleHtml($modules["teachstreet"]);
 			if ($module == "about")
 				$content .= LmeModuleAboutArea::getModuleHtml($neighborhood, $city, $state, $zip);
+			if ($module == "neighborhoods")
+				$content .= LmeModuleNeighborhoods::getModuleHtml($modules["neighborhoods"], $neighborhood, $city, $state, $zip);
 		}
 		
 		return $content;
@@ -168,6 +170,8 @@ class LmeModulesPage {
 				$modules[$module] = LmeModuleYelp::getApiUrls($neighborhood, $city, $state, $zip);
 			if ($module == "teachstreet")
 				$modules[$module] = LmeModuleTeachStreet::getApiUrls($neighborhood, $city, $state, $zip);
+			if ($module == "neighborhoods")
+				$modules[$module] = LmeModuleNeighborhoods::getApiUrls($neighborhood, $city, $state, $zip);
 		}
 		return $modules;
 	}

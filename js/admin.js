@@ -124,31 +124,26 @@ lmeadmin.changeLink = function(event) {
 	
 	if (zip) {
 		url += zip + '/';
-	} else if (neighborhood) {
+	} else if (neighborhood && city && state) {
 		url += neighborhood.toLowerCase().replace(/ /g, '-') + '/' + city.toLowerCase().replace(/ /g, '-') + '/' + state.toLowerCase() + '/';
-	} else {
+	} else if (city && state) {
 		url += city.toLowerCase().replace(/ /g, '-') + '/' + state.toLowerCase() + '/';
 	}
 	
 	parentListEl.find('.lme-link').html('<a href="' + url + '" target="_blank">' + url + '</a>');
 }
 
-(function() {
-	var modulesToDisplay = jQuery('#lme-modules-to-display'); 
-	// gotta do this because events don't fire when elements are disabled
-	jQuery('#lme-areas-descriptions li.lme-area[id!="lme-areas-new"]').each(lmeadmin.processAreaDescriptionNode);
-	jQuery('#lme-areas-add').click(lmeadmin.addAreaDescriptionNode);
-	jQuery('#lme-save-options').click(lmeadmin.preSaveOptions);
-	if (modulesToDisplay.length)
-		modulesToDisplay.sortable({ axis: 'y' });
-	jQuery('#lme-areas-descriptions .lme-location-input').change(lmeadmin.changeLink).change();
-})();
+// gotta do this because events don't fire when elements are disabled
+jQuery('#lme-areas-descriptions li.lme-area[id!="lme-areas-new"]').each(lmeadmin.processAreaDescriptionNode);
+jQuery('#lme-areas-add').click(lmeadmin.addAreaDescriptionNode);
+jQuery('#lme-save-options').click(lmeadmin.preSaveOptions);
+if (jQuery('#lme-modules-to-display').length) // yeah yeah, bad practice...
+	jQuery('#lme-modules-to-display').sortable({ axis: 'y' });
+jQuery('#lme-areas-descriptions .lme-location-input').change(lmeadmin.changeLink).change();
 
 if (YUI) {
 	YUI().use('tabview', function(Y) {
-		var tabview = new Y.TabView({
-			srcNode: '#lme-options'
-		});
+		var tabview = new Y.TabView({ srcNode: '#lme-options' });
 		tabview.render();
 	});
 }

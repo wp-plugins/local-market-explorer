@@ -17,7 +17,8 @@
 .lme-market-charts-container {
 	margin: 0 auto 20px;
 	width: 470px;
-	overflow: auto;
+	overflow-y: auto;
+	overflow-x: hidden;
 }
 .lme-zhvi-chart {
 	float: left;
@@ -42,6 +43,11 @@
 }
 .lme-market-logo {
 	float: right;
+}
+
+.lme-neighborhoods .lme-neighborhood {
+	width: 33%;
+	float: left;
 }
 
 .lme-recently-sold {
