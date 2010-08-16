@@ -6,15 +6,6 @@ add_action("pre_get_posts", array("LmeModulesPage", "preActivate"));
 add_filter("posts_request", array("LmeModulesPage", "clearQuery"));
 add_filter("the_posts", array("LmeModulesPage", "activate"));
 
-require_once("api-requester.php");
-require_once("modules/market-stats.php");
-require_once("modules/market-activity.php");
-require_once("modules/schools.php");
-require_once("modules/yelp.php");
-require_once("modules/walk-score.php");
-require_once("modules/teachstreet.php");
-require_once("modules/about-area.php");
-
 class LmeModulesPage {
 	// this is a roundabout way to make sure that any other plugin / widget / etc that uses the WP_Query object doesn't get our IDX data
 	// in their query. since we don't actually get the query itself in the "the_posts" filter, we have to step around the issue by
@@ -38,6 +29,9 @@ class LmeModulesPage {
 	static function activate($posts) {
 		global $wp_query;
 
+		// we want this on every page in case a shortcode is called
+		wp_enqueue_style("lme", LME_PLUGIN_URL . "css/client.css", null, LME_PLUGIN_VERSION);
+
 		// see comment above preActivate
 		if (is_array($wp_query->query) && isset($wp_query->query["lme-action-swap"])) {
 			$wp_query->query["lme-action"] = $wp_query->query["lme-action-swap"];
@@ -48,8 +42,6 @@ class LmeModulesPage {
 		if (!is_array($wp_query->query) || !isset($wp_query->query["lme-action"])) {
 			return $posts;
 		}
-
-		wp_enqueue_style("lme", LME_PLUGIN_URL . "css/client.css", null, LME_PLUGIN_VERSION);
 		
 		// keep wordpress from mucking up our HTML
 		remove_filter("the_content", "wptexturize");
@@ -57,8 +49,6 @@ class LmeModulesPage {
 		remove_filter("the_content", "convert_chars");
 		remove_filter("the_content", "wpautop");
 		remove_filter("the_content", "prepend_attachment");
-
-		add_filter("page_link", array("LmeModulesPage", "getPermalink")); // for any plugin that needs it
 
 		// no RSS feeds
 		remove_action("wp_head", "feed_links");
@@ -81,7 +71,7 @@ class LmeModulesPage {
 			"post_content"		=> self::getPageContent(),
 			"post_date"			=> date("c"),
 			"post_date_gmt"		=> gmdate("c"),
-			"post_name"			=> "dsidxpress-data",
+			"post_name"			=> self::getCanonicalLink(),
 			"post_parent"		=> 0,
 			"post_status"		=> "publish",
 			"post_title"		=> self::getPageTitle(),
@@ -144,8 +134,19 @@ class LmeModulesPage {
 		
 		return $content;
 	}
-	static function getPermalink($permalink) {
-		return $permalink;
+	static function getCanonicalLink() {
+		global $wp_query;
+		
+		$neighborhood = strtolower($wp_query->query["lme-neighborhood"]);
+		$city = strtolower($wp_query->query["lme-city"]);
+		$state = strtolower($wp_query->query["lme-state"]);
+		
+		if (!empty($wp_query->query["lme-zip"]))
+			return "/local/{$wp_query->query["lme-zip"]}/";
+		else if (!empty($neighborhood))
+			return "/local/{$neighborhood}/{$city}/{$state}/";
+		else
+			return "/local/{$city}/{$state}/";
 	}
 	static function getFinalApiUrls() {
 		$neighborhood = self::getNeighborhood();

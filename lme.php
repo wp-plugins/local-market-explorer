@@ -48,6 +48,15 @@ if (is_admin()) {
 	require_once("modules-page.php");
 }
 require_once("modules-page-rewrite.php");
+require_once("api-requester.php");
+require_once("modules/market-stats.php");
+require_once("modules/market-activity.php");
+require_once("modules/schools.php");
+require_once("modules/yelp.php");
+require_once("modules/walk-score.php");
+require_once("modules/teachstreet.php");
+require_once("modules/about-area.php");
+require_once("shortcodes.php");
 
 class Lme {
 	static function InitializeAreasSchema() {

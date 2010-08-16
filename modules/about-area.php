@@ -16,7 +16,7 @@ class LmeModuleAboutArea {
 			);
 		} else {
 			$query = $wpdb->prepare(
-				$sqlPreWhereClause . "city = %s AND state = %s",
+				$sqlPreWhereClause . "neighborhood = '' AND city = %s AND state = %s",
 				$opt_city,
 				$opt_state
 			);
@@ -25,8 +25,9 @@ class LmeModuleAboutArea {
 		// since this is their own blog, we specifically allow all HTML in the description
 		$description = $wpdb->get_col($query);
 		
-		if (count($description) == 0)
+		if (count($description) == 0 || empty($description[0]))
 			return;
+		$description = $description[0];
 		
 		return <<<HTML
 			<h2 class="lme-module-heading">About Area</h2>

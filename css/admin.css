@@ -103,10 +103,15 @@
 	width: 630px;
 	height: 150px;
 }
-.lme-araes-remove-container {
+.lme-areas-remove-container {
 	text-align: right;
 	padding-top: 10px;
 }
+.lme-area .lme-link {
+	float: left;
+	margin-top: 10px;
+}
+
 
 #lme-other-options {
 	margin-left: 10px;

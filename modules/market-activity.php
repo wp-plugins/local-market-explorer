@@ -28,7 +28,12 @@ class LmeModuleMarketActivity {
 			return;
 		unset($arrayActivity);
 		
+		$options = get_option(LME_OPTION_NAME);
 		$zillowRegion = $activity->region;
+		$zillowUrlSuffix = "#{scid=gen-api-wplugin";
+		if (!empty($options["zillow-username"]))
+			$zillowUrlSuffix .= "&scrnnm=" . $options["zillow-username"];
+		$zillowUrlSuffix .= "}";
 		
 		if (isset($zillowRegion->neighborhood))
 			$location = "{$zillowRegion->neighborhood}, {$zillowRegion->city}";
@@ -54,10 +59,10 @@ HTML;
 			
 			$content .= <<<HTML
 				<div class="lme-recently-sold">
-					<a href="{$soldProperty->detailPageLink}"><img src="{$soldProperty->largeImageLink}" /></a>
+					<a href="{$soldProperty->detailPageLink}{$zillowUrlSuffix}"><img src="{$soldProperty->largeImageLink}" /></a>
 					<div class="lme-data">
 						<div>
-							<a href="{$soldProperty->detailPageLink}">{$soldProperty->address->street},
+							<a href="{$soldProperty->detailPageLink}{$zillowUrlSuffix}">{$soldProperty->address->street},
 								{$soldProperty->address->city}, {$soldProperty->address->state}</a>
 						</div>
 						<div>Sold {$soldProperty->lastSoldDate} for \${$soldPrice}</div>
@@ -68,7 +73,7 @@ HTML;
 		}
 		
 		$content .= <<<HTML
-				<a href="{$activity->links->forSale}">See {$location} real estate and homes for sale</a>
+				<a href="{$activity->links->forSale}{$zillowUrlSuffix}">See {$location} real estate and homes for sale</a>
 			</div>
 HTML;
 		return $content;

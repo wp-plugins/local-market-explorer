@@ -4,7 +4,7 @@ class LmeModuleSchools {
 	static function getApiUrls($opt_neighborhood, $opt_city, $opt_state, $opt_zip) {
 		$options = get_option(LME_OPTION_NAME);
 		$apiKey = "bd23bb5cb91e37c39282f6bf75d56fb9"; // education.com wants this embedded
-		$url = "http://www.education.com/service/service.php?f=schoolSearch&sn=sf&resf=php&v3&key={$apiKey}&";
+		$url = "http://api.education.com/service/service.php?f=schoolSearch&sn=sf&resf=php&v3&key={$apiKey}&";
 		
 		if (isset($opt_zip)) {
 			$locationParams = "zip={$opt_zip}";

@@ -28,6 +28,13 @@ class LmeModuleMarketStats {
 		$zillowRegion = $demographics->region;
 		$locationName;
 		
+		$options = get_option(LME_OPTION_NAME);
+		$zillowRegion = $activity->region;
+		$zillowUrlSuffix = "#{scid=gen-api-wplugin";
+		if (!empty($options["zillow-username"]))
+			$zillowUrlSuffix .= "&scrnnm=" . $options["zillow-username"];
+		$zillowUrlSuffix .= "}";
+		
 		if (isset($zillowRegion->neighborhood)) {
 			$localNodeName = "neighborhood";
 			$location = "{$zillowRegion->neighborhood}, {$zillowRegion->city}";
@@ -52,9 +59,9 @@ class LmeModuleMarketStats {
 		$content = <<<HTML
 			<h2 class="lme-module-heading">Real Estate Market Stats</h2>
 			<div class="lme-module">
-				<h3 class="lme-zhvi"><a href="{$demographics->links->main}">Zillow Home Value Index: \${$zhvi}</a></h3>
+				<h3 class="lme-zhvi"><a href="{$demographics->links->main}{$zillowUrlSuffix}">Zillow Home Value Index: \${$zhvi}</a></h3>
 				<div class="lme-market-charts-container">
-					<img src="{$regionChart->url}" class="lme-zhvi-chart" />
+					<img src="{$regionChart->url}{$zillowUrlSuffix}" class="lme-zhvi-chart" />
 					<div class="lme-market-charts">
 						<div>
 							<h4>Zillow Home Value Index</h4>
@@ -113,9 +120,9 @@ HTML;
 		$content .= <<<HTML
 				</table>
 				<div class="lme-market-location-url">
-					<a href="{$zillowLocationUrl}">See {$location} home values at Zillow.com</a>
+					<a href="{$zillowLocationUrl}{$zillowUrlSuffix}">See {$location} home values at Zillow.com</a>
 				</div>
-				<a href="http://www.zillow.com"><img class="lme-market-logo" src="http://www.zillow.com/static/logos/Zillowlogo_150x40.gif" /></a>
+				<a href="http://www.zillow.com/{$zillowUrlSuffix}"><img class="lme-market-logo" src="http://www.zillow.com/static/logos/Zillowlogo_150x40.gif" /></a>
 			</div>
 HTML;
 		return $content;
