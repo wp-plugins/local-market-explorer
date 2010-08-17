@@ -30,8 +30,8 @@ class LmeModuleYelp {
 		$jsonResults = array();
 		$resultsId = rand();
 		wp_enqueue_script("jquery");
+		wp_enqueue_script("gmaps3", "http://maps.google.com/maps/api/js?sensor=false", null, null, true);
 		wp_enqueue_script("local-market-explorer", LME_PLUGIN_URL . "js/client.js", null, null, true);
-		wp_enqueue_script("gmaps3", "http://maps.google.com/maps/api/js?sensor=false&callback=lme.loadYelpMaps", null, null, true);
 		
 		foreach ($yelpResponse as $business) {
 			$jsonResults[] = (object)array(

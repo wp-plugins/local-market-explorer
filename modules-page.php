@@ -132,6 +132,8 @@ class LmeModulesPage {
 				$content .= LmeModuleAboutArea::getModuleHtml($neighborhood, $city, $state, $zip);
 			if ($module == "neighborhoods")
 				$content .= LmeModuleNeighborhoods::getModuleHtml($modules["neighborhoods"], $neighborhood, $city, $state, $zip);
+			if ($module == "nileguide")
+				$content .= LmeModuleNileGuide::getModuleHtml($modules["nileguide"], $neighborhood, $city, $state, $zip);
 		}
 		
 		return $content;
@@ -172,6 +174,8 @@ class LmeModulesPage {
 				$modules[$module] = LmeModuleTeachStreet::getApiUrls($neighborhood, $city, $state, $zip);
 			if ($module == "neighborhoods")
 				$modules[$module] = LmeModuleNeighborhoods::getApiUrls($neighborhood, $city, $state, $zip);
+			if ($module == "nileguide")
+				$modules[$module] = LmeModuleNileGuide::getApiUrls($neighborhood, $city, $state, $zip);
 		}
 		return $modules;
 	}

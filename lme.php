@@ -3,7 +3,7 @@
 Plugin Name: Local Market Explorer
 Plugin URI: http://wordpress.org/extend/plugins/local-market-explorer/
 Description: This plugin allows WordPress to load data from a number of real estate and neighborhood APIs to be presented all within a single page in WordPress.
-Version: 3.0
+Version: 3.0-pre
 Author: Andrew Mattie & Jonathan Mabe
 */
 
@@ -38,8 +38,8 @@ define("LME_PLUGIN_DB_VERSION", "1.0");
 define("LME_AREAS_TABLE", $wpdb->prefix . "lme_areas");
 
 register_activation_hook(__FILE__, array("Lme", "InitializeAreasSchema"));
-//register_activation_hook(__FILE__, array("Lme", "UpgradeOptionsFromVersion1"));
-//register_activation_hook(__FILE__, array("Lme", "UpgradeOptionsFromVersion2"));
+register_activation_hook(__FILE__, array("Lme", "UpgradeOptionsFromVersion1"));
+register_activation_hook(__FILE__, array("Lme", "UpgradeOptionsFromVersion2"));
 register_activation_hook(__FILE__, array("Lme", "FlushRewriteRules"));
 
 if (is_admin()) {
@@ -57,6 +57,7 @@ require_once("modules/walk-score.php");
 require_once("modules/teachstreet.php");
 require_once("modules/about-area.php");
 require_once("modules/neighborhoods.php");
+require_once("modules/nileguide.php");
 require_once("shortcodes.php");
 
 class Lme {
@@ -108,7 +109,7 @@ class Lme {
 		delete_option("lme_area_descriptions");
 	}
 	static function UpgradeOptionsFromVersion2() {
-		if (get_option("local-market-explorer"))
+		if (get_option(LME_OPTION_NAME))
 			return;
 		
 		global $wpdb;
@@ -116,7 +117,6 @@ class Lme {
 		$options = array();
 		$options["api-keys"] = array(
 			"zillow"			=> get_option("lme_apikey_zillow"),
-			"educationdotcom"	=> "bd23bb5cb91e37c39282f6bf75d56fb9",
 			"walk-score"		=> get_option("lme_apikey_walkscore"),
 			"yelp"				=> get_option("lme_apikey_yelp")
 		);
@@ -142,6 +142,22 @@ class Lme {
 			
 		if (!get_option("lme_panels_show_teachstreet") && $options["panels"]["teachstreet"])
 			unset($options["panels"]["teachstreet"]);
+		
+		foreach ($options["lme_areas"] as $area) {
+			$wpdb->insert(
+				LME_AREAS_TABLE,
+				array(
+					"city"			=> $area["city"],
+					"neighborhood"	=> $area["neighborhood"],
+					"zip"			=> $area["zip"],
+					"state"			=> $area["state"],
+					"description"	=> $area["description"]
+				),
+				array("%s", "%s", "%s", "%s", "%s")
+			);
+		}
+		
+		update_option(LME_OPTION_NAME, $options);
 	}
 	static function FlushRewriteRules() {
 		global $wp_rewrite;

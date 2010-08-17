@@ -5,7 +5,7 @@ User Voice forum link: http://localmarketexplorer.uservoice.com/
 Tags: zillow, flickr, walk score, schools, education.com, real estate, local information, city data, yelp, teachstreet
 Requires at least: 2.8
 Tested up to: 2.8
-Stable tag: 2.1
+Stable tag: 3.0
 
 This plugin allows WordPress to load data from a number of real estate and neighborhood APIs to be presented all within a single
 page in WordPress.

@@ -1,5 +1,6 @@
 <?php
 
+// use and require curl directly since we can use gzip
 class LmeApiRequester {
 	static function gatherContent($modules) {
 		$mh = curl_multi_init();
@@ -20,6 +21,7 @@ class LmeApiRequester {
 				curl_setopt($ch, CURLOPT_TIMEOUT, 5);
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 				curl_setopt($ch, CURLOPT_ENCODING, 'gzip');
+				curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
 				
 				curl_multi_add_handle($mh, $ch);
 				$handles[$url] = $ch;
@@ -39,12 +41,30 @@ class LmeApiRequester {
 				foreach ($urls as $urlDescription => $url) {
 					if ($handleKey == $url) {
 						$modules[$module][$urlDescription] = $content;
+						self::setCache($url, $content);
 					}
 				}
 			}
 		}
 		
 		curl_multi_close($mh);
+	}
+	static function getContent($url) {
+		$content = self::tryLoadFromCache($url);
+		if (!empty($content))
+			return $content;
+		
+		$ch = curl_init();
+		
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_ENCODING, 'gzip');
+		$content = curl_exec($ch);
+		curl_close($ch);
+		
+		self::setCache($url, $content);
+		return $content;
 	}
 	static function getCompressCache() {
 		return function_exists('gzdeflate') && function_exists('gzinflate');
@@ -54,9 +74,10 @@ class LmeApiRequester {
 	}
 	static function tryLoadFromCache($url) {
 		$content = get_transient(self::getCacheKey($url));
+		
 		if (empty($content))
 			return false;
-		return false;
+		
 		if (self::getCompressCache())
 			return unserialize(gzinflate(base64_decode($content)));
 		else
@@ -67,9 +88,9 @@ class LmeApiRequester {
 		$cacheSeconds = 60 * 60 * 24;
 		
 		if (self::getCompressCache())
-			return set_transient($key, base64_encode(gzdeflate(serialize($data))), $cacheSeconds);
+			set_transient($key, base64_encode(gzdeflate(serialize($data))), $cacheSeconds);
 		else
-			return set_transient($url, $data, $cacheSeconds);
+			set_transient($key, $data, $cacheSeconds);
 	}
 }
 

@@ -10,6 +10,9 @@
 	overflow: auto;
 	margin-bottom: 30px;
 }
+.lme-module th {
+	text-align: left;
+}
 
 .lme-zhvi {
 	text-align: center;
@@ -142,6 +145,25 @@
 	text-align: center;
 }
 .lme-teachstreet .lme-logo {
+	float: right;
+}
+
+.lme-nileguide .lme-seedo {
+	margin-bottom: 15px;
+}
+.lme-nileguide .lme-seedo-map {
+	height: 300px;
+}
+.lme-nileguide .lme-entry {
+	clear: both;
+	margin-bottom: 20px;
+}
+.lme-nileguide .lme-photo {
+	float: left;
+	margin: 5px 15px 5px 0 !important;
+	border: 1px solid #999;
+}
+.lme-nileguide .lme-logo {
 	float: right;
 }
 
