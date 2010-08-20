@@ -46,23 +46,26 @@ if (is_admin()) {
 	require_once(WP_PLUGIN_DIR . "/local-market-explorer/admin.php");
 } else {
 	require_once("modules-page.php");
+	require_once("api-requester.php");
+	require_once("shortcodes.php");
+	require_once("modules/market-stats.php");
+	require_once("modules/market-activity.php");
+	require_once("modules/schools.php");
+	require_once("modules/yelp.php");
+	require_once("modules/walk-score.php");
+	require_once("modules/teachstreet.php");
+	require_once("modules/about-area.php");
+	require_once("modules/neighborhoods.php");
+	require_once("modules/nileguide.php");
 }
+require_once("widgets/areas.php");
 require_once("modules-page-rewrite.php");
-require_once("api-requester.php");
-require_once("modules/market-stats.php");
-require_once("modules/market-activity.php");
-require_once("modules/schools.php");
-require_once("modules/yelp.php");
-require_once("modules/walk-score.php");
-require_once("modules/teachstreet.php");
-require_once("modules/about-area.php");
-require_once("modules/neighborhoods.php");
-require_once("modules/nileguide.php");
-require_once("shortcodes.php");
 require_once("xml-sitemaps.php");
 
+add_action("widgets_init", array("Lme", "initWidgets"));
+
 class Lme {
-	static function InitializeAreasSchema() {
+	static function initializeAreasSchema() {
 		global $wpdb;
 		
 		$options = get_option(LME_OPTION_NAME);
@@ -88,7 +91,7 @@ class Lme {
 		$options["db-version"] = LME_PLUGIN_DB_VERSION;
 		update_option(LME_OPTION_NAME, $options);
 	}
-	static function UpgradeOptionsFromVersion1() {
+	static function upgradeOptionsFromVersion1() {
 		if (get_option("lme_areas"))
 			return;
 		
@@ -109,12 +112,15 @@ class Lme {
 		delete_option("lme_area_states");
 		delete_option("lme_area_descriptions");
 	}
-	static function UpgradeOptionsFromVersion2() {
+	static function upgradeOptionsFromVersion2() {
+		global $wpdb;
+		
+		$wpdb->query("DELETE FROM " . LME_AREAS_TABLE);
 		delete_option(LME_OPTION_NAME);
+		
 		if (get_option(LME_OPTION_NAME))
 			return;
 		
-		global $wpdb;
 		
 		$options = array();
 		$options["api-keys"] = array(
@@ -122,33 +128,22 @@ class Lme {
 			"walk-score"		=> get_option("lme_apikey_walkscore"),
 			"yelp"				=> get_option("lme_apikey_yelp")
 		);
-		$options["global-modules"] = array_merge(array(), get_option("lme_module_order"));
+		// now that we've fixed up all the modules and added new ones, we're gonna set them to all be displayed by default
+		$options["global-modules"] = array(
+			0 => "about",
+			1 => "market-stats",
+			2 => "neighborhoods",
+			3 => "market-activity",
+			4 => "local-photos",
+			5 => "schools",
+			6 => "walk-score",
+			7 => "yelp",
+			8 => "teachstreet",
+			9 => "nileguide"
+		);
+		$options["zillow-username"] = get_option("lme_username_zillow");
 		
-		if (!get_option("lme_panels_show_market_stats") && $options["panels"]["market-statistics"])
-			unset($options["global-modules"]["market-statistics"]);
-			
-		if (!get_option("lme_panels_show_aboutarea") && $options["panels"]["about-area"])
-			unset($options["global-modules"]["about-area"]);
-			
-		if (!get_option("lme_panels_show_zillow_marketactivity") && $options["panels"]["market-activity"])
-			unset($options["global-modules"]["market-activity"]);
-			
-		if (!get_option("lme_panels_show_educationcom") && $options["panels"]["schools"])
-			unset($options["global-modules"]["schools"]);
-			
-		if (!get_option("lme_panels_show_walkscore") && $options["panels"]["walk-score"])
-			unset($options["global-modules"]["walk-score"]);
-			
-		if (!get_option("lme_panels_show_yelp") && $options["panels"]["yelp"])
-			unset($options["global-modules"]["yelp"]);
-			
-		if (!get_option("lme_panels_show_teachstreet") && $options["panels"]["teachstreet"])
-			unset($options["global-modules"]["teachstreet"]);
-		
-		$options["global-modules"] = array_combine(range(0, count($options["global-modules"])), $options["global-modules"]);
-		$options["zillow-username"] = $options["lme_username_zillow"];
-		
-		foreach ($options["lme_areas"] as $area) {
+		foreach (get_option("lme_areas") as $area) {
 			$wpdb->insert(
 				LME_AREAS_TABLE,
 				array(
@@ -164,7 +159,10 @@ class Lme {
 		
 		update_option(LME_OPTION_NAME, $options);
 	}
-	static function FlushRewriteRules() {
+	static function initWidgets() {
+		register_widget("LmeAreasWidget");
+	}
+	static function flushRewriteRules() {
 		global $wp_rewrite;
 		$wp_rewrite->flush_rules();
 	}
