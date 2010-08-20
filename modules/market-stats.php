@@ -51,6 +51,9 @@ class LmeModuleMarketStats {
 		$zhvi = $affordabilityData[0]->xpath("attribute[name='Zillow Home Value Index']/values/{$localNodeName}/value");
 		$zhvi = number_format($zhvi[0]);
 		
+		if ($zhvi != "0")
+			$zhviHtml = "<h3 class=\"lme-zhvi\"><a href=\"{$demographics->links->main}{$zillowUrlSuffix}\">Zillow Home Value Index: \${$zhvi}</a></h3>";
+		
 		$zhviDistributionChart = $demographics[0]->xpath("charts/chart[name='Zillow Home Value Index Distribution']/url");
 		$homeSizeChart = $demographics[0]->xpath("charts/chart[name='Home Size in Square Feet']/url");
 		$ownersRentersChart = $demographics[0]->xpath("charts/chart[name='Owners vs. Renters']/url");
@@ -59,7 +62,7 @@ class LmeModuleMarketStats {
 		$content = <<<HTML
 			<h2 class="lme-module-heading">Real Estate Market Stats</h2>
 			<div class="lme-module">
-				<h3 class="lme-zhvi"><a href="{$demographics->links->main}{$zillowUrlSuffix}">Zillow Home Value Index: \${$zhvi}</a></h3>
+				{$zhviHtml}
 				<div class="lme-market-charts-container">
 					<img src="{$regionChart->url}{$zillowUrlSuffix}" class="lme-zhvi-chart" />
 					<div class="lme-market-charts">

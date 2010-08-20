@@ -59,6 +59,7 @@ require_once("modules/about-area.php");
 require_once("modules/neighborhoods.php");
 require_once("modules/nileguide.php");
 require_once("shortcodes.php");
+require_once("xml-sitemaps.php");
 
 class Lme {
 	static function InitializeAreasSchema() {
@@ -109,6 +110,7 @@ class Lme {
 		delete_option("lme_area_descriptions");
 	}
 	static function UpgradeOptionsFromVersion2() {
+		delete_option(LME_OPTION_NAME);
 		if (get_option(LME_OPTION_NAME))
 			return;
 		
@@ -120,28 +122,31 @@ class Lme {
 			"walk-score"		=> get_option("lme_apikey_walkscore"),
 			"yelp"				=> get_option("lme_apikey_yelp")
 		);
-		$options["panels"] = array_merge(array(), get_option("lme_module_order"));
+		$options["global-modules"] = array_merge(array(), get_option("lme_module_order"));
 		
 		if (!get_option("lme_panels_show_market_stats") && $options["panels"]["market-statistics"])
-			unset($options["panels"]["market-statistics"]);
+			unset($options["global-modules"]["market-statistics"]);
 			
 		if (!get_option("lme_panels_show_aboutarea") && $options["panels"]["about-area"])
-			unset($options["panels"]["about-area"]);
+			unset($options["global-modules"]["about-area"]);
 			
 		if (!get_option("lme_panels_show_zillow_marketactivity") && $options["panels"]["market-activity"])
-			unset($options["panels"]["market-activity"]);
+			unset($options["global-modules"]["market-activity"]);
 			
 		if (!get_option("lme_panels_show_educationcom") && $options["panels"]["schools"])
-			unset($options["panels"]["schools"]);
+			unset($options["global-modules"]["schools"]);
 			
 		if (!get_option("lme_panels_show_walkscore") && $options["panels"]["walk-score"])
-			unset($options["panels"]["walk-score"]);
+			unset($options["global-modules"]["walk-score"]);
 			
 		if (!get_option("lme_panels_show_yelp") && $options["panels"]["yelp"])
-			unset($options["panels"]["yelp"]);
+			unset($options["global-modules"]["yelp"]);
 			
 		if (!get_option("lme_panels_show_teachstreet") && $options["panels"]["teachstreet"])
-			unset($options["panels"]["teachstreet"]);
+			unset($options["global-modules"]["teachstreet"]);
+		
+		$options["global-modules"] = array_combine(range(0, count($options["global-modules"])), $options["global-modules"]);
+		$options["zillow-username"] = $options["lme_username_zillow"];
 		
 		foreach ($options["lme_areas"] as $area) {
 			$wpdb->insert(

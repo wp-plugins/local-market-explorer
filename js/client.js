@@ -11,6 +11,9 @@ lme.loadYelpMaps = (function() {
 		var map, mapOptions, marker;
 		var infoWindow = new google.maps.InfoWindow();
 		
+		if (!data.length)
+			return;
+		
 		for (var i = data.length; i--;)
 			mapBounds.extend(new google.maps.LatLng(data[i].latitude, data[i].longitude));
 
@@ -55,6 +58,9 @@ lme.loadNileGuideMaps = (function() {
 		var map, mapOptions, marker;
 		var infoWindow = new google.maps.InfoWindow();
 		
+		if (!data.length)
+			return;
+		
 		for (var i = data.length; i--;)
 			mapBounds.extend(new google.maps.LatLng(data[i].latitude, data[i].longitude));
 
@@ -79,7 +85,7 @@ lme.loadNileGuideMaps = (function() {
 					'<div style="font-size: 11px; font-family: Verdana; width: 300px; min-height: 60px; line-height: 16px;">' +
 					'<a href="' + data[i].url + '"><img src="' + data[i].image + '" style="float: left; border: 1px solid #999; margin-right: 10px;" /></a>' +
 					'<a href="' + data[i].url + '"><b>' + data[i].name + '</b></a><br />' +
-					data[i].summary +
+					(data[i].summary || '') +
 					'</div>';
 				google.maps.event.addListener(marker, 'click', function() {
 					infoWindow.setContent(content);

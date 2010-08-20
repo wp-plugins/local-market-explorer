@@ -162,16 +162,10 @@ HTML;
 							<h3 style="margin-top: 40px;">Other Options</h3>
 							<ul id="lme-other-options">
 								<li>
-									<input type="checkbox" name="local-market-explorer[disallow-sitemap]"
-										id="local-market-explorer[disallow-sitemap]" <?php echo empty($options["disallow-sitemap"]) ? "" : "checked"; ?> />
-									<label for="local-market-explorer[disallow-sitemap]">
-										<i>Don't</i> allow pages with descriptions to be added to your sitemap?</label>
-								</li>
-								<li>
-									<input type="checkbox" name="local-market-explorer[disallow-loading-without-description]"
-										id="local-market-explorer[disallow-loading-without-description]" <?php echo empty($options["disallow-loading-without-description"]) ? "" : "checked" ?> />
-									<label for="local-market-explorer[disallow-loading-without-description]">
-										<i>Don't</i> allow visitors and search engines to load pages without you first adding a description?</label>
+									<input type="checkbox" name="local-market-explorer[disallow-sitemap-without-description]"
+										id="local-market-explorer[disallow-sitemap-without-description]" <?php echo empty($options["disallow-sitemap-without-description"]) ? "" : "checked"; ?> />
+									<label for="local-market-explorer[disallow-sitemap-without-description]">
+										<i>Don't</i> allow pages without descriptions to be added to your sitemap?</label>
 								</li>
 								<li>
 									<input type="text" name="local-market-explorer[zillow-username]"
@@ -348,11 +342,7 @@ HTML;
 			$options["global-modules"] = explode(",", $options["global-module-orders"]);
 		unset($options["global-module-orders"]);
 		
-		//print_r("<pre>");
-		//print_r($options);
-		//print_r($areas);
 		LmeAdmin::addNewAreaDescriptions($areas);
-		//exit();
 		
 		return $options;
 	}

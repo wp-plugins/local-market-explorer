@@ -7,7 +7,8 @@ class LmeModuleNileGuide {
 		$tripApi = "/service/trip?count=10&searchTerms=";
 		
 		if (isset($opt_zip)) {
-			$locationParams = "postalCode:{$opt_zip}";
+			$placeLocationParams = "postalCode:{$opt_zip}";
+			$tripLocationParams = "postalCode:{$opt_zip}";
 		} else {
 			// this is pretty sucky. it's just just temporary though until NileGuide implements a system to look up
 			// places / trips by city / state. this is in their todo queue.
@@ -21,10 +22,11 @@ class LmeModuleNileGuide {
 			
 			// end temp code
 			
-			$locationParams = "destinationLatLong:{$latLng->lat},{$latLng->lng}"; 
+			$placeLocationParams = "destinationLatLong:{$latLng->lat},{$latLng->lng}&searchTerms=latLong:{$latLng->lat},{$latLng->lng}&searchTerms=maxDistance:15";
+			$tripLocationParams = "destinationLatLong:{$latLng->lat},{$latLng->lng}";
 		}
 		
-		$url = "{$apiUrl}service=" . urlencode($placeApi . $locationParams) . "&service=" . urlencode($tripApi . $locationParams);
+		$url = "{$apiUrl}service=" . urlencode($placeApi . $placeLocationParams) . "&service=" . urlencode($tripApi . $tripLocationParams);
 		return array( "nileguide" => $url );
 	}
 	static function getModuleHtml($modules) {
