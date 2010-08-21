@@ -12,10 +12,7 @@ class LmeXmlSitemaps {
 		$generatorObject = &GoogleSitemapGenerator::GetInstance();
 
 		if ($generatorObject != null) {
-			if ($options["disallow-sitemap-without-description"] == "on")
-				$areas = $wpdb->get_results("SELECT neighborhood, city, state, zip FROM " . LME_AREAS_TABLE . " WHERE description <> '' ORDER BY state, city, neighborhood, zip");
-			else
-				$areas = $wpdb->get_results("SELECT neighborhood, city, state, zip FROM " . LME_AREAS_TABLE . " ORDER BY state, city, neighborhood, zip");
+			$areas = $wpdb->get_results("SELECT neighborhood, city, state, zip FROM " . LME_AREAS_TABLE . " ORDER BY state, city, neighborhood, zip");
 
 			foreach ($areas as $area) {
 				if (!empty($area->zip)) {

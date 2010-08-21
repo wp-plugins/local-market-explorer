@@ -1,10 +1,10 @@
 === Local Market Explorer ===
 Contributors: amattie, jmabe
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=10178626
-User Voice forum link: http://localmarketexplorer.uservoice.com/
-Tags: zillow, flickr, walk score, schools, education.com, real estate, local information, city data, yelp, teachstreet
+Feedback page link: http://localmarketexplorer.uservoice.com/
+Tags: zillow, walk score, schools, education.com, real estate, local, city data, yelp, teachstreet, nile guide
 Requires at least: 2.8
-Tested up to: 2.8
+Tested up to: 3.0.1
 Stable tag: 3.0
 
 This plugin allows WordPress to load data from a number of real estate and neighborhood APIs to be presented all within a single
@@ -12,16 +12,14 @@ page in WordPress.
 
 == Description ==
 
-**REQUIRES PHP 5**
-
 This plugin allows for WordPress to load in data from the following APIs:
 
 * [Zillow](http://www.zillow.com)
 * [Education.com](http://www.education.com)
-* [Flickr](http://www.flickr.com)
 * [Walk Score](http://www.walkscore.com)
 * [Yelp](http://www.yelp.com)
 * [TeachStreet](http://www.teachstreet.com)
+* [Nile Guide](http://www.nileguide.com)
 
 The data from the different APIs is then presented on a single page that is dynamically created on the server depending on the
 specially-crafted URL that is being accessed. The format of the URL to load the plugin is as follows:
@@ -46,6 +44,18 @@ If you'd like to contribute a feature suggestion or need to document a bug, plea
 5. Visit each of the API key links and get your API keys. After you put in each API key, the data will load for the corresponding modules.
 
 == Changelog ==
+
+= 3.0 =
+* Performance has been significantly increased by making all of the external data requests in parallel instead of in series.
+* The modules can now be used on individual pages and posts instead of only on the Local Market Explorer virtual pages.
+* The HTML markup and CSS styling has been significantly pruned so that skinning is easier and so that the default styles work better with many more themes.
+* The admin UI has been significantly enhanced to make it easier to use.
+* A neighborhood module has been added on city pages that links to all the neighborhoods within that city.
+* Support for canonical link tags has been added so that search engines will better index the true URL and won’t see duplicate content within your domain.
+* This version works way better with some of the more obscure WordPress installs as well as with WordPress 3.x.
+* Support for XML sitemaps has been added via the Google XML Sitemaps plugin.
+* Lots of bugs have been fixed relating to data not displaying when it should and blank data displaying when it shouldn’t.
+* More charts and data have been added to a few of the modules.
 
 = 2.1 =
 * Added option to link to an IDX page per area
@@ -89,59 +99,45 @@ If you'd like to contribute a feature suggestion or need to document a bug, plea
 
 == Frequently Asked Questions ==
 
-= How do I use the module after I install it? =
-
-The module is loaded / activated when the URL in your browser location bar matches the format of
-&lt;http://www.yourblog.com/local/_city_/_state_&gt;. In other words, to load the module for Seattle, you'll want to point
-your browser to / link to &lt;http://www.yourblog.com/local/seattle/wa&gt;. See the "Description" tab for more info.
-
-= Can I specify a ZIP or a neighborhood instead of a city? =
-
-Yes! In version 2 of Local Market Explorer, support for neighborhoods was added. The neighborhood names must match the names that Zillow has
-made available via their API, but the Local Market Explorer admin area will help you to determine the neighborhoods that are available to you
-and what the links will be for each of those neighborhoods.
-
 = Can I customize the styling and display format? =
 
-Yes. All of the styles are controlled via an external CSS stylesheet named lme-client.css (located in the 'includes' folder). You can easily override any of the styles in there. Be aware, however, that the default styles were created to be compliant with all of the branding requirements of the different APIs. It's possible that overriding any of the styles could put you out of compliance with the API provider(s).
-
-= Do I have to show all of the panels? =
-
-No. You can turn off the About, Market Activity, Walk Score, TeachStreet, Education.com, and Yelp modules via the Local Market Explorer admin section of your WordPress installation.
-You can't turn off the Zillow "Market Activity" panel though as it provides data that's needed to make the necessary requests for all of the other modules.
+Yes. All of the styles are controlled via an external CSS stylesheet named lme-client.css (located in the 'css' folder). You can
+easily override any of the styles in there. Be aware, however, that the default styles were created to be compliant with all of
+the branding requirements of the different APIs. It's possible that overriding any of the styles could put you out of compliance
+with the API provider(s).
 
 = How do I draw attention to the pages for my target markets? =
 
-There are a number of pre-built images you can use to use as calls to action on your sidebar or anywhere else. The images are available in the following colors: black, blue, green, orange, and red. The images can be found in the following folder: http://www.yoursite.com/wp-content/plugins/local-market-explorer/images/badges
+There are a number of pre-built images you can use to use as calls to action on your sidebar or anywhere else. The images are
+available in the following colors: black, blue, green, orange, and red. The images can be found in the following folder:
+http://www.yoursite.com/wp-content/plugins/local-market-explorer/images/badges
 
 = How to alter image colors for the sidebar module to match my site? =
 
-We have already given you a few sample colors to choose from but if you want even more control to integrate these buttons to match your blog, you can do so with almost all image software. To do so in Adobe Photoshop, just open the image and go to 
+We have already given you a few sample colors to choose from but if you want even more control to integrate these buttons to
+match your blog, you can do so with almost all image software. To do so in Adobe Photoshop, just open the image and go to 
 
 Image > Adjustments > Hue/Saturation (Ctrl + U) 
 
-Adjust the sliders to match your site colors. Hue will change the color profile (blue to purple, for example) and the saturation is how strong or vibrant that color is. 
+Adjust the sliders to match your site colors. Hue will change the color profile (blue to purple, for example) and the saturation
+is how strong or vibrant that color is. 
 
-If you do not have access to Photoshop, this can also be accomplished with GIMP, a free image manipulation software. (Instructions are here: http://docs.gimp.org/en/gimp-tool-hue-saturation.html)
+If you do not have access to Photoshop, this can also be accomplished with GIMP, a free image manipulation software.
+(Instructions are here: http://docs.gimp.org/en/gimp-tool-hue-saturation.html)
 
 = How do I add a sidebar module listing my target markets? =
 
-From your wordpress admin interface, simply navigate to Appearance -> Widgets, then you can drag + drop the "LME Widget" from the "Available Widgets" to a sidebar on the right (such as "Sidebar 1"). Once the widget is placed, you can click the down-arrow on the newly placed widget to customize the Title and Badge.
-
-= My sidebar is not widgetized - how do I use this plugin on my blog? =
-
-You can always direct traffic to any city by simply linking to the page from within a blog post. For instance, you could link the word "Seattle" within a blog post to http://www.yoursite.com/local/Seattle/WA/. Alternatively, if you are a real estate agent specializing in Sammamish, Issaquah, and Redmond, here is some sample code to place a module in your sidebar that links to all your target markets:
-
-&lt;p align="center"&gt;&lt;img src="http://www.yoursite.com/wp-content/plugins/local-market-explorer/images/badges/120_lmegraph_orange.gif"&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="http://www.yoursite.com/local/Sammamish/WA/"&gt;Sammamish&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://www.yoursite.com/local/Redmond/WA/"&gt;Redmond&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://www.yoursite.com/local/Issaquah/WA/"&gt;Issaquah&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
+From your wordpress admin interface, simply navigate to Appearance -> Widgets, then you can drag + drop the "LME Widget" from
+the "Available Widgets" to a sidebar on the right (such as "Sidebar 1"). Once the widget is placed, you can click the
+down-arrow on the newly placed widget to customize the Title and Badge.
 
 = The Market Activity module is not getting populated with recent sales data - why? =
 
-The module is driven by a private API call that needs permissions to be granted to a specific Zillow API key. To request access to this API, simply fill out the API upgrade form located [here](http://www.zillow.com/webservice/APIUpgradeRequest.htm) and select "Local Market Explorer Wordpress Plugin" in the API request type field. Once the request is processed, your market activity module should populate automatically with recent sales data.
+The module is driven by a private API call that needs permissions to be granted to a specific Zillow API key.
+To request access to this API, simply fill out the API upgrade form located
+[here](http://www.zillow.com/webservice/APIUpgradeRequest.htm) and select "Local Market Explorer Wordpress Plugin" in the API
+request type field. Once the request is processed, your market activity module should populate automatically with recent sales
+data.
 
 == Screenshots ==
 
