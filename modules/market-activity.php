@@ -35,12 +35,20 @@ class LmeModuleMarketActivity {
 			$zillowUrlSuffix .= "&scrnnm=" . $options["zillow-username"];
 		$zillowUrlSuffix .= "}";
 		
-		if (isset($zillowRegion->neighborhood))
+		if (isset($zillowRegion->neighborhood)) {
 			$location = "{$zillowRegion->neighborhood}, {$zillowRegion->city}";
-		else if (isset($zillowRegion->zip))
+		} else if (isset($zillowRegion->zip)) {
 			$location = "{$zillowRegion->zip}";
-		else
+		} else {
 			$location = "{$zillowRegion->city}";
+		}
+		
+		$stateUrl = strtolower($zillowRegion->state);
+		$cityUrl = str_replace(" ", "-", strtolower($zillowRegion->city));
+		if ($stateUrl && $cityUrl) {
+			$mortgageUrl = "http://www.zillow.com/mortgage-rates/{$stateUrl}/{$cityUrl}/{$zillowUrlSuffix}";
+			$mortgageUrlHtml = "View <a href=\"{$mortgageUrl}\">{$zillowRegion->city}, {$zillowRegion->state} mortgage rates on Zillow</a>";
+		}
 		
 		$content = <<<HTML
 			<h2 class="lme-module-heading">Real Estate Market Activity</h2>
@@ -73,7 +81,8 @@ HTML;
 		}
 		
 		$content .= <<<HTML
-				<a href="{$activity->links->forSale}{$zillowUrlSuffix}">See {$location} real estate and homes for sale</a>
+				<a href="{$activity->links->forSale}{$zillowUrlSuffix}">See {$location} real estate and homes for sale</a><br />
+				{$mortgageUrlHtml}
 			</div>
 HTML;
 		return $content;

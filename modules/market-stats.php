@@ -25,11 +25,9 @@ class LmeModuleMarketStats {
 	static function getModuleHtml($apiResponses) {
 		$demographics = simplexml_load_string($apiResponses["demographics"])->response;
 		$regionChart = simplexml_load_string($apiResponses["region-chart"])->response;
-		$zillowRegion = $demographics->region;
-		$locationName;
 		
+		$zillowRegion = $demographics->region;
 		$options = get_option(LME_OPTION_NAME);
-		$zillowRegion = $activity->region;
 		$zillowUrlSuffix = "#{scid=gen-api-wplugin";
 		if (!empty($options["zillow-username"]))
 			$zillowUrlSuffix .= "&scrnnm=" . $options["zillow-username"];
@@ -46,6 +44,12 @@ class LmeModuleMarketStats {
 			$location = "{$zillowRegion->city}";
 		}
 		$zillowLocationUrl = $demographics[0]->links->main;
+		
+		$stateUrl = strtolower($zillowRegion->state);
+		if ($stateUrl) {
+			$mortgageUrl = "http://www.zillow.com/mortgage-rates/{$stateUrl}/{$zillowUrlSuffix}";
+			$mortgageUrlHtml = "Check out <a href=\"{$mortgageUrl}\">{$zillowRegion->state} mortgage rates on Zillow</a>";
+		}
 		
 		$affordabilityData = $demographics[0]->xpath("pages/page[name='Affordability']/tables/table[name='Affordability Data']/data");
 		$zhvi = $affordabilityData[0]->xpath("attribute[name='Zillow Home Value Index']/values/{$localNodeName}/value");
@@ -123,7 +127,8 @@ HTML;
 		$content .= <<<HTML
 				</table>
 				<div class="lme-market-location-url">
-					<a href="{$zillowLocationUrl}{$zillowUrlSuffix}">See {$location} home values at Zillow.com</a>
+					<a href="{$zillowLocationUrl}{$zillowUrlSuffix}">See {$location} home values at Zillow.com</a><br />
+					{$mortgageUrlHtml}
 				</div>
 				<a href="http://www.zillow.com/{$zillowUrlSuffix}"><img class="lme-market-logo" src="http://www.zillow.com/static/logos/Zillowlogo_150x40.gif" /></a>
 			</div>
