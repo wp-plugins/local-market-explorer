@@ -49,6 +49,7 @@ HTML;
 		}
 		
 		$content .= <<<HTML
+				<div style="clear: both;"></div> <!-- IE 6 fix -->
 			</div>
 HTML;
 		return $content;

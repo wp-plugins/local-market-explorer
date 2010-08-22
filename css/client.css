@@ -9,6 +9,7 @@
 	padding: 10px;
 	overflow: auto;
 	margin-bottom: 30px;
+	position: relative;
 }
 .lme-module th {
 	text-align: left;

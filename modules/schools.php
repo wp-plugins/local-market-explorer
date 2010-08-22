@@ -53,50 +53,52 @@ HTML;
 		$content .= <<<HTML
 				</div>
 				<div class="lme-right">
-					<div class="lme-filter">
+					<div class="lme-filter lme-school-grade-filter" data-filter-type="grade">
 						<b>Grade level filter</b>
 						<div>
-							<input type="radio" name="lme-grade-level" id="lme-grade-level-all" checked />
+							<input type="radio" name="lme-grade-level" id="lme-grade-level-all" data-filter="" checked />
 							<label for="lme-grade-level-all">All</label>
 						</div>
 						<div>
-							<input type="radio" name="lme-grade-level" id="lme-grade-level-elem" />
+							<input type="radio" name="lme-grade-level" id="lme-grade-level-elem" data-filter="Elementary" />
 							<label for="lme-grade-level-elem">Elem. Schools</label>
 						</div>
 						<div>
-							<input type="radio" name="lme-grade-level" id="lme-grade-level-middle" />
+							<input type="radio" name="lme-grade-level" id="lme-grade-level-middle" data-filter="Middle" />
 							<label for="lme-grade-level-middle">Middle Schools</label>
 						</div>
 						<div>
-							<input type="radio" name="lme-grade-level" id="lme-grade-level-high" />
+							<input type="radio" name="lme-grade-level" id="lme-grade-level-high" data-filter="High" />
 							<label for="lme-grade-level-high">High Schools</label>
 						</div>
 					</div>
 					
-					<div class="lme-filter">
+					<div class="lme-filter lme-school-type-filter" data-filter-type="type">
 						<b>Schoool type filter</b>
 						<div>
-							<input type="radio" name="lme-school-type" id="lme-school-type-all" checked />
+							<input type="radio" name="lme-school-type" id="lme-school-type-all" data-filter="" checked />
 							<label for="lme-school-type-all">All</label>
 						</div>
 						<div>
-							<input type="radio" name="lme-school-type" id="lme-school-type-public" />
+							<input type="radio" name="lme-school-type" id="lme-school-type-public" data-filter="Public" />
 							<label for="lme-school-type-public">Public Schools</label>
 						</div>
 						<div>
-							<input type="radio" name="lme-school-type" id="lme-school-type-private" />
+							<input type="radio" name="lme-school-type" id="lme-school-type-private" data-filter="Private" />
 							<label for="lme-school-type-private">Private Schools</label>
 						</div>
 						<div>
-							<input type="radio" name="lme-school-type" id="lme-school-type-charter" />
+							<input type="radio" name="lme-school-type" id="lme-school-type-charter" data-filter="Charter" />
 							<label for="lme-school-type-charter">Charter Schools</label>
 						</div>
 					</div>
 				</div>
+				<div style="clear: both;"></div> <!-- IE 6 fix -->
 				<div class="lme-market-location-url">
 					<a href="{$locationUrl}">See more info on {$location} schools</a>
 				</div>
 				<img class="lme-market-logo" src="http://www.education.com/i/logo/edu-logo-150x32.jpg" />
+				<div style="clear: both;"></div> <!-- IE 6 fix -->
 			</div>
 HTML;
 		return $content;

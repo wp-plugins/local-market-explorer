@@ -55,6 +55,7 @@ HTML;
 					<a href="{$apiResponse->region_browse_url}">Find more classes and teachers in {$apiResponse->region}</a>
 				</div>
 				<a href="http://www.teachstreet.com"><img class="lme-logo" src="{$logoSrc}" /></a>
+				<div style="clear: both;"></div> <!-- IE 6 fix -->
 			</div>
 HTML;
 		return $content;

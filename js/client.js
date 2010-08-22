@@ -1,6 +1,7 @@
 var lme = lme || {};
 
-lme.loadYelpMaps = (function() {
+// init yelp map(s)
+(function() {
 	var $ = jQuery;
 	
 	$('.lme-yelp .lme-map').each(function() {
@@ -47,7 +48,9 @@ lme.loadYelpMaps = (function() {
 		}
 	});
 })();
-lme.loadNileGuideMaps = (function() {
+
+//init nile guide map(s)
+(function() {
 	var $ = jQuery;
 	
 	$('.lme-seedo-map').each(function() {
@@ -93,5 +96,34 @@ lme.loadNileGuideMaps = (function() {
 				});
 			})();
 		}
+	});
+})();
+
+// init school filters
+(function() {
+	var $ = jQuery;
+	var gradeMatcher = new RegExp(''), typeMatcher = new RegExp('');
+	
+	$('.lme-school-grade-filter, .lme-school-type-filter').click(function(e) {
+		var filter = e.target.getAttribute('data-filter');
+		var filterType = e.currentTarget.getAttribute('data-filter-type');
+		
+		// if data-for isn't set on the target, this will be null. if it's just an empty string, 'all' was clicked and we want
+		// to continue 
+		if (filter == null)
+			return;
+		
+		if (filterType == 'type')
+			typeMatcher = new RegExp(filter);
+		else if (filterType == 'grade')
+			gradeMatcher = new RegExp(filter);
+		
+		// now we hide any school that doesn't match our filters and show any that were previously hidden
+		$(this).closest('.lme-schools').find('.lme-school').each(function() {
+			var grade = this.getAttribute('data-grade');
+			var type = this.getAttribute('data-type');
+			
+			this.style.display = gradeMatcher.test(grade) && typeMatcher.test(type) ? '' : 'none';
+		});
 	});
 })();

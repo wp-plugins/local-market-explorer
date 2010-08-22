@@ -33,6 +33,7 @@ class LmeModuleAboutArea {
 			<h2 class="lme-module-heading">About Area</h2>
 			<div class="lme-module lme-about-area">
 				{$description}
+				<div style="clear: both;"></div> <!-- IE 6 fix -->
 			</div>
 HTML;
 	}

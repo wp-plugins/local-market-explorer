@@ -99,6 +99,7 @@ HTML;
 		$content .= <<<HTML
 				</div>
 				<a href="http://www.yelp.com"><img class="lme-market-logo" src="http://media2.px.yelpcdn.com/static/20091130149848283/i/developers/yelp_logo_75x38.png" /></a>
+				<div style="clear: both;"></div> <!-- IE 6 fix -->
 			</div>
 HTML;
 		return $content;

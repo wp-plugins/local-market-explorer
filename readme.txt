@@ -7,33 +7,52 @@ Requires at least: 2.8
 Tested up to: 3.0.1
 Stable tag: 3.0
 
-This plugin allows WordPress to load data from a number of real estate and neighborhood APIs to be presented all within a single
-page in WordPress.
+This plugin allows WordPress to load data from a number of neighborhood-related APIs to be presented on a single page or within
+your own pages / posts.
 
 == Description ==
 
-This plugin allows for WordPress to load in data from the following APIs:
+This plugin allows WordPress to load data from a number of neighborhood-related APIs to be presented on a single page or within
+your own pages / posts. The different modules that this plugin contains are as follows:
 
-* [Zillow](http://www.zillow.com)
-* [Education.com](http://www.education.com)
-* [Walk Score](http://www.walkscore.com)
-* [Yelp](http://www.yelp.com)
-* [TeachStreet](http://www.teachstreet.com)
-* [Nile Guide](http://www.nileguide.com)
+* Real Estate Market Stats (via [Zillow](http://www.zillow.com))
+* Real Estate Market Activity (via Zillow)
+* Schools (via [Education.com](http://www.education.com))
+* Walk Score (via [Walk Score](http://www.walkscore.com))
+* Yelp (via [Yelp](http://www.yelp.com))
+* Local Classes (via [TeachStreet](http://www.teachstreet.com))
+* Local Content from NileGuide (via [Nile Guide](http://www.nileguide.com))
 
-The data from the different APIs is then presented on a single page that is dynamically created on the server depending on the
-specially-crafted URL that is being accessed. The format of the URL to load the plugin is as follows:
-&lt;http://www.example.com/local/_city_/_state_&gt;.
+To use the modules on the pre-generated Local Market Explorer "virtual pages," you don't need to do anything other than link to
+or visit the specially-crafted URLs that Local Market Explorer intercepts. The formats of these URLs look like this:
+
+* &lt;http://www.yoursite.com/local/_city_/_state_/&gt;
+* &lt;http://www.yoursite.com/local/_neighborhood_/_city_/_state_/&gt;
+* &lt;http://www.yoursite.com/local/_zip_/&gt;
 
 For example, to load the Local Market Explorer for Seattle, WA, you'd simply need to point your browser to
-&lt;http://www.example.com/local/seattle/wa&gt;. If you have spaces in your city name, you can use hyphens for the spaces in the URL,
-like so: &lt;http://www.example.com/local/rancho-santa-margarita/ca&gt;.
+&lt;http://www.yoursite.com/local/seattle/wa/&gt;. If you have spaces in your city name, you can use hyphens for the spaces in
+the URL, like so: &lt;http://www.yoursite.com/local/laguna-beach/ca/&gt;. You DO NOT need to pre-initialize these
+URLs to work; simply having Local Market Explorer installed is enough to get any of these URLs to load the appropriate data.
 
-At any time, you can link to any city in any state that you'd like. While not all of the APIs have data for every single city in the United States, you'll find that most cities are sufficiently covered by nearly all of the APIs.
+To use the modules with your own pages and posts, you only need to insert the Local Market Explorer shortcode text via the
+page / post editor. There's a small map icon in the toolbar editor that can help you do this.
 
-This plugin is open-source donationware. I'm willing to accept and integrate well-written patches into the code, but the continued development of the module (new features, bug fixes, etc) by the plugin author is funded by donations. If you'd like to donate, please [donate via PayPal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=10178626).
+More information and help can be found in the "Help" tab in the admin once the plugin is installed.
 
-If you'd like to contribute a feature suggestion or need to document a bug, please use the [User Voice forum](http://localmarketexplorer.uservoice.com/) set up specifically for that purpose. With User Voice, each user gets a fixed number of votes that they can cast for any particular bug or feature. The higher the number of votes for an item, the higher the priority will be for that item as development commences on the plugin itself.
+If you'd like to contribute a feature suggestion or need to document a bug, please use the
+[User Voice forum](http://localmarketexplorer.uservoice.com/) set up specifically for that purpose. With User Voice, each user
+gets a fixed number of votes that they can cast for any particular bug or feature. The higher the number of votes for an item,
+the higher the priority will be for that item as development commences on the plugin itself.
+
+This plugin is open-source donationware. I'm willing to accept and integrate well-written patches into the code, but the
+continued development of the plugin (new features, bug fixes, etc) by the plugin author is funded by either donations or
+companies willing to pay a nominal fee to have their data integrated. You can thank Zillow and Education.com for funding the
+vast majority of the development. If you'd like to donate towards a particular feature, please
+[donate via PayPal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=10178626). Getting me something sweet
+on [my Amazon wishlist](http://www.amazon.com/wishlist/7EQB35SN16H9/ref=cm_wl_rlist_go) would certainly help grease the wheels
+for new features as well. I'm happily employed at [Diverse Solutions](http://www.diversesolutions.com) though and so some
+feature ideas you may have are off-limits for me to work on.
 
 == Installation ==
 
