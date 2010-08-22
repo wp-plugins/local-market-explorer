@@ -59,7 +59,7 @@
 }
 .lme-recently-sold img {
 	float: left;
-	margin: 5px 15px 5px 0 !important;
+	margin: 5px 10px 5px 0 !important;
 	border: 1px solid #999;
 }
 .lme-recently-sold .lme-data {
@@ -150,6 +150,7 @@
 
 .lme-nileguide .lme-seedo {
 	margin-bottom: 15px;
+	overflow: auto;
 }
 .lme-nileguide .lme-seedo-map {
 	height: 300px;
@@ -162,6 +163,9 @@
 	float: left;
 	margin: 5px 15px 5px 0 !important;
 	border: 1px solid #999;
+}
+.lme-nileguide .lme-trips {
+	overflow: auto;
 }
 .lme-nileguide .lme-logo {
 	float: right;
