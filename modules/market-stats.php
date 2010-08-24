@@ -4,6 +4,10 @@ class LmeModuleMarketStats {
 	static function getApiUrls($opt_neighborhood, $opt_city, $opt_state, $opt_zip) {
 		$options = get_option(LME_OPTION_NAME);
 		$apiKey = $options["api-keys"]["zillow"];
+		
+		if (!$apiKey)
+			return array();
+		
 		$urlBase = "http://www.zillow.com/webservice/";
 		
 		if (isset($opt_zip)) {
@@ -23,6 +27,9 @@ class LmeModuleMarketStats {
 		);
 	}
 	static function getModuleHtml($apiResponses) {
+		if (!$apiResponses["demographics"])
+			return "";
+		
 		$demographics = simplexml_load_string($apiResponses["demographics"])->response;
 		$regionChart = simplexml_load_string($apiResponses["region-chart"])->response;
 		

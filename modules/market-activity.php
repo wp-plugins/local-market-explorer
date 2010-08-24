@@ -4,6 +4,10 @@ class LmeModuleMarketActivity {
 	static function getApiUrls($opt_neighborhood, $opt_city, $opt_state, $opt_zip) {
 		$options = get_option(LME_OPTION_NAME);
 		$apiKey = $options["api-keys"]["zillow"];
+		
+		if (!$apiKey)
+			return array();
+		
 		$url = "http://www.zillow.com/webservice/FMRWidget.htm?status=recentlySold&zws-id={$apiKey}&region=";
 		
 		if (isset($opt_zip)) {
@@ -22,6 +26,9 @@ class LmeModuleMarketActivity {
 		);
 	}
 	static function getModuleHtml($apiResponses) {
+		if (!$apiResponses["recent-sales"])
+			return "";
+		
 		$activity = simplexml_load_string($apiResponses["recent-sales"])->response;
 		$arrayActivity = (array)$activity;
 		if (empty($arrayActivity))

@@ -92,6 +92,7 @@
 	border-right: 1px solid #eee;
 	float: right;
 	width: 33%;
+	overflow: hidden;
 }
 .lme-schools .lme-filter {
 	margin: 15px auto;

@@ -40,19 +40,19 @@ page / post editor. There's a small map icon in the toolbar editor that can help
 
 More information and help can be found in the "Help" tab in the admin once the plugin is installed.
 
-If you'd like to contribute a feature suggestion or need to document a bug, please use the
-[User Voice forum](http://localmarketexplorer.uservoice.com/) set up specifically for that purpose. With User Voice, each user
-gets a fixed number of votes that they can cast for any particular bug or feature. The higher the number of votes for an item,
-the higher the priority will be for that item as development commences on the plugin itself.
-
 This plugin is open-source donationware. I'm willing to accept and integrate well-written patches into the code, but the
 continued development of the plugin (new features, bug fixes, etc) by the plugin author is funded by either donations or
 companies willing to pay a nominal fee to have their data integrated. You can thank Zillow and Education.com for funding the
-vast majority of the development. If you'd like to donate towards a particular feature, please
+vast majority of the development thus far. If you'd like to donate towards a particular feature however, please
 [donate via PayPal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=10178626). Getting me something sweet
 on [my Amazon wishlist](http://www.amazon.com/wishlist/7EQB35SN16H9/ref=cm_wl_rlist_go) would certainly help grease the wheels
 for new features as well. I'm happily employed at [Diverse Solutions](http://www.diversesolutions.com) though and so some
 feature ideas you may have are off-limits for me to work on.
+
+If you'd like to contribute a feature suggestion or need to document a bug, please use the
+[User Voice forum](http://localmarketexplorer.uservoice.com/) set up specifically for that purpose. With User Voice, each user
+gets a fixed number of votes that they can cast for any particular bug or feature. The higher the number of votes for an item,
+the higher the priority will be for that item as development commences on the plugin itself.
 
 == Installation ==
 

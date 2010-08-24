@@ -118,6 +118,7 @@ HTML;
 						<li><a href="#general-options">General Options</a></li>
 						<li><a href="#module-page-options">Module Page Options</a></li>
 						<li><a href="#help">Help</a></li>
+						<li><a href="#about">About</a></li>
 					</ul>
 					<div>
 						<div>
@@ -323,6 +324,28 @@ HTML;
 									<li>[lme-module type="walk-score" zip="92651"]</li>
 								</ul>
 							</div>
+						</div>
+						<div>
+							<p>This plugin is open-source donationware. I'm willing to accept and integrate well-written patches into the code, but the
+							continued development of the plugin (new features, bug fixes, etc) by the plugin author is funded by either donations or
+							companies willing to pay a nominal fee to have their data integrated. You can thank Zillow and Education.com for funding the
+							vast majority of the development thus far, although other companies have contributed as well. If you'd like to donate towards
+							a particular feature or just to say thanks, feel free to
+							<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=10178626"> donate via PayPal</a>. Getting me
+							something sweet on <a href="http://www.amazon.com/wishlist/7EQB35SN16H9/ref=cm_wl_rlist_go">my Amazon wishlist</a> would
+							certainly be a great thank-you gift as well and would grease the wheels for new features. I'm happily employed at
+							<a href="http://www.diversesolutions.com">Diverse Solutions</a> though and so some feature ideas you may have are off-limits
+							for me to work on.</p>
+							
+							<p>If you'd like to contribute a feature suggestion or need to document a bug, please use the
+							<a href="http://localmarketexplorer.uservoice.com/">User Voice feedback forum</a> set up specifically for that purpose. With
+							User Voice, each user gets a fixed number of votes that they can cast for any particular bug or feature. The higher the number
+							of votes for an item, the higher the priority will be for that item as development commences on the plugin itself.</p>
+							
+							<p>If you'd like to contact me, please use the contact link on the
+							<a href="http://localmarketexplorer.uservoice.com/">User Voice forum</a></p>
+							
+							<p>- Andrew Mattie, plugin author</p>
 						</div>
 					</div>
 				</div>
