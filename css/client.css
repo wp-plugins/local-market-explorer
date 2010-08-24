@@ -14,6 +14,9 @@
 .lme-module th {
 	text-align: left;
 }
+.lme-module table {
+	width: 100%;
+}
 
 .lme-zhvi {
 	text-align: center;
