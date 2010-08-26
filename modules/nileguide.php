@@ -30,7 +30,7 @@ class LmeModuleNileGuide {
 		return array( "nileguide" => $url );
 	}
 	static function getModuleHtml($modules) {
-		$apiResponse = json_decode($modules["nileguide"])->feed->entry;
+		$apiResponse = @json_decode($modules["nileguide"])->feed->entry;
 		
 		if (empty($apiResponse) || count($apiResponse) == 0)
 			return;

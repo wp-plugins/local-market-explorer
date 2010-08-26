@@ -17,7 +17,11 @@ class LmeModuleNeighborhoods {
 		if (!empty($opt_neighborhood) || !empty($opt_zip))
 			return;
 		
-		$neighborhoods = simplexml_load_string($apiResponses["neighborhoods"])->response->list->region;
+		$neighborhoods = @simplexml_load_string($apiResponses["neighborhoods"]);
+		if (empty($neighborhoods))
+			return;
+		
+		$neighborhoods = $neighborhoods->response->list->region;
 		if (!count($neighborhoods))
 			return;
 		

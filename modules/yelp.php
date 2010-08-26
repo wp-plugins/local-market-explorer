@@ -22,7 +22,7 @@ class LmeModuleYelp {
 		);
 	}
 	static function getModuleHtml($apiResponses) {
-		$yelpResponse = json_decode($apiResponses["yelp"])->businesses;
+		$yelpResponse = @json_decode($apiResponses["yelp"])->businesses;
 		
 		if (empty($yelpResponse))
 			return;

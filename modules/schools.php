@@ -18,7 +18,7 @@ class LmeModuleSchools {
 		);
 	}
 	static function getModuleHtml($apiResponses) {
-		$schoolSearch = unserialize($apiResponses["school-search"]);
+		$schoolSearch = @unserialize($apiResponses["school-search"]);
 		
 		if (empty($schoolSearch))
 			return;

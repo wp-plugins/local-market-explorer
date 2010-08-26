@@ -30,8 +30,12 @@ class LmeModuleMarketStats {
 		if (!$apiResponses["demographics"])
 			return "";
 		
-		$demographics = simplexml_load_string($apiResponses["demographics"])->response;
-		$regionChart = simplexml_load_string($apiResponses["region-chart"])->response;
+		$demographics = @simplexml_load_string($apiResponses["demographics"])->response;
+		$regionChart = @simplexml_load_string($apiResponses["region-chart"])->response;
+		
+		// it's unfortunate, but if Zillow fails to load, we don't want to hold up everything else
+		if (empty($demographics) || empty($regionChart))
+			return "";
 		
 		$zillowRegion = $demographics->region;
 		$options = get_option(LME_OPTION_NAME);

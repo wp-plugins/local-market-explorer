@@ -134,6 +134,8 @@ class LmeModulesPage {
 				$content .= LmeModuleNeighborhoods::getModuleHtml($modules["neighborhoods"], $neighborhood, $city, $state, $zip);
 			if ($module == "nileguide")
 				$content .= LmeModuleNileGuide::getModuleHtml($modules["nileguide"], $neighborhood, $city, $state, $zip);
+			if ($module == "dsidxpress")
+				$content .= LmeModuleDsIdxPress::getModuleHtml($neighborhood, $city, $state, $zip);
 		}
 		
 		return $content;

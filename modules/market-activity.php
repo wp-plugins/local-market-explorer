@@ -29,7 +29,7 @@ class LmeModuleMarketActivity {
 		if (!$apiResponses["recent-sales"])
 			return "";
 		
-		$activity = simplexml_load_string($apiResponses["recent-sales"])->response;
+		$activity = @simplexml_load_string($apiResponses["recent-sales"])->response;
 		$arrayActivity = (array)$activity;
 		if (empty($arrayActivity))
 			return;

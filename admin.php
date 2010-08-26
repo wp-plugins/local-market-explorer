@@ -42,16 +42,16 @@ HTML;
 		$checkedModules = array(); 
 		
 		$moduleInfo = array(
-			"about"				=> array("name" => "About area",		"description" => "your own description"),
-			"market-stats"		=> array("name" => "Market statistics",	"description" => "area statistics from Zillow"),
-			"neighborhoods"		=> array("name" => "Neighborhoods",		"description" => "neighborhoods (only for cities)"),
-			"market-activity"	=> array("name" => "Market activity",	"description" => "recent sales from Zillow"),
-			"local-photos"		=> array("name" => "Local photos",		"description" => "from Panoramio"),
-			"schools"			=> array("name" => "Schools",			"description" => "from Education.com"),
-			"walk-score"		=> array("name" => "Walk Score",		"description" => "see www.walkscore.com"),
-			"yelp"				=> array("name" => "Yelp reviews",		"description" => "from Yelp"),
-			"teachstreet"		=> array("name" => "Classes",			"description" => "from Teachstreet"),
-			"nileguide"			=> array("name" => "Things to do",		"description" => "from NileGuide")
+			"about"				=> array("name" => "About area",			"description" => "your own description"),
+			"market-stats"		=> array("name" => "Market statistics",		"description" => "area statistics from <a href=\"http://www.zillow.com\">Zillow</a>"),
+			"neighborhoods"		=> array("name" => "Neighborhoods",			"description" => "neighborhoods (only for cities)"),
+			"market-activity"	=> array("name" => "Market activity",		"description" => "recent sales from <a href=\"http://www.zillow.com\">Zillow</a>"),
+			"schools"			=> array("name" => "Schools",				"description" => "from <a href=\"http://www.education.com\">Education.com</a>"),
+			"walk-score"		=> array("name" => "Walk Score",			"description" => "see <a href=\"http://www.walkscore.com\">Walk Score</a>"),
+			"yelp"				=> array("name" => "Yelp reviews",			"description" => "from <a href=\"http://www.yelp.com\">Yelp</a>"),
+			"teachstreet"		=> array("name" => "Classes",				"description" => "from <a href=\"http://www.teachstreet.com\">Teachstreet</a>"),
+			"nileguide"			=> array("name" => "Things to do",			"description" => "from <a href=\"http://www.nileguide.com\">NileGuide</a>"),
+			"dsidxpress"		=> array("name" => "Newest real estate",	"description" => "from <a href=\"http://www.dsidxpress.com\">dsIDXpress</a> by <a href=\"http://www.diversesolutions.com\">Diverse Solutions</a>")
 		);
 	
 		$listItemHtml = <<<HTML
@@ -162,12 +162,6 @@ HTML;
 							
 							<h3 style="margin-top: 40px;">Other Options</h3>
 							<ul id="lme-other-options">
-								<li>
-									<input type="checkbox" name="local-market-explorer[disallow-sitemap-without-description]"
-										id="local-market-explorer[disallow-sitemap-without-description]" <?php echo empty($options["disallow-sitemap-without-description"]) ? "" : "checked"; ?> />
-									<label for="local-market-explorer[disallow-sitemap-without-description]">
-										<i>Don't</i> allow pages without descriptions to be added to your sitemap?</label>
-								</li>
 								<li>
 									<input type="text" name="local-market-explorer[zillow-username]"
 										id="local-market-explorer[zillow-username]" value="<?php echo $options["zillow-username"] ?>" />
@@ -310,6 +304,8 @@ HTML;
 									<li>teachstreet</li>
 									<li>nileguide</li>
 								</ul>
+								<p>
+									Note that dsIDXpress is NOT included in that list as it has its own shortcodes you can use.
 								<p>
 									For the location attributes, you'll need to specify either "city" and "state",
 									"neighborhood" "city" and "state", or "zip". You'll want to use the full names

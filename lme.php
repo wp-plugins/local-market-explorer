@@ -57,6 +57,7 @@ if (is_admin()) {
 	require_once("modules/about-area.php");
 	require_once("modules/neighborhoods.php");
 	require_once("modules/nileguide.php");
+	require_once("modules/dsidxpress.php");
 }
 require_once("widgets/areas.php");
 require_once("modules-page-rewrite.php");

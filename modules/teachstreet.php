@@ -21,7 +21,11 @@ class LmeModuleTeachStreet {
 		);
 	}
 	static function getModuleHtml($classes) {
-		$apiResponse = json_decode($classes["teachstreet"]);
+		$apiResponse = @json_decode($classes["teachstreet"]);
+		
+		if (empty($apiResponse))
+			return;
+		
 		$classes = $apiResponse->items;
 		
 		if (empty($classes))
