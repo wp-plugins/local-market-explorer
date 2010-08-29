@@ -4,7 +4,7 @@ class LmeModuleYelp {
 	static function getApiUrls($opt_neighborhood, $opt_city, $opt_state, $opt_zip) {
 		$options = get_option(LME_OPTION_NAME);
 		$apiKey = $options["api-keys"]["yelp"];
-		$url = "http://api.yelp.com/business_review_search?ywsid={$apiKey}&limit=20&category=active+food+localflavor+nightlife+restaurants&location=";
+		$url = "http://api.yelp.com/business_review_search?ywsid={$apiKey}&limit=20&category=active+food+localflavor+nightlife+restaurants&radius=3&location=";
 		
 		if (isset($opt_zip)) {
 			$locationParams = "{$opt_zip}";
