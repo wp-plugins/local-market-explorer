@@ -105,6 +105,13 @@
 	margin: 0 0 0 15px;
 }
 
+.lme-yelp-logo {
+	vertical-align: middle !important;
+	margin: 3px 0 !important;
+	padding: 0 !important;
+	border-style: none !important;
+	background-color: transparent !important;
+}
 .lme-yelp .lme-map {
 	height: 300px;
 	border: 1px solid #eee;

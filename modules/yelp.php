@@ -4,7 +4,7 @@ class LmeModuleYelp {
 	static function getApiUrls($opt_neighborhood, $opt_city, $opt_state, $opt_zip) {
 		$options = get_option(LME_OPTION_NAME);
 		$apiKey = $options["api-keys"]["yelp"];
-		$url = "http://api.yelp.com/business_review_search?ywsid={$apiKey}&limit=20&category=active+food+localflavor+nightlife+restaurants&radius=3&location=";
+		$url = "http://api.yelp.com/business_review_search?ywsid={$apiKey}&limit=20&category=active+food+localflavor+nightlife+restaurants&location=";
 		
 		if (isset($opt_zip)) {
 			$locationParams = "{$opt_zip}";
@@ -59,7 +59,9 @@ class LmeModuleYelp {
 				lme.yelpData = lme.yelpData || {};
 				lme.yelpData['{$resultsId}'] = {$jsonResultsSerialized};
 			</script>
-			<h2 class="lme-module-heading">Yelp</h2>
+			<h2 class="lme-module-heading">
+				<a href="http://www.yelp.com"><img src="http://media2.px.yelpcdn.com/static/20091130149848283/i/developers/yelp_logo_75x38.png" alt="Yelp" class="lme-yelp-logo" /></a>
+			</h2>
 			<div class="lme-module lme-yelp">
 				<div class="lme-map" data-resultsid="{$resultsId}"></div>
 				<div class="lme-businesses">
@@ -98,7 +100,6 @@ HTML;
 		}
 		$content .= <<<HTML
 				</div>
-				<a href="http://www.yelp.com"><img class="lme-market-logo" src="http://media2.px.yelpcdn.com/static/20091130149848283/i/developers/yelp_logo_75x38.png" /></a>
 				<div style="clear: both;"></div> <!-- IE 6 fix -->
 			</div>
 HTML;
