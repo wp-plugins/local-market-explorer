@@ -1,4 +1,3 @@
-var lme = lme || {};
 
 // init yelp map(s)
 (function() {
