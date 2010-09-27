@@ -15,16 +15,7 @@ class LmeXmlSitemaps {
 			$areas = $wpdb->get_results("SELECT neighborhood, city, state, zip FROM " . LME_AREAS_TABLE . " ORDER BY state, city, neighborhood, zip");
 
 			foreach ($areas as $area) {
-				if (!empty($area->zip)) {
-					$locationUrl = $area->zip;
-				} else {
-					$cityUrl = urlencode(strtolower(str_replace(array("-", " "), array("_", "-"), $area->city)));
-					if (!empty($area->neighborhood))
-						$neighborhoodUrl = urlencode(strtolower(str_replace(array("-", " "), array("_", "-"), $area->neighborhood))) . "/";
-					$locationUrl = "{$neighborhoodUrl}{$cityUrl}/" . strtolower($area->state);
-					
-				}
-				$url = "{$blogUrl}/local/{$locationUrl}/";
+				$url = $blogUrl . LmeModulesPageRewrite::getCanonicalLink($area->zip, $area->city, $area->neighborhood, $area->state);
 				$generatorObject->AddUrl($url, time(), "daily", ".5");
 			}
 		}

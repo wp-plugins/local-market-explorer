@@ -30,10 +30,6 @@ class LmeModuleNeighborhoods {
 			array_push($sortedNeighborhoods, (string)$neighborhood->name);
 		sort($sortedNeighborhoods);
 		
-		$blogUrl = get_bloginfo("url");
-		$hyphenizedCity = strtolower(str_replace(" ", "-", $opt_city));
-		$lcaseState = strtolower($opt_state);
-		
 		$city = ucwords($opt_city);
 		$state = strtoupper($opt_state);
 		
@@ -43,11 +39,10 @@ class LmeModuleNeighborhoods {
 HTML;
 		
 		foreach ($sortedNeighborhoods as $neighborhood) {
-			$hyphenizedNeighborhood = strtolower(str_replace(" ", "-", $neighborhood));
+			$lmeUrl = LmeModulesPageRewrite::getCanonicalLink(null, $city, $neighborhood, $state);
 			$content .= <<<HTML
 				<div class="lme-neighborhood">
-					<a href="{$blogUrl}/local/{$hyphenizedNeighborhood}/{$hyphenizedCity}/{$lcaseState}/">
-						{$neighborhood}</a>
+					<a href="{$lmeUrl}">{$neighborhood}</a>
 				</div>
 HTML;
 		}

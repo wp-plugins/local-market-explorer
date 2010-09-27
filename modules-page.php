@@ -53,6 +53,11 @@ class LmeModulesPage {
 		// no RSS feeds
 		remove_action("wp_head", "feed_links");
 		remove_action("wp_head", "feed_links_extra");
+		
+		$neighborhood = self::getNeighborhood();
+		$city = self::getCity();
+		$state = self::getState();
+		$zip = self::getZip();
 
 		$wp_query->found_posts = 0;
 		$wp_query->max_num_pages = 0;
@@ -71,7 +76,7 @@ class LmeModulesPage {
 			"post_content"		=> self::getPageContent(),
 			"post_date"			=> date("c"),
 			"post_date_gmt"		=> gmdate("c"),
-			"post_name"			=> self::getCanonicalLink(),
+			"post_name"			=> LmeModulesPageRewrite::getCanonicalLink($zip, $city, $neighborhood, $state),
 			"post_parent"		=> 0,
 			"post_status"		=> "publish",
 			"post_title"		=> self::getPageTitle(),
@@ -140,20 +145,6 @@ class LmeModulesPage {
 		
 		return $content;
 	}
-	static function getCanonicalLink() {
-		global $wp_query;
-		
-		$neighborhood = strtolower($wp_query->query["lme-neighborhood"]);
-		$city = strtolower($wp_query->query["lme-city"]);
-		$state = strtolower($wp_query->query["lme-state"]);
-		
-		if (!empty($wp_query->query["lme-zip"]))
-			return "/local/{$wp_query->query["lme-zip"]}/";
-		else if (!empty($neighborhood))
-			return "/local/{$neighborhood}/{$city}/{$state}/";
-		else
-			return "/local/{$city}/{$state}/";
-	}
 	static function getFinalApiUrls() {
 		$neighborhood = self::getNeighborhood();
 		$city = self::getCity();
@@ -183,11 +174,11 @@ class LmeModulesPage {
 	}
 	static function getNeighborhood() {
 		global $wp_query;
-		return str_replace(array("-", "_"), array(" ", "-"), $wp_query->query["lme-neighborhood"]);
+		return urldecode(str_replace(array("-", "_"), array(" ", "-"), $wp_query->query["lme-neighborhood"]));
 	}
 	static function getCity() {
 		global $wp_query;
-		return str_replace(array("-", "_"), array(" ", "-"), $wp_query->query["lme-city"]);
+		return urldecode(str_replace(array("-", "_"), array(" ", "-"), $wp_query->query["lme-city"]));
 	}
 	static function getState() {
 		global $wp_query;

@@ -20,5 +20,34 @@ class LmeModulesPageRewrite {
 
 		return $queryVars;
 	}
+	static function getCanonicalLink($zip, $city, $neighborhood, $state) {
+		if (!empty($zip)) {
+			$locationUrl = "/local/{$zip}";
+		} else {
+			$prettyUrlRegex = '/^[\w\d\s\-_]+$/';
+			
+			$citySlug = urlencode(strtolower(str_replace(array("-", " "), array("_", "-"), $city)));
+			$allowPrettyCity = preg_match($prettyUrlRegex, $citySlug);
+			
+			if (empty($neighborhood)) {
+				if ($allowPrettyCity)
+					$locationUrl = "/local/{$citySlug}/" . strtolower($state) . "/";
+				else
+					$locationUrl = "/?lme-action=1&lme-city=" . urlencode($citySlug) . "&lme-state=" . strtolower($state);
+			} else {
+				$neighborhoodSlug = urlencode(strtolower(str_replace(array("-", " "), array("_", "-"), $neighborhood)));
+				$allowPrettyNeighborhood = preg_match($prettyUrlRegex, $neighborhoodSlug);
+				
+				if ($allowPrettyCity && $allowPrettyNeighborhood)
+					$locationUrl = "/local/{$neighborhoodSlug}/{$citySlug}/" . strtolower($state) . "/";
+				else if ($allowPrettyCity)
+					$locationUrl = "/local/{$citySlug}/" . strtolower($state) . "/?lme-neighborhood=" . urlencode($neighborhoodSlug);
+				else
+					$locationUrl = "/?lme-action=1&lme-city=" . urlencode($citySlug) . "&lme-neighborhood=" . urlencode($neighborhoodSlug) . "&lme-state=" . strtolower($state);
+			}
+			
+		}
+		return $locationUrl;
+	}
 }
 ?>
