@@ -82,6 +82,8 @@ HTML;
 			
 			if (!empty($image))
 				$reviewImgHtml = "<a href=\"{$link}\"><img src=\"{$image}\" class=\"lme-photo\" /></a>";
+			else
+				$reviewImgHtml = "";
 			
 			$description = (array)$entry->content;
 			$description = strip_tags($description["$"]);
@@ -143,6 +145,8 @@ HTML;
 			$image = $image["$"];
 			if (!empty($image))
 				$reviewImgHtml = "<a href=\"{$link}\"><img src=\"{$image}\" class=\"lme-photo\" /></a>";
+			else
+				$reviewImgHtml = "";
 			
 			$description = (array)$entry->content;
 			$description = strip_tags($description["$"]);

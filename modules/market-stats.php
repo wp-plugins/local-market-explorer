@@ -57,10 +57,7 @@ class LmeModuleMarketStats {
 		$zillowLocationUrl = $demographics[0]->links->main;
 		
 		$stateUrl = strtolower($zillowRegion->state);
-		if ($stateUrl) {
-			$mortgageUrl = "http://www.zillow.com/mortgage-rates/{$stateUrl}/{$zillowUrlSuffix}";
-			$mortgageUrlHtml = "Check out <a href=\"{$mortgageUrl}\">{$zillowRegion->state} mortgage rates on Zillow</a>";
-		}
+		$mortgageUrlHtml = "Check out <a href=\"{$zillowRegion->zmmrateurl}\">{$zillowRegion->state} mortgage rates on Zillow</a>";
 		
 		$affordabilityData = $demographics[0]->xpath("pages/page[name='Affordability']/tables/table[name='Affordability Data']/data");
 		$zhvi = $affordabilityData[0]->xpath("attribute[name='Zillow Home Value Index']/values/{$localNodeName}/value");
