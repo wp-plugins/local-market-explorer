@@ -344,12 +344,9 @@ HTML;
 							
 							<p>- Andrew Mattie, plugin author</p>
 							
-							<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-							<input type="hidden" name="cmd" value="_s-xclick">
-							<input type="hidden" name="hosted_button_id" value="AUU3XFCCEKX4S">
-							<input type="image" src="https://www.paypal.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-							<img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
-							</form>
+							<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=amattie%40gmail%2ecom&lc=US&item_name=Local%20Market%20Explorer&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest">
+								<img src="https://www.paypal.com/en_US/i/btn/btn_donateCC_LG.gif" alt="PayPal - The safer, easier way to pay online!" />
+							</a>
 						</div>
 					</div>
 				</div>
@@ -380,6 +377,7 @@ HTML;
 		// clear everything out and re-add
 		$wpdb->query("DELETE FROM " . LME_AREAS_TABLE);
 		foreach ($newAreasArray as $area) {
+			$area = stripslashes_deep($area);
 			$wpdb->insert(
 				LME_AREAS_TABLE,
 				array(
