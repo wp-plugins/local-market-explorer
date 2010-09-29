@@ -1,42 +1,59 @@
 === Local Market Explorer ===
 Contributors: amattie, jmabe
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=10178626
-User Voice forum link: http://localmarketexplorer.uservoice.com/
-Tags: zillow, flickr, walk score, schools, education.com, real estate, local information, city data, yelp, teachstreet, nileguide
+Feedback page link: http://localmarketexplorer.uservoice.com/
+Tags: zillow, walk score, schools, education.com, real estate, local, city data, yelp, teachstreet, nile guide
 Requires at least: 2.8
-Tested up to: 2.9.2
-Stable tag: 2.2.3
+Tested up to: 3.0.1
+Stable tag: 3.0
 
-This plugin allows WordPress to load data from a number of real estate and neighborhood APIs to be presented all within a single
-page in WordPress.
+This plugin allows WordPress to load data from a number of neighborhood-related APIs to be presented on a single page or within
+your own pages / posts.
 
 == Description ==
 
-**REQUIRES PHP 5**
+This plugin allows WordPress to load data from a number of neighborhood-related APIs to be presented on a single page or within
+your own pages / posts. The different modules that this plugin contains are as follows:
 
-This plugin allows for WordPress to load in data from the following APIs:
+* Real Estate Market Stats (via [Zillow](http://www.zillow.com))
+* Real Estate Market Activity (via Zillow)
+* Schools (via [Education.com](http://www.education.com))
+* Walk Score (via [Walk Score](http://www.walkscore.com))
+* Yelp (via [Yelp](http://www.yelp.com))
+* Local Classes (via [TeachStreet](http://www.teachstreet.com))
+* Local Content from NileGuide (via [Nile Guide](http://www.nileguide.com))
+* IDX / MLS Real Estate Data (via [dsIDXpress](http://www.dsidxpress.com))
 
-* [Zillow](http://www.zillow.com)
-* [Education.com](http://www.education.com/schoolfinder/)
-* [Flickr](http://www.flickr.com)
-* [Walk Score](http://www.walkscore.com)
-* [Yelp](http://www.yelp.com)
-* [TeachStreet](http://www.teachstreet.com)
-* [NileGuide](http://www.nileguide.com)
+To use the modules on the pre-generated Local Market Explorer "virtual pages," you don't need to do anything other than link to
+or visit the specially-crafted URLs that Local Market Explorer intercepts. The formats of these URLs look like this:
 
-The data from the different APIs is then presented on a single page that is dynamically created on the server depending on the
-specially-crafted URL that is being accessed. The format of the URL to load the plugin is as follows:
-&lt;http://www.example.com/local/_city_/_state_&gt;.
+* &lt;http://www.yoursite.com/local/_city_/_state_/&gt;
+* &lt;http://www.yoursite.com/local/_neighborhood_/_city_/_state_/&gt;
+* &lt;http://www.yoursite.com/local/_zip_/&gt;
 
 For example, to load the Local Market Explorer for Seattle, WA, you'd simply need to point your browser to
-&lt;http://www.example.com/local/seattle/wa&gt;. If you have spaces in your city name, you can use hyphens for the spaces in the URL,
-like so: &lt;http://www.example.com/local/rancho-santa-margarita/ca&gt;.
+&lt;http://www.yoursite.com/local/seattle/wa/&gt;. If you have spaces in your city name, you can use hyphens for the spaces in
+the URL, like so: &lt;http://www.yoursite.com/local/laguna-beach/ca/&gt;. You DO NOT need to pre-initialize these
+URLs to work; simply having Local Market Explorer installed is enough to get any of these URLs to load the appropriate data.
 
-At any time, you can link to any city in any state that you'd like. While not all of the APIs have data for every single city in the United States, you'll find that most cities are sufficiently covered by nearly all of the APIs.
+To use the modules with your own pages and posts, you only need to insert the Local Market Explorer shortcode text via the
+page / post editor. There's a small map icon in the toolbar editor that can help you do this.
 
-This plugin is open-source donationware. I'm willing to accept and integrate well-written patches into the code, but the continued development of the module (new features, bug fixes, etc) by the plugin author is funded by donations. If you'd like to donate, please [donate via PayPal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=10178626).
+More information and help can be found in the "Help" tab in the admin once the plugin is installed.
 
-If you'd like to contribute a feature suggestion or need to document a bug, please use the [User Voice forum](http://localmarketexplorer.uservoice.com/) set up specifically for that purpose. With User Voice, each user gets a fixed number of votes that they can cast for any particular bug or feature. The higher the number of votes for an item, the higher the priority will be for that item as development commences on the plugin itself.
+This plugin is open-source donationware. I'm willing to accept and integrate well-written patches into the code, but the
+continued development of the plugin (new features, bug fixes, etc) by the plugin author is funded by either donations or
+companies willing to pay a nominal fee to have their data integrated. You can thank Zillow and Education.com for funding the
+vast majority of the development thus far. If you'd like to donate towards a particular feature however, please
+[donate via PayPal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=10178626). Getting me something sweet
+on [my Amazon wishlist](http://www.amazon.com/wishlist/7EQB35SN16H9/ref=cm_wl_rlist_go) would certainly help grease the wheels
+for new features as well. I'm happily employed at [Diverse Solutions](http://www.diversesolutions.com) though and so some
+feature ideas you may have are off-limits for me to work on.
+
+If you'd like to contribute a feature suggestion or need to document a bug, please use the
+[User Voice forum](http://localmarketexplorer.uservoice.com/) set up specifically for that purpose. With User Voice, each user
+gets a fixed number of votes that they can cast for any particular bug or feature. The higher the number of votes for an item,
+the higher the priority will be for that item as development commences on the plugin itself.
 
 == Installation ==
 
@@ -48,22 +65,18 @@ If you'd like to contribute a feature suggestion or need to document a bug, plea
 
 == Changelog ==
 
-= 2.2.3 =
-* Fixed Education.com's "Powered by" link per their request
-
-= 2.2.1 =
-* Fixed small bugs with Nile Guide and Yelp where map wasn't loading at times
-* Refined Nile Guide API url based on feedback from their software engineers
-
-= 2.2 =
-* Added support for Nile Guide data
-* Increased compatibility across the board w/ different blog settings and different plugins
-* Added support for WordPress's canonical URL feature to ensure that the correct URL gets indexed
-* Fixed issues with the "recent posts" widget not working with plugin
-
-= 2.1.1 =
-* Fixed Yelp map that broke to due an API change with Google Maps
-* Fixed Market Stats module values that broke due to an API change with Zillow
+= 3.0 =
+* Performance has been significantly increased by making all of the external data requests in parallel instead of in series.
+* The modules can now be used on individual pages and posts instead of only on the Local Market Explorer virtual pages.
+* The HTML markup and CSS styling has been significantly pruned so that skinning is easier and so that the default styles work better with many more themes.
+* The admin UI has been significantly enhanced to make it easier to use.
+* A neighborhood module has been added on city pages that links to all the neighborhoods within that city.
+* Support for canonical link tags has been added so that search engines will better index the true URL and won’t see duplicate content within your domain.
+* This version works way better with some of the more obscure WordPress installs as well as with WordPress 3.x.
+* Support for XML sitemaps has been added via the Google XML Sitemaps plugin.
+* Lots of bugs have been fixed relating to data not displaying when it should and blank data displaying when it shouldn’t.
+* More charts and data have been added to a few of the modules.
+* Support for dsIDXpress has been added to the local pages.
 
 = 2.1 =
 * Added option to link to an IDX page per area
@@ -107,60 +120,52 @@ If you'd like to contribute a feature suggestion or need to document a bug, plea
 
 == Frequently Asked Questions ==
 
-= How do I use the module after I install it? =
-
-The module is loaded / activated when the URL in your browser location bar matches the format of
-&lt;http://www.yourblog.com/local/_city_/_state_&gt;. In other words, to load the module for Seattle, you'll want to point
-your browser to / link to &lt;http://www.yourblog.com/local/seattle/wa&gt;. See the "Description" tab for more info.
-
-= Can I specify a ZIP or a neighborhood instead of a city? =
-
-Yes! In version 2 of Local Market Explorer, support for neighborhoods was added. The neighborhood names must match the names that Zillow has
-made available via their API, but the Local Market Explorer admin area will help you to determine the neighborhoods that are available to you
-and what the links will be for each of those neighborhoods.
-
 = Can I customize the styling and display format? =
 
-Yes. All of the styles are controlled via an external CSS stylesheet named lme-client.css (located in the 'includes' folder). You can easily override any of the styles in there. Be aware, however, that the default styles were created to be compliant with all of the branding requirements of the different APIs. It's possible that overriding any of the styles could put you out of compliance with the API provider(s).
-
-= Do I have to show all of the panels? =
-
-No. You can turn off the About, Market Activity, Walk Score, TeachStreet, Education.com, and Yelp modules via the Local Market Explorer admin section of your WordPress installation.
-You can't turn off the Zillow "Market Activity" panel though as it provides data that's needed to make the necessary requests for all of the other modules.
+Yes. All of the styles are controlled via an external CSS stylesheet named lme-client.css (located in the 'css' folder). You can
+easily override any of the styles in there. Be aware, however, that the default styles were created to be compliant with all of
+the branding requirements of the different APIs. It's possible that overriding any of the styles could put you out of compliance
+with the API provider(s).
 
 = How do I draw attention to the pages for my target markets? =
 
-There are a number of pre-built images you can use to use as calls to action on your sidebar or anywhere else. The images are available in the following colors: black, blue, green, orange, and red. The images can be found in the following folder: http://www.yoursite.com/wp-content/plugins/local-market-explorer/images/badges
+There are a number of pre-built images you can use to use as calls to action on your sidebar or anywhere else. The images are
+available in the following colors: black, blue, green, orange, and red. The images can be found in the following folder:
+http://www.yoursite.com/wp-content/plugins/local-market-explorer/images/badges
 
 = How to alter image colors for the sidebar module to match my site? =
 
-We have already given you a few sample colors to choose from but if you want even more control to integrate these buttons to match your blog, you can do so with almost all image software. To do so in Adobe Photoshop, just open the image and go to 
+We have already given you a few sample colors to choose from but if you want even more control to integrate these buttons to
+match your blog, you can do so with almost all image software. To do so in Adobe Photoshop, just open the image and go to 
 
 Image > Adjustments > Hue/Saturation (Ctrl + U) 
 
-Adjust the sliders to match your site colors. Hue will change the color profile (blue to purple, for example) and the saturation is how strong or vibrant that color is. 
+Adjust the sliders to match your site colors. Hue will change the color profile (blue to purple, for example) and the saturation
+is how strong or vibrant that color is. 
 
-If you do not have access to Photoshop, this can also be accomplished with GIMP, a free image manipulation software. (Instructions are here: http://docs.gimp.org/en/gimp-tool-hue-saturation.html)
+If you do not have access to Photoshop, this can also be accomplished with GIMP, a free image manipulation software.
+(Instructions are here: http://docs.gimp.org/en/gimp-tool-hue-saturation.html)
 
 = How do I add a sidebar module listing my target markets? =
 
-From your wordpress admin interface, simply navigate to Appearance -> Widgets, then you can drag + drop the "LME Widget" from the "Available Widgets" to a sidebar on the right (such as "Sidebar 1"). Once the widget is placed, you can click the down-arrow on the newly placed widget to customize the Title and Badge.
-
-= My sidebar is not widgetized - how do I use this plugin on my blog? =
-
-You can always direct traffic to any city by simply linking to the page from within a blog post. For instance, you could link the word "Seattle" within a blog post to http://www.yoursite.com/local/Seattle/WA/. Alternatively, if you are a real estate agent specializing in Sammamish, Issaquah, and Redmond, here is some sample code to place a module in your sidebar that links to all your target markets:
-
-&lt;p align="center"&gt;&lt;img src="http://www.yoursite.com/wp-content/plugins/local-market-explorer/images/badges/120_lmegraph_orange.gif"&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="http://www.yoursite.com/local/Sammamish/WA/"&gt;Sammamish&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://www.yoursite.com/local/Redmond/WA/"&gt;Redmond&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://www.yoursite.com/local/Issaquah/WA/"&gt;Issaquah&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
+From your wordpress admin interface, simply navigate to Appearance -> Widgets, then you can drag + drop the "LME Widget" from
+the "Available Widgets" to a sidebar on the right (such as "Sidebar 1"). Once the widget is placed, you can click the
+down-arrow on the newly placed widget to customize the Title and Badge.
 
 = The Market Activity module is not getting populated with recent sales data - why? =
 
-The module is driven by a private API call that needs permissions to be granted to a specific Zillow API key. To request access to this API, simply fill out the API upgrade form located [here](http://www.zillow.com/webservice/APIUpgradeRequest.htm) and select "Local Market Explorer Wordpress Plugin" in the API request type field. Once the request is processed, your market activity module should populate automatically with recent sales data.
+The module is driven by a private API call that needs permissions to be granted to a specific Zillow API key.
+To request access to this API, simply fill out the API upgrade form located
+[here](http://www.zillow.com/webservice/APIUpgradeRequest.htm) and select "Local Market Explorer Wordpress Plugin" in the API
+request type field. Once the request is processed, your market activity module should populate automatically with recent sales
+data.
 
 == Screenshots ==
 
-1. A screenshot of the module for Seattle, WA.
+1. Real Estate Market Stats module
+2. Real Estate Market Activity module
+3. Schools module
+4. Walk Score module
+5. Yelp module
+6. Local Classes module
+7. Local Content from NileGuide module
