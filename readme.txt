@@ -22,6 +22,7 @@ your own pages / posts. The different modules that this plugin contains are as f
 * Yelp (via [Yelp](http://www.yelp.com))
 * Local Classes (via [TeachStreet](http://www.teachstreet.com))
 * Local Content from NileGuide (via [Nile Guide](http://www.nileguide.com))
+* IDX / MLS Real Estate Data (via [dsIDXpress](http://www.dsidxpress.com))
 
 To use the modules on the pre-generated Local Market Explorer "virtual pages," you don't need to do anything other than link to
 or visit the specially-crafted URLs that Local Market Explorer intercepts. The formats of these URLs look like this:
@@ -75,6 +76,7 @@ the higher the priority will be for that item as development commences on the pl
 * Support for XML sitemaps has been added via the Google XML Sitemaps plugin.
 * Lots of bugs have been fixed relating to data not displaying when it should and blank data displaying when it shouldn’t.
 * More charts and data have been added to a few of the modules.
+* Support for dsIDXpress has been added to the local pages.
 
 = 2.1 =
 * Added option to link to an IDX page per area
@@ -160,4 +162,10 @@ data.
 
 == Screenshots ==
 
-1. A screenshot of the module for Seattle, WA.
+1. Real Estate Market Stats module
+2. Real Estate Market Activity module
+3. Schools module
+4. Walk Score module
+5. Yelp module
+6. Local Classes module
+7. Local Content from NileGuide module
