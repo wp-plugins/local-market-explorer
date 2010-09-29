@@ -71,10 +71,10 @@ the higher the priority will be for that item as development commences on the pl
 * The HTML markup and CSS styling has been significantly pruned so that skinning is easier and so that the default styles work better with many more themes.
 * The admin UI has been significantly enhanced to make it easier to use.
 * A neighborhood module has been added on city pages that links to all the neighborhoods within that city.
-* Support for canonical link tags has been added so that search engines will better index the true URL and won’t see duplicate content within your domain.
+* Support for canonical link tags has been added so that search engines will better index the true URL and won't see duplicate content within your domain.
 * This version works way better with some of the more obscure WordPress installs as well as with WordPress 3.x.
 * Support for XML sitemaps has been added via the Google XML Sitemaps plugin.
-* Lots of bugs have been fixed relating to data not displaying when it should and blank data displaying when it shouldn’t.
+* Lots of bugs have been fixed relating to data not displaying when it should and blank data displaying when it shouldn't.
 * More charts and data have been added to a few of the modules.
 * Support for dsIDXpress has been added to the local pages.
 
