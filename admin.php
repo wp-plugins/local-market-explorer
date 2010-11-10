@@ -284,14 +284,14 @@ HTML;
 									An example shortcode for one of Local Market Explorer's shortcodes looks like this:
 								</p>
 								<p style="font-face: Courier New;">
-									[lme-module type="schools" city="Los Angeles" state="CA"]
+									[lme-module module="schools" city="Los Angeles" state="CA"]
 								</p>
 								<p>
 									Shortcodes are always contained within brackets, and Local Market Explorer's
 									shortcodes always start with <span style="font-face: Courier New;">lme-module</span>.
-									The lme-module shortcode always contains a type attribute as well as attributes to
+									The lme-module shortcode always contains a "module" attribute as well as attributes to
 									specify the desired location to load the data for. The order of the attributes doesn't
-									matter. The valid type attributes are as follows:
+									matter. The valid module attributes are as follows:
 								</p>
 								<ul style="margin-left: 20px;">
 									<li>about</li>
@@ -314,11 +314,11 @@ HTML;
 									examples:
 								</p>
 								<ul>
-									<li>[lme-module type="market-stats" city="Laguna Beach" state="CA"]</li>
-									<li>[lme-module type="market-activity" neighborhood="Downtown" city="Los Angeles" state="CA"]</li>
-									<li>[lme-module type="schools" city="Irvine" state="CA"]</li>
-									<li>[lme-module type="yelp" city="San Francisco" state="CA" neighborhood="Mission"]</li>
-									<li>[lme-module type="walk-score" zip="92651"]</li>
+									<li>[lme-module module="market-stats" city="Laguna Beach" state="CA"]</li>
+									<li>[lme-module module="market-activity" neighborhood="Downtown" city="Los Angeles" state="CA"]</li>
+									<li>[lme-module module="schools" city="Irvine" state="CA"]</li>
+									<li>[lme-module module="yelp" city="San Francisco" state="CA" neighborhood="Mission"]</li>
+									<li>[lme-module module="walk-score" zip="92651"]</li>
 								</ul>
 							</div>
 						</div>
