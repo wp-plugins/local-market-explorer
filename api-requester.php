@@ -3,17 +3,18 @@
 // use and require curl directly since we can use gzip
 class LmeApiRequester {
 	static function gatherContent($modules) {
+		$moduleContent = $modules;
 		$mh = curl_multi_init();
 		$handles = array();
 		$running = null;
 		
-		foreach ($modules as $module => $urls) {
+		foreach ($moduleContent as $module => $urls) {
 			foreach ($urls as $urlDescription => $url) {
 				$cachedContent = self::tryLoadFromCache($url);
-				if (!empty($cachedContent)) {
+				/*if (!empty($cachedContent)) {
 					$modules[$module][$urlDescription] = $cachedContent;
 					continue;
-				}
+				}*/
 				
 				$ch = curl_init();
 				
@@ -37,10 +38,10 @@ class LmeApiRequester {
 			$content = curl_multi_getcontent($handle);
 			curl_multi_remove_handle($mh, $handle);
 			
-			foreach ($modules as $module => $urls) {
+			foreach ($moduleContent as $module => $urls) {
 				foreach ($urls as $urlDescription => $url) {
 					if ($handleKey == $url) {
-						$modules[$module][$urlDescription] = $content;
+						$moduleContent[$module][$urlDescription] = $content;
 						self::setCache($url, $content);
 					}
 				}
@@ -48,6 +49,7 @@ class LmeApiRequester {
 		}
 		
 		curl_multi_close($mh);
+		return $moduleContent;
 	}
 	static function getContent($url) {
 		$content = self::tryLoadFromCache($url);

@@ -113,7 +113,7 @@ class LmeModulesPage {
 		$options = get_option(LME_OPTION_NAME);
 		$modules = self::getFinalApiUrls();
 		$content = "";
-		LmeApiRequester::gatherContent(&$modules);
+		$moduleContent = LmeApiRequester::gatherContent($modules);
 		
 		$neighborhood = self::getNeighborhood();
 		$city = self::getCity();
@@ -122,23 +122,23 @@ class LmeModulesPage {
 		
 		foreach ($options["global-modules"] as $order => $module) {
 			if ($module == "market-stats")
-				$content .= LmeModuleMarketStats::getModuleHtml($modules["market-stats"]);
+				$content .= LmeModuleMarketStats::getModuleHtml($moduleContent["market-stats"]);
 			if ($module == "market-activity")
-				$content .= LmeModuleMarketActivity::getModuleHtml($modules["market-activity"]);
+				$content .= LmeModuleMarketActivity::getModuleHtml($moduleContent["market-activity"]);
 			if ($module == "schools")
-				$content .= LmeModuleSchools::getModuleHtml($modules["schools"]);
+				$content .= LmeModuleSchools::getModuleHtml($moduleContent["schools"]);
 			if ($module == "yelp")
-				$content .= LmeModuleYelp::getModuleHtml($modules["yelp"]);
+				$content .= LmeModuleYelp::getModuleHtml($moduleContent["yelp"]);
 			if ($module == "walk-score")
 				$content .= LmeModuleWalkScore::getModuleHtml($neighborhood, $city, $state, $zip);
 			if ($module == "teachstreet")
-				$content .= LmeModuleTeachStreet::getModuleHtml($modules["teachstreet"]);
+				$content .= LmeModuleTeachStreet::getModuleHtml($moduleContent["teachstreet"]);
 			if ($module == "about")
 				$content .= LmeModuleAboutArea::getModuleHtml($neighborhood, $city, $state, $zip);
 			if ($module == "neighborhoods")
-				$content .= LmeModuleNeighborhoods::getModuleHtml($modules["neighborhoods"], $neighborhood, $city, $state, $zip);
+				$content .= LmeModuleNeighborhoods::getModuleHtml($moduleContent["neighborhoods"], $neighborhood, $city, $state, $zip);
 			if ($module == "nileguide")
-				$content .= LmeModuleNileGuide::getModuleHtml($modules["nileguide"], $neighborhood, $city, $state, $zip);
+				$content .= LmeModuleNileGuide::getModuleHtml($moduleContent["nileguide"], $neighborhood, $city, $state, $zip);
 			if ($module == "dsidxpress")
 				$content .= LmeModuleDsIdxPress::getModuleHtml($neighborhood, $city, $state, $zip);
 		}
