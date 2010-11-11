@@ -11,10 +11,10 @@ class LmeApiRequester {
 		foreach ($moduleContent as $module => $urls) {
 			foreach ($urls as $urlDescription => $url) {
 				$cachedContent = self::tryLoadFromCache($url);
-				/*if (!empty($cachedContent)) {
+				if (!empty($cachedContent)) {
 					$modules[$module][$urlDescription] = $cachedContent;
 					continue;
-				}*/
+				}
 				
 				$ch = curl_init();
 				
