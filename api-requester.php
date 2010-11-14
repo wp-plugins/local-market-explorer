@@ -12,7 +12,7 @@ class LmeApiRequester {
 			foreach ($urls as $urlDescription => $url) {
 				$cachedContent = self::tryLoadFromCache($url);
 				if (!empty($cachedContent)) {
-					$modules[$module][$urlDescription] = $cachedContent;
+					$moduleContent[$module][$urlDescription] = $cachedContent;
 					continue;
 				}
 				
