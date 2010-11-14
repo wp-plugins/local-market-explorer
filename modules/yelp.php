@@ -22,6 +22,8 @@ class LmeModuleYelp {
 		);
 	}
 	static function getModuleHtml($apiResponses) {
+		global $wp_scripts;
+		
 		$yelpResponse = @json_decode($apiResponses["yelp"])->businesses;
 		
 		if (empty($yelpResponse))
@@ -29,9 +31,12 @@ class LmeModuleYelp {
 		
 		$jsonResults = array();
 		$resultsId = rand();
-		wp_enqueue_script("jquery");
+		
 		wp_enqueue_script("gmaps3", "http://maps.google.com/maps/api/js?sensor=false", null, null, true);
-		wp_enqueue_script("local-market-explorer", LME_PLUGIN_URL . "js/client.js", null, null, true);
+		wp_enqueue_script("local-market-explorer", LME_PLUGIN_URL . "js/client.js", array("jquery"), null, true);
+		
+		$wp_scripts->in_footer[] = "gmaps3";
+		$wp_scripts->in_footer[] = "local-market-explorer";
 		
 		foreach ($yelpResponse as $business) {
 			$jsonResults[] = (object)array(

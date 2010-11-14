@@ -30,6 +30,8 @@ class LmeModuleNileGuide {
 		return array( "nileguide" => $url );
 	}
 	static function getModuleHtml($modules) {
+		global $wp_scripts;
+		
 		$apiResponse = @json_decode($modules["nileguide"])->feed->entry;
 		
 		if (empty($apiResponse) || count($apiResponse) == 0)
@@ -38,9 +40,12 @@ class LmeModuleNileGuide {
 		$jsonResults = array();
 		$logoSrc = LME_PLUGIN_URL . "images/logos/nileguide.png";
 		$resultsId = rand();
-		wp_enqueue_script("jquery");
+		
 		wp_enqueue_script("gmaps3", "http://maps.google.com/maps/api/js?sensor=false", null, null, true);
-		wp_enqueue_script("local-market-explorer", LME_PLUGIN_URL . "js/client.js", null, null, true);
+		wp_enqueue_script("local-market-explorer", LME_PLUGIN_URL . "js/client.js", array("jquery"), null, true);
+		
+		$wp_scripts->in_footer[] = "gmaps3";
+		$wp_scripts->in_footer[] = "local-market-explorer";
 		
 		$content = <<<HTML
 			<h2 class="lme-module-heading">Local Content from NileGuide</h2>
