@@ -5,7 +5,7 @@ Feedback page link: http://localmarketexplorer.uservoice.com/
 Tags: zillow, walk score, schools, education.com, real estate, local, city data, yelp, teachstreet, nile guide
 Requires at least: 2.8
 Tested up to: 3.0.1
-Stable tag: 3.0
+Stable tag: 3.0.1
 
 This plugin allows WordPress to load data from a number of neighborhood-related APIs to be presented on a single page or within
 your own pages / posts.
@@ -64,6 +64,13 @@ the higher the priority will be for that item as development commences on the pl
 5. Visit each of the API key links and get your API keys. After you put in each API key, the data will load for the corresponding modules.
 
 == Changelog ==
+
+= 3.0.1 =
+* Fixed documentation error with modules
+* Fixed some pedantic PHP warnings when debug mode was turned on
+* Fixed neighborhoods, NileGuide, Walk Score, Teach Street, and about area shortcodes
+* Added neighborhoods and NileGuide modules to the shortcode insertion tool
+* Added workarounds for http://core.trac.wordpress.org/ticket/9346
 
 = 3.0 =
 * Performance has been significantly increased by making all of the external data requests in parallel instead of in series.
