@@ -80,13 +80,15 @@ $localJsUri = get_option("siteurl") . "/" . WPINC . "/js/";
 			<th style="width: 70px; padding-top: 2px;"><label for="module">Module</label></th>
 			<td>
 				<select id="module">
-					<option value="market-stats">Market Statistics</option>
-					<option value="market-activity">Market Activity</option>
-					<option value="schools">Schools</option>
-					<option value="yelp">Yelp</option>
-					<option value="walk-score">Walk Score</option>
-					<option value="teachstreet">TeachStreet</option>
 					<option value="about-area">About Area</option>
+					<option value="market-activity">Market Activity</option>
+					<option value="market-stats">Market Statistics</option>
+					<option value="neighborhoods">Neighborhoods</option>
+					<option value="nileguide">NileGuide</option>
+					<option value="schools">Schools</option>
+					<option value="teachstreet">TeachStreet</option>
+					<option value="walk-score">Walk Score</option>
+					<option value="yelp">Yelp</option>
 				</select>
 			</td>
 		</tr>
