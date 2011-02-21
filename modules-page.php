@@ -29,8 +29,9 @@ class LmeModulesPage {
 	static function activate($posts) {
 		global $wp_query;
 
-		// we want this on every page in case a shortcode is called
+		// we want these on every page in case a shortcode is called
 		wp_enqueue_style("lme", LME_PLUGIN_URL . "css/client.css", null, LME_PLUGIN_VERSION);
+		wp_enqueue_script("local-market-explorer", LME_PLUGIN_URL . "js/client.js", array("jquery"), null, true);
 
 		// see comment above preActivate
 		if (is_array($wp_query->query) && isset($wp_query->query["lme-action-swap"])) {
@@ -141,6 +142,8 @@ class LmeModulesPage {
 				$content .= LmeModuleNileGuide::getModuleHtml($moduleContent["nileguide"], $neighborhood, $city, $state, $zip);
 			if ($module == "dsidxpress")
 				$content .= LmeModuleDsIdxPress::getModuleHtml($neighborhood, $city, $state, $zip);
+			if ($module == "colleges")
+				$content .= LmeModuleColleges::getModuleHtml($moduleContent["colleges"], $city, $state, $zip);
 		}
 		
 		return $content;
@@ -169,6 +172,8 @@ class LmeModulesPage {
 				$modules[$module] = LmeModuleNeighborhoods::getApiUrls($neighborhood, $city, $state, $zip);
 			if ($module == "nileguide")
 				$modules[$module] = LmeModuleNileGuide::getApiUrls($neighborhood, $city, $state, $zip);
+			if ($module == "colleges")
+				$modules[$module] = LmeModuleColleges::getApiUrls($neighborhood, $city, $state, $zip);
 		}
 		return $modules;
 	}

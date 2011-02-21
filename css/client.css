@@ -17,6 +17,9 @@
 .lme-module table {
 	width: 100%;
 }
+.lme-module label {
+	cursor: pointer;
+}
 
 .lme-zhvi {
 	text-align: center;
@@ -183,3 +186,55 @@
 	float: right;
 }
 
+.lme-colleges .lme-left, .lme-colleges .lme-right {
+	height: 400px;
+	overflow: auto;
+	margin-bottom: 15px;
+	border-top: 1px solid #eee;
+	border-bottom: 1px solid #eee;
+}
+.lme-colleges .lme-left {
+	border-left: 1px solid #eee;
+	float: left;
+	padding: 0 2%;
+	width: 23%;
+}
+.lme-college {
+	margin-bottom: 25px;
+	display: none;
+}
+.lme-public-4-year {
+	display: block;
+}
+.lme-college h3 {
+	font-weight: bold;
+}
+.lme-college h4 {
+	font-weight: bold;
+	margin-bottom: 0 !important;
+	padding-bottom: 0 !important;
+}
+.lme-colleges .lme-right {
+	border-right: 1px solid #eee;
+	float: right;
+	overflow: hidden;
+	width: 72%;
+}
+.lme-colleges-container {
+	background-color: #eee;
+	height: 330px;
+	overflow: auto;
+	padding: 10px;
+}
+.lme-colleges .lme-filter {
+	margin: 15px auto;
+}
+.lme-colleges .lme-left input {
+	margin: 0 0 0 15px;
+}
+.lme-matchcollege-logo {
+	display: block;
+	height: 50px;
+	margin: 100px auto 0 auto;
+	width: 120px;
+}

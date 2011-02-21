@@ -126,3 +126,26 @@
 		});
 	});
 })();
+
+//init college filters
+(function() {
+	var $ = jQuery;
+	
+	$('.lme-colleges').change(function(e) {
+		var currentTarget = $(e.currentTarget);
+		var target = $(e.target);
+		var filter = target.attr('data-filter');
+		var subtitle;
+		
+		if (!filter)
+			return;
+		
+		subtitle = filter.replace(/\-/g, ' ') + ' colleges';
+		subtitle = subtitle[0].toUpperCase() + subtitle.substr(1);
+		currentTarget.find('.lme-college-subtitle').text(subtitle);
+
+		currentTarget.find('.lme-college').each(function() {
+			this.style.display = $(this).hasClass('lme-' + filter) ? 'block' : 'none';
+		});
+	});
+})();

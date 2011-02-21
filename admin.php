@@ -51,7 +51,8 @@ HTML;
 			"yelp"				=> array("name" => "Yelp reviews",			"description" => "from <a href=\"http://www.yelp.com\">Yelp</a>"),
 			"teachstreet"		=> array("name" => "Classes",				"description" => "from <a href=\"http://www.teachstreet.com\">Teachstreet</a>"),
 			"nileguide"			=> array("name" => "Things to do",			"description" => "from <a href=\"http://www.nileguide.com\">NileGuide</a>"),
-			"dsidxpress"		=> array("name" => "Newest real estate",	"description" => "from <a href=\"http://www.dsidxpress.com\">dsIDXpress</a> by <a href=\"http://www.diversesolutions.com\">Diverse Solutions</a>")
+			"dsidxpress"		=> array("name" => "Newest real estate",	"description" => "from <a href=\"http://www.dsidxpress.com\">dsIDXpress</a> by <a href=\"http://www.diversesolutions.com\">Diverse Solutions</a>"),
+			"colleges"			=> array("name" => "Colleges",				"description" => "from <a href=\"http://www.matchcollege.com\">MatchCollege</a>"),
 		);
 	
 		$listItemHtml = <<<HTML
@@ -303,6 +304,7 @@ HTML;
 									<li>yelp</li>
 									<li>teachstreet</li>
 									<li>nileguide</li>
+									<li>colleges</li>
 								</ul>
 								<p>
 									Note that local real estate via <a href="http://www.dsidxpress.com">dsIDXpress</a> is
@@ -344,9 +346,11 @@ HTML;
 							
 							<p>- Andrew Mattie, plugin author</p>
 							
-							<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=amattie%40gmail%2ecom&lc=US&item_name=Local%20Market%20Explorer&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest">
-								<img src="https://www.paypal.com/en_US/i/btn/btn_donateCC_LG.gif" alt="PayPal - The safer, easier way to pay online!" />
-							</a>
+							<p>
+								<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=amattie%40gmail%2ecom&lc=US&item_name=Local%20Market%20Explorer&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest">
+									<img src="https://www.paypal.com/en_US/i/btn/btn_donateCC_LG.gif" alt="PayPal - The safer, easier way to pay online!" />
+								</a>
+							</p>
 						</div>
 					</div>
 				</div>
