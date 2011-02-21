@@ -141,7 +141,7 @@
 			return;
 		
 		subtitle = filter.replace(/\-/g, ' ') + ' colleges';
-		subtitle = subtitle[0].toUpperCase() + subtitle.substr(1);
+		subtitle = subtitle.charAt(0).toUpperCase() + subtitle.substr(1);
 		currentTarget.find('.lme-college-subtitle').text(subtitle);
 
 		currentTarget.find('.lme-college').each(function() {

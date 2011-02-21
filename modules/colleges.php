@@ -34,7 +34,7 @@ class LmeModuleColleges {
 		if (!empty($opt_zip)) {
 			$areaName = $zip;
 		} else {
-			$areaName = $opt_city . ", " . $opt_state;
+			$areaName = ucwords($opt_city) . ", " . strtoupper($opt_state);
 		}
 		
 		$content = <<<HTML
