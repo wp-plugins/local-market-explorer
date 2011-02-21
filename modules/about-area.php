@@ -5,7 +5,7 @@ class LmeModuleAboutArea {
 		global $wpdb;
 		$sqlPreWhereClause = "SELECT description FROM " . LME_AREAS_TABLE . " WHERE ";
 		
-		if (isset($opt_zip)) {
+		if (!empty($opt_zip)) {
 			$query = $wpdb->prepare($sqlPreWhereClause . "zip = %s", $opt_zip);
 		} else if (strlen($opt_neighborhood) > 0) {
 			$query = $wpdb->prepare(

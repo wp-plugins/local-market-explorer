@@ -6,7 +6,7 @@ class LmeModuleSchools {
 		$apiKey = "bd23bb5cb91e37c39282f6bf75d56fb9"; // education.com wants this embedded
 		$url = "http://api.education.com/service/service.php?f=schoolSearch&sn=sf&resf=php&v3&key={$apiKey}&";
 		
-		if (isset($opt_zip)) {
+		if (!empty($opt_zip)) {
 			$locationParams = "zip={$opt_zip}";
 		} else {
 			$encodedCity = urlencode($opt_city);

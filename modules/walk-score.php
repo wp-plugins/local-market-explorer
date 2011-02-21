@@ -5,7 +5,7 @@ class LmeModuleWalkScore {
 		$options = get_option(LME_OPTION_NAME);
 		$apiKey = $options["api-keys"]["walk-score"];
 	
-		if (isset($opt_zip)) {
+		if (!empty($opt_zip)) {
 			$locationParams = "{$opt_zip}";
 		} else {
 			$encodedCity = urlencode($opt_city);

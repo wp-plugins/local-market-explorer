@@ -4,7 +4,7 @@ class LmeModuleTeachStreet {
 	static function getApiUrls($opt_neighborhood, $opt_city, $opt_state, $opt_zip) {
 		$url = "http://www.teachstreet.com/lme/classes.json?where=";
 		
-		if (isset($opt_zip)) {
+		if (!empty($opt_zip)) {
 			$locationParams = "{$opt_zip}";
 		} else {
 			$encodedCity = urlencode($opt_city);

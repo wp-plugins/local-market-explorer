@@ -10,7 +10,7 @@ class LmeModuleMarketStats {
 		
 		$urlBase = "http://www.zillow.com/webservice/";
 		
-		if (isset($opt_zip)) {
+		if (!empty($opt_zip)) {
 			$locationParams = "zip={$opt_zip}";
 		} else {
 			$encodedCity = urlencode($opt_city);

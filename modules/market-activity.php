@@ -10,7 +10,7 @@ class LmeModuleMarketActivity {
 		
 		$url = "http://www.zillow.com/webservice/FMRWidget.htm?status=recentlySold&zws-id={$apiKey}&region=";
 		
-		if (isset($opt_zip)) {
+		if (!empty($opt_zip)) {
 			$locationParams = "{$opt_zip}";
 		} else {
 			$encodedCity = urlencode($opt_city);
