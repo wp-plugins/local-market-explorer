@@ -91,6 +91,8 @@ HTML;
 			$url = htmlentities($college["url"]);
 			$name = htmlentities($college["college_name"]);
 			$address = htmlentities($college["address"]);
+			$city = htmlentities($college["city"]);
+			$state = htmlentities($college["state"]);
 			$phone = htmlentities($college["general_phone"]);
 			$collegeType = htmlentities($college["college_type"]);
 			$highestDegree = htmlentities($college["highest_degree"]);
@@ -101,7 +103,8 @@ HTML;
 
 						<div class="lme-college {$filterClass}">
 							<h4><a href="{$url}">{$name}</a></h4>
-							<div>{$address} | {$phone}</div>
+							<div>{$address}, {$city}, {$state}</div>
+							<div>{$phone}</div>
 							<div>College Type: {$collegeType}</div>
 							<div>Highest Degree: {$highestDegree}</div>
 							<div>Students Enrolled: {$studentsEnrolled}</div>
