@@ -2,10 +2,10 @@
 Contributors: amattie, jmabe
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=10178626
 Feedback page link: http://localmarketexplorer.uservoice.com/
-Tags: zillow, walk score, schools, education.com, real estate, local, city data, yelp, teachstreet, nile guide
+Tags: zillow, walk score, schools, education.com, real estate, local, city data, yelp, teachstreet, nileguide, matchcollege
 Requires at least: 2.8
 Tested up to: 3.1
-Stable tag: 3.0.1
+Stable tag: 3.1
 
 This plugin allows WordPress to load data from a number of neighborhood-related APIs to be presented on a single page or within
 your own pages / posts.
@@ -136,7 +136,7 @@ the higher the priority will be for that item as development commences on the pl
 
 = Can I customize the styling and display format? =
 
-Yes. All of the styles are controlled via an external CSS stylesheet named lme-client.css (located in the 'css' folder). You can
+Yes. All of the styles are controlled via an external CSS stylesheet named client.css (located in the 'css' folder). You can
 easily override any of the styles in there. Be aware, however, that the default styles were created to be compliant with all of
 the branding requirements of the different APIs. It's possible that overriding any of the styles could put you out of compliance
 with the API provider(s).
@@ -145,26 +145,13 @@ with the API provider(s).
 
 There are a number of pre-built images you can use to use as calls to action on your sidebar or anywhere else. The images are
 available in the following colors: black, blue, green, orange, and red. The images can be found in the following folder:
-http://www.yoursite.com/wp-content/plugins/local-market-explorer/images/badges
-
-= How to alter image colors for the sidebar module to match my site? =
-
-We have already given you a few sample colors to choose from but if you want even more control to integrate these buttons to
-match your blog, you can do so with almost all image software. To do so in Adobe Photoshop, just open the image and go to 
-
-Image > Adjustments > Hue/Saturation (Ctrl + U) 
-
-Adjust the sliders to match your site colors. Hue will change the color profile (blue to purple, for example) and the saturation
-is how strong or vibrant that color is. 
-
-If you do not have access to Photoshop, this can also be accomplished with GIMP, a free image manipulation software.
-(Instructions are here: http://docs.gimp.org/en/gimp-tool-hue-saturation.html)
+/wp-content/plugins/local-market-explorer/images/badges
 
 = How do I add a sidebar module listing my target markets? =
 
-From your wordpress admin interface, simply navigate to Appearance -> Widgets, then you can drag + drop the "LME Widget" from
-the "Available Widgets" to a sidebar on the right (such as "Sidebar 1"). Once the widget is placed, you can click the
-down-arrow on the newly placed widget to customize the Title and Badge.
+From your WordPress admin interface, simply navigate to Appearance -> Widgets, then you can drag + drop the "Local Market
+Explorer Areas" from the "Available Widgets" to a sidebar on the right (such as "Sidebar 1"). Once the widget is placed, you can
+click the down-arrow on the newly placed widget to customize the title.
 
 = The Market Activity module is not getting populated with recent sales data - why? =
 
@@ -183,3 +170,4 @@ data.
 5. Yelp module
 6. Local Classes module
 7. Local Content from NileGuide module
+7. Colleges module

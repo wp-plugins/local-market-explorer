@@ -106,6 +106,8 @@
 }
 .lme-schools .lme-right input {
 	margin: 0 0 0 15px;
+	padding: 0;
+	width: auto;
 }
 
 .lme-yelp-logo {
@@ -231,6 +233,8 @@
 }
 .lme-colleges .lme-left input {
 	margin: 0 0 0 15px;
+	padding: 0;
+	width: auto;
 }
 .lme-matchcollege-logo {
 	display: block;
