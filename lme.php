@@ -37,10 +37,10 @@ define("LME_PLUGIN_VERSION", $pluginData["Version"]);
 define("LME_PLUGIN_DB_VERSION", "1.0");
 define("LME_AREAS_TABLE", $wpdb->prefix . "lme_areas");
 
-register_activation_hook(__FILE__, array("Lme", "InitializeAreasSchema"));
-register_activation_hook(__FILE__, array("Lme", "UpgradeOptionsFromVersion1"));
-register_activation_hook(__FILE__, array("Lme", "UpgradeOptionsFromVersion2"));
-register_activation_hook(__FILE__, array("Lme", "FlushRewriteRules"));
+register_activation_hook(__FILE__, array("Lme", "initializeAreasSchema"));
+register_activation_hook(__FILE__, array("Lme", "upgradeOptions"));
+register_activation_hook(__FILE__, array("Lme", "initOptionDefaults"));
+register_activation_hook(__FILE__, array("Lme", "flushRewriteRules"));
 
 if (is_admin()) {
 	require_once(WP_PLUGIN_DIR . "/local-market-explorer/admin.php");
@@ -71,7 +71,7 @@ class Lme {
 		global $wpdb;
 		
 		$options = get_option(LME_OPTION_NAME);
-		if (!$options)
+		if (empty($options))
 			$options = array();
 		
 		if ($options["db-version"] == LME_PLUGIN_DB_VERSION)
@@ -93,58 +93,34 @@ class Lme {
 		$options["db-version"] = LME_PLUGIN_DB_VERSION;
 		update_option(LME_OPTION_NAME, $options);
 	}
-	static function upgradeOptionsFromVersion1() {
-		if (get_option("lme_areas"))
-			return;
-		
-		$lme_areas = array();
-		$lme_area_cities = unserialize(get_option("lme_area_cities"));
-		$lme_area_states = unserialize(get_option("lme_area_states"));
-		$lme_area_descriptions = unserialize(get_option("lme_area_descriptions"));
-		
-		for ($i = 0; $i < sizeOf($lme_area_cities); $i++) {
-			$lme_areas[$i] = array();
-			$lme_areas[$i]["city"] = $lme_area_cities[$i];
-			$lme_areas[$i]["state"] = $lme_area_states[$i];
-			$lme_areas[$i]["description"] = $lme_area_descriptions[$i];
-		}
-		
-		update_option("lme_areas", $lme_areas);
-		delete_option("lme_area_cities");
-		delete_option("lme_area_states");
-		delete_option("lme_area_descriptions");
-	}
-	static function upgradeOptionsFromVersion2() {
+	static function upgradeOptions() {
 		global $wpdb;
 		
-		$wpdb->query("DELETE FROM " . LME_AREAS_TABLE);
-		delete_option(LME_OPTION_NAME);
+		$options = get_option(LME_OPTION_NAME);
+		if (empty($options))
+			$options = array();
 		
-		if (get_option(LME_OPTION_NAME))
-			return;
+		// v1 areas upgrade
+		if (get_option("lme_area_cities") || get_option("lme_area_states") || get_option("lme_area_descriptions")) {
+			$lme_areas = array();
+			$lme_area_cities = unserialize(get_option("lme_area_cities"));
+			$lme_area_states = unserialize(get_option("lme_area_states"));
+			$lme_area_descriptions = unserialize(get_option("lme_area_descriptions"));
+			
+			for ($i = 0; $i < sizeOf($lme_area_cities); $i++) {
+				$lme_areas[$i] = array();
+				$lme_areas[$i]["city"] = $lme_area_cities[$i];
+				$lme_areas[$i]["state"] = $lme_area_states[$i];
+				$lme_areas[$i]["description"] = $lme_area_descriptions[$i];
+			}
+			
+			update_option("lme_areas", $lme_areas);
+			delete_option("lme_area_cities");
+			delete_option("lme_area_states");
+			delete_option("lme_area_descriptions");
+		}
 		
-		
-		$options = array();
-		$options["api-keys"] = array(
-			"zillow"			=> get_option("lme_apikey_zillow"),
-			"walk-score"		=> get_option("lme_apikey_walkscore"),
-			"yelp"				=> get_option("lme_apikey_yelp")
-		);
-		// now that we've fixed up all the modules and added new ones, we're gonna set them to all be displayed by default
-		$options["global-modules"] = array(
-			0 => "about",
-			1 => "market-stats",
-			2 => "neighborhoods",
-			3 => "market-activity",
-			4 => "local-photos",
-			5 => "schools",
-			6 => "walk-score",
-			7 => "yelp",
-			8 => "teachstreet",
-			9 => "nileguide"
-		);
-		$options["zillow-username"] = get_option("lme_username_zillow");
-		
+		// v2 areas upgrade
 		foreach (get_option("lme_areas") as $area) {
 			$wpdb->insert(
 				LME_AREAS_TABLE,
@@ -156,6 +132,45 @@ class Lme {
 					"description"	=> $area["description"]
 				),
 				array("%s", "%s", "%s", "%s", "%s")
+			);
+		}
+		
+		if (get_option("lme_apikey_zillow")) {
+			$options["api-keys"]["zillow"] = get_option("lme_apikey_zillow");
+			delete_option("lme_apikey_zillow");
+		}
+		if (get_option("lme_apikey_walkscore")) {
+			$options["api-keys"]["walk-score"] = get_option("lme_apikey_walkscore");
+			delete_option("lme_apikey_walkscore");
+		}
+		if (get_option("lme_apikey_yelp")) {
+			$options["api-keys"]["yelp"] = get_option("lme_apikey_yelp");
+			delete_option("lme_apikey_yelp");
+		}
+		if (get_option("lme_username_zillow")) {
+			$options["zillow-username"] = get_option("lme_username_zillow");
+			delete_option("lme_username_zillow");
+		}
+		
+		update_option(LME_OPTION_NAME, $options);
+	}
+	static function initOptionDefaults() {
+		$options = get_option(LME_OPTION_NAME);
+		if (empty($options))
+			$options = array();
+			
+		if (empty($options["global-modules"])) {
+			$options["global-modules"] = array(
+				0 => "about",
+				1 => "market-stats",
+				2 => "neighborhoods",
+				3 => "market-activity",
+				4 => "schools",
+				5 => "walk-score",
+				6 => "yelp",
+				7 => "teachstreet",
+				8 => "nileguide",
+				9 => "colleges"
 			);
 		}
 		

@@ -66,6 +66,11 @@ the higher the priority will be for that item as development commences on the pl
 
 == Changelog ==
 
+= 3.1.2 =
+* Removing some debugging code that was causing problems during install
+* Cleaned up option upgrading code for v1.x and v2.x to ensure that everything transfers correctly during the upgrade
+* Fixed bug with college module not being initialized on install and empty / blank module being initialized instead
+
 = 3.1 =
 * Fixed possible issues with some of the modules not working when something other than a zip code was used
 * Fixed issue where shortcode insertion tool was occasionally not working
