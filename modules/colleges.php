@@ -29,7 +29,7 @@ class LmeModuleColleges {
 			return;
 
 		$state = htmlentities($colleges[0]["college"]["state"]);
-		$findMoreUrl = "http://www.matchcollege.com/state-college/" . strtolower($state);
+		$findMoreUrl = "http://www.matchcollege.com/state-college/" . strtoupper($state);
 		
 		if (!empty($opt_zip)) {
 			$areaName = $zip;
