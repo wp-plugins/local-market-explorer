@@ -59,6 +59,7 @@ if (is_admin()) {
 	require_once("modules/nileguide.php");
 	require_once("modules/dsidxpress.php");
 	require_once("modules/colleges.php");
+	require_once("modules/homethinking.php");
 }
 require_once("widgets/areas.php");
 require_once("modules-page-rewrite.php");
@@ -170,7 +171,8 @@ class Lme {
 				6 => "yelp",
 				7 => "teachstreet",
 				8 => "nileguide",
-				9 => "colleges"
+				9 => "colleges",
+				10 => "homethinking"
 			);
 		}
 		

@@ -42,17 +42,42 @@ HTML;
 		$checkedModules = array(); 
 		
 		$moduleInfo = array(
-			"about"				=> array("name" => "About area",			"description" => "your own description"),
-			"market-stats"		=> array("name" => "Market statistics",		"description" => "area statistics from <a href=\"http://www.zillow.com\">Zillow</a>"),
-			"neighborhoods"		=> array("name" => "Neighborhoods",			"description" => "neighborhoods (only for cities)"),
-			"market-activity"	=> array("name" => "Market activity",		"description" => "recent sales from <a href=\"http://www.zillow.com\">Zillow</a>"),
-			"schools"			=> array("name" => "Schools",				"description" => "from <a href=\"http://www.education.com\">Education.com</a>"),
-			"walk-score"		=> array("name" => "Walk Score",			"description" => "see <a href=\"http://www.walkscore.com\">Walk Score</a>"),
-			"yelp"				=> array("name" => "Yelp reviews",			"description" => "from <a href=\"http://www.yelp.com\">Yelp</a>"),
-			"teachstreet"		=> array("name" => "Classes",				"description" => "from <a href=\"http://www.teachstreet.com\">Teachstreet</a>"),
-			"nileguide"			=> array("name" => "Things to do",			"description" => "from <a href=\"http://www.nileguide.com\">NileGuide</a>"),
-			"dsidxpress"		=> array("name" => "Newest real estate",	"description" => "from <a href=\"http://www.dsidxpress.com\">dsIDXpress</a> by <a href=\"http://www.diversesolutions.com\">Diverse Solutions</a>"),
-			"colleges"			=> array("name" => "Colleges",				"description" => "from <a href=\"http://www.matchcollege.com\">MatchCollege</a>"),
+			"about" => array(
+				"name" => "About area",
+				"description" => "your own description"),
+			"market-stats" => array(
+				"name" => "Market statistics",
+				"description" => "area statistics from <a href=\"http://www.zillow.com\">Zillow</a>"),
+			"neighborhoods" => array(
+				"name" => "Neighborhoods",
+				"description" => "neighborhoods (only for cities)"),
+			"market-activity" => array(
+				"name" => "Market activity",
+				"description" => "recent sales from <a href=\"http://www.zillow.com\">Zillow</a>"),
+			"schools" => array(
+				"name" => "Schools",
+				"description" => "from <a href=\"http://www.education.com\">Education.com</a>"),
+			"walk-score" => array(
+				"name" => "Walk Score",
+				"description" => "see <a href=\"http://www.walkscore.com\">Walk Score</a>"),
+			"yelp" => array(
+				"name" => "Yelp reviews",
+				"description" => "from <a href=\"http://www.yelp.com\">Yelp</a>"),
+			"teachstreet" => array(
+				"name" => "Classes",
+				"description" => "from <a href=\"http://www.teachstreet.com\">Teachstreet</a>"),
+			"nileguide" => array(
+				"name" => "Things to do",
+				"description" => "from <a href=\"http://www.nileguide.com\">NileGuide</a>"),
+			"dsidxpress" => array(
+				"name" => "Newest real estate",
+				"description" => "from <a href=\"http://www.dsidxpress.com\">dsIDXpress</a> by <a href=\"http://www.diversesolutions.com\">Diverse Solutions</a>"),
+			"colleges" => array(
+				"name" => "Colleges",
+				"description" => "from <a href=\"http://www.matchcollege.com\">MatchCollege</a>"),
+			"homethinking" => array(
+				"name" => "Realtors",
+				"description" => "from <a href=\"http://www.homethinking.com\">Homethinking</a>"),
 		);
 	
 		$listItemHtml = <<<HTML
@@ -305,6 +330,7 @@ HTML;
 									<li>teachstreet</li>
 									<li>nileguide</li>
 									<li>colleges</li>
+									<li>homethinking</li>
 								</ul>
 								<p>
 									Note that local real estate via <a href="http://www.dsidxpress.com">dsIDXpress</a> is

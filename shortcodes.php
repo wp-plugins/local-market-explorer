@@ -23,6 +23,8 @@ class LmeShortcodes {
 			$modules[] = LmeModuleNileGuide::getApiUrls($neighborhood, $city, $state, $zip);
 		} else if ($atts["module"] == "colleges") {
 			$modules[] = LmeModuleColleges::getApiUrls($neighborhood, $city, $state, $zip);
+		} else if ($atts["module"] == "homethinking") {
+			$modules[] = LmeModuleHomethinking::getApiUrls($neighborhood, $city, $state, $zip);
 		}
 		
 		$moduleContent = LmeApiRequester::gatherContent($modules);
@@ -47,6 +49,8 @@ class LmeShortcodes {
 			return LmeModuleNileGuide::getModuleHtml($moduleContent[0], $neighborhood, $city, $state, $zip);
 		} else if ($atts["module"] == "colleges") {
 			return LmeModuleColleges::getModuleHtml($moduleContent[0], $city, $state, $zip);
+		} else if ($atts["module"] == "homethinking") {
+			return LmeModuleHomethinking::getModuleHtml($moduleContent[0], $city, $state, $zip);
 		}
 	}
 }

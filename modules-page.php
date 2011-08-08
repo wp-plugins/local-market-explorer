@@ -144,6 +144,8 @@ class LmeModulesPage {
 				$content .= LmeModuleDsIdxPress::getModuleHtml($neighborhood, $city, $state, $zip);
 			if ($module == "colleges")
 				$content .= LmeModuleColleges::getModuleHtml($moduleContent["colleges"], $city, $state, $zip);
+			if ($module == "homethinking")
+				$content .= LmeModuleHomethinking::getModuleHtml($moduleContent["homethinking"], $city, $state, $zip);
 		}
 		
 		return $content;
@@ -174,6 +176,8 @@ class LmeModulesPage {
 				$modules[$module] = LmeModuleNileGuide::getApiUrls($neighborhood, $city, $state, $zip);
 			if ($module == "colleges")
 				$modules[$module] = LmeModuleColleges::getApiUrls($neighborhood, $city, $state, $zip);
+			if ($module == "homethinking")
+				$modules[$module] = LmeModuleHomethinking::getApiUrls($neighborhood, $city, $state, $zip);
 		}
 		return $modules;
 	}

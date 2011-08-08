@@ -242,3 +242,24 @@
 	margin: 100px auto 0 auto;
 	width: 120px;
 }
+
+.lme-homethinking .lme-realtor {
+	border-bottom: 1px solid #EEE;
+	clear: both;
+	padding: 20px inherit;
+	overflow: auto;
+}
+.lme-homethinking .lme-realtor:last-child {
+	border-bottom-style: none;
+}
+.lme-homethinking .lme-photo {
+	float: left;
+	margin: 5px 15px 5px 0 !important;
+	border: 1px solid #999;
+}
+.lme-homethinking .lme-data {
+	float: left;
+}
+.lme-homethinking-find-more {
+	padding: 15px 2px 10px;
+}

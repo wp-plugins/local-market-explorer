@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Feedback page link: http://localmarketexplorer.uservoice.com/
 Tags: zillow, walk score, schools, education.com, real estate, local, city data, yelp, teachstreet, nileguide, matchcollege
 Requires at least: 2.8
-Tested up to: 3.1
+Tested up to: 3.2.1
 Stable tag: 3.1.2
 
 This plugin allows WordPress to load data from a number of neighborhood-related APIs to be presented on a single page or within
@@ -24,6 +24,7 @@ your own pages / posts. The different modules that this plugin contains are as f
 * Local Content from NileGuide (via [Nile Guide](http://www.nileguide.com))
 * IDX / MLS Real Estate Data (via [dsIDXpress](http://www.dsidxpress.com))
 * Colleges (via [MatchCollege](http://www.matchcollege.com))
+* Realtors (via [Homethinking](http://www.homethinking.com))
 
 To use the modules on the pre-generated Local Market Explorer "virtual pages," you don't need to do anything other than link to
 or visit the specially-crafted URLs that Local Market Explorer intercepts. The formats of these URLs look like this:
@@ -65,6 +66,10 @@ the higher the priority will be for that item as development commences on the pl
 5. Visit each of the API key links and get your API keys. After you put in each API key, the data will load for the corresponding modules.
 
 == Changelog ==
+
+= 3.2 =
+* Added Realtors module using data from [Homethinking](http://www.homethinking.com)
+
 
 = 3.1.2 =
 * Removing some debugging code that was causing problems during install
