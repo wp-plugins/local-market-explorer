@@ -69,7 +69,8 @@ the higher the priority will be for that item as development commences on the pl
 
 = 3.2 =
 * Added Realtors module using data from [Homethinking](http://www.homethinking.com)
-
+* Small styling fixes
+* Fixes for Zillow market activity and market stats modules
 
 = 3.1.2 =
 * Removing some debugging code that was causing problems during install

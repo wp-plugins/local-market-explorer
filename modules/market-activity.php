@@ -69,8 +69,8 @@ HTML;
 			if ($resultsShown > 10)
 				continue;
 				
-			$soldPrice = number_format($soldProperty->lastSoldPrice);
-			$finishedSqFt = number_format($soldProperty->finishedSqFt);
+			$soldPrice = number_format((string)$soldProperty->lastSoldPrice);
+			$finishedSqFt = number_format((string)$soldProperty->finishedSqFt);
 			
 			$content .= <<<HTML
 				<div class="lme-recently-sold">
