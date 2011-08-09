@@ -3,14 +3,13 @@
 class LmeModuleHomethinking {
 	static function getApiUrls($opt_neighborhood, $opt_city, $opt_state, $opt_zip) {
 		$options = get_option(LME_OPTION_NAME);
-		$urlBase = "http://api.homethinking.com/RealtorWebService/getRealtorListByCityState?";
 		$apiParams = array();
 		
 		$apiParams["page"] = "0";
 		$apiParams["partnerId"] = "NiSc168282";
 		
 		if (!empty($opt_zip)) {
-			$urlBase = "http://api.homethinking.com/RealtorWebService/getRealtorListByCityState?";
+			$urlBase = "http://api.homethinking.com/RealtorWebService/getRealtorListByZip?";
 			$apiParams["zip"] = $opt_zip;
 		} else {
 			$urlBase = "http://api.homethinking.com/RealtorWebService/getRealtorListByCityState?";
@@ -38,9 +37,10 @@ class LmeModuleHomethinking {
 			$areaName = $zip;
 			$brandingLink = sprintf("http://www.homethinking.com/z%s-Realtors.html", $areaName);
 		} else {
-			$areaName = ucwords($opt_city) . ", " . strtoupper($opt_state);
+			$fullState = LmeStates::$translations[strtoupper($opt_state)];
+			$areaName = ucwords($opt_city) . ", " . $fullState;
 			$brandingLink = sprintf("http://www.homethinking.com/%s-Realtors-in-%s.html",
-				str_replace(" ", "-", $opt_city), $opt_state);
+				str_replace(" ", "-", ucwords($opt_city)), $fullState);
 		}
 		$brandingText = sprintf("Browse more %s Realtors at Homethinking", $areaName);
 		

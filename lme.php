@@ -63,6 +63,7 @@ if (is_admin()) {
 }
 require_once("widgets/areas.php");
 require_once("modules-page-rewrite.php");
+require_once("states.php");
 require_once("xml-sitemaps.php");
 
 add_action("widgets_init", array("Lme", "initWidgets"));
