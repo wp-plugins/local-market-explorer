@@ -71,6 +71,7 @@ the higher the priority will be for that item as development commences on the pl
 * Added Realtors module using data from [Homethinking](http://www.homethinking.com)
 * Small styling fixes
 * Fixes for Zillow market activity and market stats modules
+* Fixed maps in Yelp and NileGuide modules
 
 = 3.1.2 =
 * Removing some debugging code that was causing problems during install
@@ -81,7 +82,6 @@ the higher the priority will be for that item as development commences on the pl
 * Fixed possible issues with some of the modules not working when something other than a zip code was used
 * Fixed issue where shortcode insertion tool was occasionally not working
 * Added colleges module using data from [MatchCollege](http://www.matchcollege.com)
-* 
 
 = 3.0.1 =
 * Fixed documentation error with modules
