@@ -2,10 +2,10 @@
 Contributors: amattie, jmabe
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=10178626
 Feedback page link: http://localmarketexplorer.uservoice.com/
-Tags: zillow, walk score, schools, education.com, real estate, local, city data, yelp, teachstreet, nileguide, matchcollege
+Tags: zillow, walk score, schools, education.com, real estate, local, city data, yelp, teachstreet, nileguide, matchcollege, homethinking
 Requires at least: 2.8
 Tested up to: 3.2.1
-Stable tag: 3.1.2
+Stable tag: 3.2
 
 This plugin allows WordPress to load data from a number of neighborhood-related APIs to be presented on a single page or within
 your own pages / posts.
