@@ -199,7 +199,7 @@
 	border-left: 1px solid #eee;
 	float: left;
 	padding: 0 2%;
-	width: 23%;
+	width: 29%;
 }
 .lme-college {
 	margin-bottom: 25px;
@@ -220,7 +220,7 @@
 	border-right: 1px solid #eee;
 	float: right;
 	overflow: hidden;
-	width: 72%;
+	width: 66%;
 }
 .lme-colleges-container {
 	background-color: #eee;
@@ -248,9 +248,6 @@
 	clear: both;
 	padding: 20px inherit;
 	overflow: auto;
-}
-.lme-homethinking .lme-realtor:last-child {
-	border-bottom-style: none;
 }
 .lme-homethinking .lme-photo {
 	float: left;
