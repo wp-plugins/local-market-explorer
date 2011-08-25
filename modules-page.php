@@ -35,6 +35,9 @@ class LmeModulesPage {
 			unset($wp_query->query["lme-action-swap"]);
 			return $posts;
 		}
+		
+		// we want these on every page in case a shortcode is called.
+		wp_enqueue_style("lme", LME_PLUGIN_URL . "css/client.css", null, LME_PLUGIN_VERSION);
 
 		if (!is_array($wp_query->query) || !isset($wp_query->query["lme-action"])) {
 			return $posts;
@@ -80,8 +83,6 @@ class LmeModulesPage {
 			"post_type"			=> "page"
 		));
 		
-		// we want these on every page in case a shortcode is called.
-		wp_enqueue_style("lme", LME_PLUGIN_URL . "css/client.css", null, LME_PLUGIN_VERSION);
 		// this needs to be enqueued after the content has been processed in case this depends on other libraries
 		wp_enqueue_script("local-market-explorer", LME_PLUGIN_URL . "js/client.js", array("jquery"), null, true);
 		
