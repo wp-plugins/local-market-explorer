@@ -186,7 +186,7 @@ HTML;
 		}
 		$content .= <<<HTML
 				</div>
-				<a href="http://www.nileguide.com"><img class="lme-logo" src="{$logoSrc}" /></a>
+				<a href="http://www.nileguide.com" target="_blank"><img class="lme-logo" src="{$logoSrc}" /></a>
 				<div style="clear: both;"></div> <!-- IE 6 fix -->
 			</div>
 HTML;

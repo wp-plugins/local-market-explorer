@@ -135,10 +135,11 @@ HTML;
 		$content .= <<<HTML
 				</table>
 				<div class="lme-market-location-url">
-					<a href="{$zillowLocationUrl}{$zillowUrlSuffix}">See {$location} home values at Zillow.com</a><br />
+					<a href="{$zillowLocationUrl}{$zillowUrlSuffix}" target="_blank">See {$location} home values at Zillow.com</a><br />
 					{$mortgageUrlHtml}
 				</div>
-				<a href="http://www.zillow.com/{$zillowUrlSuffix}"><img class="lme-market-logo" src="http://www.zillow.com/static/logos/Zillowlogo_150x40.gif" /></a>
+				<a href="http://www.zillow.com/{$zillowUrlSuffix}" target="_blank">
+					<img class="lme-market-logo" src="http://www.zillow.com/static/logos/Zillowlogo_150x40.gif" /></a>
 				<div style="clear: both;"></div> <!-- IE 6 fix -->
 			</div>
 HTML;

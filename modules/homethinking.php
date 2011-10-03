@@ -88,7 +88,7 @@ HTML;
 		$content .= <<<HTML
 				<div style="clear: both;"></div>
 				<div class="lme-homethinking-find-more">
-					Find more <a href="{$brandingLink}">{$brandingText}</a>
+					Find more <a href="{$brandingLink}" target="_blank">{$brandingText}</a>
 				</div>
 			</div>
 			<div style="clear: both;"></div>

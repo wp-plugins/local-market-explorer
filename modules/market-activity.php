@@ -89,7 +89,8 @@ HTML;
 		
 		$content .= <<<HTML
 				<div style="clear: both;"></div> <!-- IE 6 fix -->
-				<a href="{$activity->links->forSale}{$zillowUrlSuffix}">See {$location} real estate and homes for sale</a><br />
+				<a href="{$activity->links->forSale}{$zillowUrlSuffix}" target="_blank">
+					See {$location} real estate and homes for sale</a><br />
 				{$mortgageUrlHtml}
 				<div style="clear: both;"></div> <!-- IE 6 fix -->
 			</div>

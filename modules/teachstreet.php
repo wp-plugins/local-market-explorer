@@ -56,9 +56,10 @@ HTML;
 		$content .= <<<HTML
 				</div>
 				<div class="lme-branding">
-					<a href="{$apiResponse->region_browse_url}">Find more classes and teachers in {$apiResponse->region}</a>
+					<a href="{$apiResponse->region_browse_url}" target="_blank">
+						Find more classes and teachers in {$apiResponse->region}</a>
 				</div>
-				<a href="http://www.teachstreet.com"><img class="lme-logo" src="{$logoSrc}" /></a>
+				<a href="http://www.teachstreet.com" target="_blank"><img class="lme-logo" src="{$logoSrc}" /></a>
 				<div style="clear: both;"></div> <!-- IE 6 fix -->
 			</div>
 HTML;

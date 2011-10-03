@@ -74,7 +74,7 @@ HTML;
 					</div>
 					
 					<div class="lme-filter lme-school-type-filter" data-filter-type="type">
-						<b>Schoool type filter</b>
+						<b>School type filter</b>
 						<div>
 							<input type="radio" name="lme-school-type" id="lme-school-type-all" data-filter="" checked />
 							<label for="lme-school-type-all">All</label>
@@ -95,7 +95,7 @@ HTML;
 				</div>
 				<div style="clear: both;"></div> <!-- IE 6 fix -->
 				<div class="lme-market-location-url">
-					<a href="{$locationUrl}">See more info on {$location} schools</a>
+					<a href="{$locationUrl}" target="_blank">See more info on {$location} schools</a>
 				</div>
 				<img class="lme-market-logo" src="http://www.education.com/i/logo/edu-logo-150x32.jpg" />
 				<div style="clear: both;"></div> <!-- IE 6 fix -->

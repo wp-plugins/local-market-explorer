@@ -74,7 +74,7 @@ class LmeModuleColleges {
 						</div>
 					</div>
 					
-					<a href="http://www.matchcollege.com">
+					<a href="http://www.matchcollege.com" target="_blank">
 						<img class="lme-matchcollege-logo" src="{$logoUrl}" />
 					</a>
 				</div>
@@ -118,7 +118,7 @@ HTML;
 				</div>
 				<div style="clear: both;"></div> <!-- IE 6 fix -->
 				<div class="lme-colleges-find-more">
-					Find more <a href="{$findMoreUrl}">colleges in {$state}</a>
+					Find more <a href="{$findMoreUrl}" target="_blank">colleges in {$state}</a>
 				</div>
 				<div style="clear: both;"></div> <!-- IE 6 fix -->
 			</div>
