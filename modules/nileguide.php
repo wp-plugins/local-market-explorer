@@ -2,7 +2,8 @@
 
 class LmeModuleNileGuide {
 	static function getApiUrls($opt_neighborhood, $opt_city, $opt_state, $opt_zip) {
-		$apiUrl = "http://www.nileguide.com/service/cat?";
+		$apiKey = "ec9b61be-8365-457c-a070-a7ed200049b5"; // embedded per NG's request
+		$apiUrl = "http://www.nileguide.com/service/cat?key=" . $apiKey;
 		$placeApi = "/service/place?count=10&searchTerms=category:seedo&searchTerms=";
 		$tripApi = "/service/trip?count=10&searchTerms=";
 		
@@ -40,18 +41,7 @@ class LmeModuleNileGuide {
 		$jsonResults = array();
 		$logoSrc = LME_PLUGIN_URL . "images/logos/nileguide.png";
 		$resultsId = rand();
-		
-		wp_enqueue_script("gmaps3", "http://maps.google.com/maps/api/js?sensor=false", null, null, true);
-		
-		$wp_scripts->in_footer[] = "gmaps3";
-		$wp_scripts->in_footer[] = "local-market-explorer";
-		
-		$content = <<<HTML
-			<h2 class="lme-module-heading">Local Content from NileGuide</h2>
-			<div class="lme-module lme-nileguide">
-				<h3>Things to See and Do</h3>
-				<div class="lme-seedo">
-HTML;
+	
 		foreach ($apiResponse as $entry) {
 			if ($entry->category->term != "/place/seedo")
 				continue;
@@ -99,7 +89,7 @@ HTML;
 			else
 				$description .= ")";
 			
-			$content .= <<<HTML
+			$seeAndDoContent .= <<<HTML
 						<div class="lme-entry">
 							$reviewImgHtml
 							<div class="lme-data">
@@ -110,22 +100,44 @@ HTML;
 HTML;
 		}
 		
-		$pluginUrl = LME_PLUGIN_URL;
-		$jsonResultsSerialized = json_encode($jsonResults);
+		wp_enqueue_script("gmaps3", "http://maps.google.com/maps/api/js?sensor=false", null, null, true);
+		wp_enqueue_script("local-market-explorer");
+		
+		if (version_compare($wp_version, '3.3', '<')) {
+			$wp_scripts->in_footer[] = "gmaps3";
+			$wp_scripts->in_footer[] = "local-market-explorer";
+		}
+		
+		$content = <<<HTML
+			<h2 class="lme-module-heading">Local Content from NileGuide</h2>
+			<div class="lme-module lme-nileguide">
+HTML;
+		
+		if (!empty($seeAndDoContent)) {
+			$content = <<<HTML
+					<h3>Things to See and Do</h3>
+					<div class="lme-seedo">
+HTML;
+			$content .= $seeAndDoContent;
+			$pluginUrl = LME_PLUGIN_URL;
+			$jsonResultsSerialized = json_encode($jsonResults);
+			$content .= <<<HTML
+					</div>
+					<script>
+						var lme = lme || {};
+						lme.pluginUrl = '{$pluginUrl}';
+						lme.nileGuideData = lme.nileGuideData || {};
+						lme.nileGuideData['{$resultsId}'] = {$jsonResultsSerialized};
+					</script>
+					
+					<hr />
+					<h3>Map of Things to See and Do</h3>
+					<div class="lme-seedo-map" data-resultsid="{$resultsId}"></div>
+					
+					<hr />
+HTML;
+		}
 		$content .= <<<HTML
-				</div>
-				<script>
-					var lme = lme || {};
-					lme.pluginUrl = '{$pluginUrl}';
-					lme.nileGuideData = lme.nileGuideData || {};
-					lme.nileGuideData['{$resultsId}'] = {$jsonResultsSerialized};
-				</script>
-				
-				<hr />
-				<h3>Map of Things to See and Do</h3>
-				<div class="lme-seedo-map" data-resultsid="{$resultsId}"></div>
-				
-				<hr />
 				<h3>Suggested Trip Itineraries</h3>
 				<div class="lme-trips">
 HTML;
