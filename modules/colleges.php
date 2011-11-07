@@ -32,9 +32,9 @@ class LmeModuleColleges {
 		$findMoreUrl = "http://www.matchcollege.com/state-college/" . strtoupper($state);
 		
 		if (!empty($opt_zip)) {
-			$areaName = $zip;
+			$areaName = htmlspecialchars($zip);
 		} else {
-			$areaName = ucwords($opt_city) . ", " . strtoupper($opt_state);
+			$areaName = htmlspecialchars(ucwords($opt_city) . ", " . strtoupper($opt_state));
 		}
 		
 		$content = <<<HTML

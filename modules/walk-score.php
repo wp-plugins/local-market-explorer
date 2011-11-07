@@ -19,6 +19,7 @@ class LmeModuleWalkScore {
 		$iframeSrc = LME_PLUGIN_URL . "modules/walk-score-iframe.php";
 		$iframeSrc .= "?api-key=" . urlencode($apiKey);
 		$iframeSrc .= "&location=" . urlencode($locationParams);
+		$iframeSrc = htmlentities($iframeSrc);
 		
 		return <<<HTML
 			<h2 class="lme-module-heading">Walk Score</h2>

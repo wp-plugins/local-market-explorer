@@ -33,16 +33,21 @@ class LmeModuleNeighborhoods {
 		$city = ucwords($opt_city);
 		$state = strtoupper($opt_state);
 		
+		$encCity = htmlentities($city);
+		$encState = htmlentities($state);
+		
 		$content = <<<HTML
-			<h2 class="lme-module-heading">Neighborhoods in {$city}, {$state}</h2>
+			<h2 class="lme-module-heading">Neighborhoods in {$encCity}, {$encState}</h2>
 			<div class="lme-module lme-neighborhoods">
 HTML;
 		
 		foreach ($sortedNeighborhoods as $neighborhood) {
-			$lmeUrl = LmeModulesPageRewrite::getCanonicalLink(null, $city, $neighborhood, $state);
+			$encLmeUrl = htmlentities(LmeModulesPageRewrite::getCanonicalLink(null, $city, $neighborhood, $state));
+			$encNeighborhood = htmlentities($neighborhood);
+			
 			$content .= <<<HTML
 				<div class="lme-neighborhood">
-					<a href="{$lmeUrl}">{$neighborhood}</a>
+					<a href="{$encLmeUrl}">{$encNeighborhood}</a>
 				</div>
 HTML;
 		}
