@@ -156,7 +156,10 @@ HTML;
 							<table class="form-table lme-api-keys">
 								<tr>
 									<th>
-										<label for="local-market-explorer[api-keys][zillow]">Zillow API key:</label>
+										<label for="local-market-explorer[api-keys][zillow]">
+											Zillow API key:<br>
+											<span style="font-size: 10px;">(<a href="https://www.zillow.com/webservice/Registration.htm" target="_blank">get one</a>)</span>
+										</label>
 									</th>
 									<td>
 										<input class="lme-api-key" type="text" id="local-market-explorer[api-keys][zillow]"
@@ -166,7 +169,10 @@ HTML;
 								</tr>
 								<tr>
 									<th>
-										<label for="local-market-explorer[api-keys][walk-score]">Walk Score API key:</label>
+										<label for="local-market-explorer[api-keys][walk-score]">
+											Walk Score ID:<br>
+											<span style="font-size: 10px;">(<a href="http://www.walkscore.com/professional/sign-up" target="_blank">get one</a>)</span>
+										</label>
 									</th>
 									<td>
 										<input class="lme-api-key" type="text" id="local-market-explorer[api-keys][walk-score]"
@@ -176,7 +182,10 @@ HTML;
 								</tr>
 								<tr>
 									<th>
-										<label for="local-market-explorer[api-keys][yelp]">Yelp API key:</label>
+										<label for="local-market-explorer[api-keys][yelp]">
+											Yelp API key:<br>
+											<span style="font-size: 10px;">(<a href="http://www.yelp.com/developers/getting_started/api_access" target="_blank">get one</a>)</span>
+										</label>
 									</th>
 									<td>
 										<input class="lme-api-key" type="text" id="local-market-explorer[api-keys][yelp]"
