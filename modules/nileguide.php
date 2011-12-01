@@ -27,7 +27,7 @@ class LmeModuleNileGuide {
 			$tripLocationParams = "destinationLatLong:{$latLng->lat},{$latLng->lng}";
 		}
 		
-		$url = "{$apiUrl}service=" . urlencode($placeApi . $placeLocationParams) . "&service=" . urlencode($tripApi . $tripLocationParams);
+		$url = "{$apiUrl}&service=" . urlencode($placeApi . $placeLocationParams) . "&service=" . urlencode($tripApi . $tripLocationParams);
 		return array( "nileguide" => $url );
 	}
 	static function getModuleHtml($modules) {
@@ -114,7 +114,7 @@ HTML;
 HTML;
 		
 		if (!empty($seeAndDoContent)) {
-			$content = <<<HTML
+			$content .= <<<HTML
 					<h3>Things to See and Do</h3>
 					<div class="lme-seedo">
 HTML;
