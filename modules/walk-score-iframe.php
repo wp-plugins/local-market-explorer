@@ -55,9 +55,14 @@
 			</form>
 		</div>
 	</div>
+	<?php
+	$apiKey = preg_replace('/[^a-z0-9_\-]/', '', $_GET['api-key']);
+	$location = preg_replace('/[^a-z0-9_\-,\']/', '', urldecode($_GET['location']));
+	$location = str_replace("'", "\\'", $location);
+	?>
 	<script>
-		var ws_wsid = '<?php echo $_GET["api-key"] ?>';
-		var ws_address = '<?php echo str_replace("'", "\\'", $_GET["location"]) ?>';
+		var ws_wsid = '<?php echo $apiKey ?>';
+		var ws_address = '<?php echo $location ?>';
 		var ws_width = document.body.clientWidth;
 		var ws_height = "286";
 		var ws_layout = "horizontal";

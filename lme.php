@@ -53,10 +53,8 @@ if (is_admin()) {
 	require_once("modules/schools.php");
 	require_once("modules/yelp.php");
 	require_once("modules/walk-score.php");
-	require_once("modules/teachstreet.php");
 	require_once("modules/about-area.php");
 	require_once("modules/neighborhoods.php");
-	require_once("modules/nileguide.php");
 	require_once("modules/dsidxpress.php");
 	require_once("modules/colleges.php");
 	require_once("modules/homethinking.php");
@@ -162,18 +160,16 @@ class Lme {
 			$options = array();
 			
 		if (empty($options["global-modules"])) {
-			$options["global-modules"] = array(
-				0 => "about",
-				1 => "market-stats",
-				2 => "neighborhoods",
-				3 => "market-activity",
-				4 => "schools",
-				5 => "walk-score",
-				6 => "yelp",
-				7 => "teachstreet",
-				8 => "nileguide",
-				9 => "colleges",
-				10 => "homethinking"
+			$options['global-modules'] = array(
+				'about',
+				'market-stats',
+				'neighborhoods',
+				'market-activity',
+				'schools',
+				'walk-score',
+				'yelp',
+				'colleges',
+				'homethinking'
 			);
 		}
 		

@@ -25,6 +25,8 @@ class LmeModuleHomethinking {
 			return "";
 		
 		$results = @simplexml_load_string($apiResponses["homethinking"]);
+		if (!$results)
+			return ''; // if API returned an error string instead of xml
 		$ns = $results->getNamespaces(true);
 		$results->registerXPathNamespace("ns", $ns["ns"]);
 		

@@ -63,12 +63,6 @@ HTML;
 			"yelp" => array(
 				"name" => "Yelp reviews",
 				"description" => "from <a href=\"http://www.yelp.com\">Yelp</a>"),
-			"teachstreet" => array(
-				"name" => "Classes",
-				"description" => "from <a href=\"http://www.teachstreet.com\">Teachstreet</a>"),
-			"nileguide" => array(
-				"name" => "Things to do",
-				"description" => "from <a href=\"http://www.nileguide.com\">NileGuide</a>"),
 			"dsidxpress" => array(
 				"name" => "Newest real estate",
 				"description" => "from <a href=\"http://www.dsidxpress.com\">dsIDXpress</a> by <a href=\"http://www.diversesolutions.com\">Diverse Solutions</a>"),
@@ -218,6 +212,8 @@ HTML;
 		$moduleOrderReplacements = array("#{internal-name}", "#{checked}", "#{name}", "#{short-description}");
 		if (count($options["global-modules"])) {
 			foreach ($options["global-modules"] as $module) {
+				if (!isset($moduleInfo[$module]))
+					continue;
 				$moduleOrderValues = array(
 					$module,
 					"checked='checked'",
@@ -336,8 +332,6 @@ HTML;
 									<li>schools</li>
 									<li>walk-score</li>
 									<li>yelp</li>
-									<li>teachstreet</li>
-									<li>nileguide</li>
 									<li>colleges</li>
 									<li>homethinking</li>
 								</ul>
@@ -431,7 +425,7 @@ HTML;
 		}
 	}
 	static function proxyZillowApiRequest() {
-		$apiBase = "http://www.zillow.com/webservice/" . $_GET["api"] . ".htm?";
+		$apiBase = "http://www.zillow.com/webservice/" . sanitize_text_field($_GET["api"]) . ".htm?";
 		$apiParams = $_GET["apiParams"];
 		
 		$finalApiUrl = $apiBase;

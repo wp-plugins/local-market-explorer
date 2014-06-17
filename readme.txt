@@ -2,7 +2,7 @@
 Contributors: amattie, jmabe
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=10178626
 Feedback page link: http://localmarketexplorer.uservoice.com/
-Tags: zillow, walk score, schools, education.com, real estate, local, city data, yelp, teachstreet, nileguide, matchcollege, homethinking
+Tags: zillow, walk score, schools, education.com, real estate, local, city data, yelp, matchcollege, homethinking
 Requires at least: 2.8
 Tested up to: 3.3
 Stable tag: 3.2.5
@@ -20,8 +20,6 @@ your own pages / posts. The different modules that this plugin contains are as f
 * Schools (via [Education.com](http://www.education.com))
 * Walk Score (via [Walk Score](http://www.walkscore.com))
 * Yelp (via [Yelp](http://www.yelp.com))
-* Local Classes (via [TeachStreet](http://www.teachstreet.com))
-* Local Content from NileGuide (via [Nile Guide](http://www.nileguide.com))
 * IDX / MLS Real Estate Data (via [dsIDXpress](http://www.dsidxpress.com))
 * Colleges (via [MatchCollege](http://www.matchcollege.com))
 * Realtors (via [Homethinking](http://www.homethinking.com))

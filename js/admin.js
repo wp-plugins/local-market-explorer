@@ -99,7 +99,7 @@ lmeadmin.loadNeighborhoodsCallback = function(neighborhoodDropDown, response) {
 	
 	neighborhoodDropDown
 		.html(neighborhoodSelections.join(''))
-		.attr('disabled', '');
+		.removeAttr('disabled');
 }
 lmeadmin.preSaveOptions = function(event) {
 	var orderedModules = [];

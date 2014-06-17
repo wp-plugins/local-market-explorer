@@ -137,14 +137,10 @@ class LmeModulesPage {
 				$content .= LmeModuleYelp::getModuleHtml($moduleContent["yelp"]);
 			if ($module == "walk-score")
 				$content .= LmeModuleWalkScore::getModuleHtml($neighborhood, $city, $state, $zip);
-			if ($module == "teachstreet")
-				$content .= LmeModuleTeachStreet::getModuleHtml($moduleContent["teachstreet"]);
 			if ($module == "about")
 				$content .= LmeModuleAboutArea::getModuleHtml($neighborhood, $city, $state, $zip);
 			if ($module == "neighborhoods")
 				$content .= LmeModuleNeighborhoods::getModuleHtml($moduleContent["neighborhoods"], $neighborhood, $city, $state, $zip);
-			if ($module == "nileguide")
-				$content .= LmeModuleNileGuide::getModuleHtml($moduleContent["nileguide"], $neighborhood, $city, $state, $zip);
 			if ($module == "dsidxpress")
 				$content .= LmeModuleDsIdxPress::getModuleHtml($neighborhood, $city, $state, $zip);
 			if ($module == "colleges")
@@ -173,12 +169,8 @@ class LmeModulesPage {
 				$modules[$module] = LmeModuleSchools::getApiUrls($neighborhood, $city, $state, $zip);
 			if ($module == "yelp")
 				$modules[$module] = LmeModuleYelp::getApiUrls($neighborhood, $city, $state, $zip);
-			if ($module == "teachstreet")
-				$modules[$module] = LmeModuleTeachStreet::getApiUrls($neighborhood, $city, $state, $zip);
 			if ($module == "neighborhoods")
 				$modules[$module] = LmeModuleNeighborhoods::getApiUrls($neighborhood, $city, $state, $zip);
-			if ($module == "nileguide")
-				$modules[$module] = LmeModuleNileGuide::getApiUrls($neighborhood, $city, $state, $zip);
 			if ($module == "colleges")
 				$modules[$module] = LmeModuleColleges::getApiUrls($neighborhood, $city, $state, $zip);
 			if ($module == "homethinking")

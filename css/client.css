@@ -145,49 +145,6 @@
 	border-style: none;
 }
 
-.lme-teachstreet .lme-classes {
-	margin-bottom: 15px;
-}
-.lme-teachstreet .lme-class {
-	clear: both;
-}
-.lme-teachstreet .lme-photo {
-	float: left;
-	margin: 5px 15px 5px 0 !important;
-	border: 1px solid #999;
-}
-.lme-teachstreet .lme-branding {
-	width: 300px;
-	float: left;
-	text-align: center;
-}
-.lme-teachstreet .lme-logo {
-	float: right;
-}
-
-.lme-nileguide .lme-seedo {
-	margin-bottom: 15px;
-	overflow: auto;
-}
-.lme-nileguide .lme-seedo-map {
-	height: 300px;
-}
-.lme-nileguide .lme-entry {
-	clear: both;
-	margin-bottom: 20px;
-}
-.lme-nileguide .lme-photo {
-	float: left;
-	margin: 5px 15px 5px 0 !important;
-	border: 1px solid #999;
-}
-.lme-nileguide .lme-trips {
-	overflow: auto;
-}
-.lme-nileguide .lme-logo {
-	float: right;
-}
-
 .lme-colleges .lme-left, .lme-colleges .lme-right {
 	height: 400px;
 	overflow: auto;

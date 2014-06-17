@@ -67,7 +67,7 @@ class LmeModuleYelp {
 				lme.yelpData['{$resultsId}'] = {$jsonResultsSerialized};
 			</script>
 			<h2 class="lme-module-heading">
-				<a href="http://www.yelp.com"><img src="http://media2.px.yelpcdn.com/static/20091130149848283/i/developers/yelp_logo_75x38.png" alt="Yelp" class="lme-yelp-logo" /></a>
+				<a href="http://www.yelp.com"><img src="//s3-media4.ak.yelpcdn.com/assets/2/www/img/7e704c57a423/developers/yelp_logo_75x38.png" alt="Yelp" class="lme-yelp-logo" /></a>
 			</h2>
 			<div class="lme-module lme-yelp">
 				<div class="lme-map" data-resultsid="{$resultsId}"></div>
