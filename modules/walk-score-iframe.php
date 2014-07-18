@@ -1,3 +1,4 @@
+<?php require_once( '../../../../wp-load.php' ); ?>
 <!doctype html>
 <html>
 <head>
@@ -56,8 +57,8 @@
 		</div>
 	</div>
 	<?php
-	$apiKey = preg_replace('/[^a-z0-9_\-]/', '', $_GET['api-key']);
-	$location = preg_replace('/[^a-z0-9_\-,\']/', '', urldecode($_GET['location']));
+	$apiKey = preg_replace('/[^a-z0-9_-]/', '', esc_js($_GET['api-key']));
+	$location = preg_replace('/[^a-z0-9_\-,\']/', '', esc_js(urldecode($_GET['location'])));
 	$location = str_replace("'", "\\'", $location);
 	?>
 	<script>
