@@ -24,7 +24,8 @@ Author: Andrew Mattie & Jonathan Mabe
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-global $wp_version, $wpdb;
+//Test
+global $wp_version, $wpdb;     
 
 require_once(ABSPATH . "wp-admin/includes/plugin.php");
 $pluginData = get_plugin_data(__FILE__);
