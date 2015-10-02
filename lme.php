@@ -3,7 +3,7 @@
 Plugin Name: Local Market Explorer
 Plugin URI: http://wordpress.org/extend/plugins/local-market-explorer/
 Description: This plugin allows WordPress to load data from a number of real estate and neighborhood APIs to be presented all within a single page in WordPress.
-Version: 3.2.6
+Version: 4.0
 Author: Andrew Mattie & Jonathan Mabe
 */
 
@@ -51,7 +51,6 @@ if (is_admin()) {
 	require_once("modules/market-stats.php");
 	require_once("modules/market-activity.php");
 	require_once("modules/schools.php");
-	require_once("modules/yelp.php");
 	require_once("modules/walk-score.php");
 	require_once("modules/about-area.php");
 	require_once("modules/neighborhoods.php");
@@ -167,7 +166,6 @@ class Lme {
 				'market-activity',
 				'schools',
 				'walk-score',
-				'yelp',
 				'colleges',
 				'homethinking'
 			);
