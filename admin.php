@@ -23,16 +23,18 @@ class LmeAdmin {
 	static function initialize() {
 		register_setting(LME_OPTION_NAME, LME_OPTION_NAME, array("LmeAdmin", "sanitizeOptions"));
 	}
+  static function load_custom_wp_admin_style() {
+  }
 	static function loadHeader() {
 		$pluginUrl = LME_PLUGIN_URL;
-		wp_enqueue_script("yui-3", "http://yui.yahooapis.com/3.1.1/build/yui/yui-min.js", null, "3.1.1", true);
+		wp_enqueue_script("yui-3", "{$pluginUrl}js/yui-min.js", null, "3.1.1", true);
 		wp_enqueue_script("lme-admin", "{$pluginUrl}js/admin.js", array("jquery", "jquery-ui-sortable"), LME_PLUGIN_VERSION, true);
-
-		echo <<<HTML
-			<link rel="stylesheet" type="text/css" href="{$pluginUrl}css/jquery-ui-1.7.2.custom.css" />
-			<link rel="stylesheet" type="text/css" href="{$pluginUrl}css/admin.css" />
-HTML;
+    wp_register_style('jquery-ui', LME_PLUGIN_URL . 'css/jquery-ui-1.7.2.custom.css', false, '1.7.2');
+    wp_enqueue_style('jquery-ui');
+    wp_register_style('admin-css', LME_PLUGIN_URL . 'css/admin.css', false, '1.0');
+    wp_enqueue_style('admin-css');
 	}
+
 	static function editOptions() {
 		global $wpdb;
 		
@@ -60,9 +62,6 @@ HTML;
 			"walk-score" => array(
 				"name" => "Walk Score",
 				"description" => "see <a href=\"http://www.walkscore.com\">Walk Score</a>"),
-			"yelp" => array(
-				"name" => "Yelp reviews",
-				"description" => "from <a href=\"http://www.yelp.com\">Yelp</a>"),
 			"dsidxpress" => array(
 				"name" => "Newest real estate",
 				"description" => "from <a href=\"http://www.dsidxpress.com\">dsIDXpress</a> by <a href=\"http://www.diversesolutions.com\">Diverse Solutions</a>"),
@@ -158,7 +157,7 @@ HTML;
 									<td>
 										<input class="lme-api-key" type="text" id="local-market-explorer[api-keys][zillow]"
 											name="local-market-explorer[api-keys][zillow]"
-											value="<?php echo $options["api-keys"]["zillow"] ?>" />
+											value="<?php if (isset($options["api-keys"]["zillow"])) { echo $options["api-keys"]["zillow"]; } ?>" />
 									</td>
 								</tr>
 								<tr>
@@ -171,20 +170,7 @@ HTML;
 									<td>
 										<input class="lme-api-key" type="text" id="local-market-explorer[api-keys][walk-score]"
 											name="local-market-explorer[api-keys][walk-score]"
-											value="<?php echo $options["api-keys"]["walk-score"] ?>" />
-									</td>
-								</tr>
-								<tr>
-									<th>
-										<label for="local-market-explorer[api-keys][yelp]">
-											Yelp API key:<br>
-											<span style="font-size: 10px;">(<a href="http://www.yelp.com/developers/getting_started/api_access" target="_blank">get one</a>)</span>
-										</label>
-									</th>
-									<td>
-										<input class="lme-api-key" type="text" id="local-market-explorer[api-keys][yelp]"
-											name="local-market-explorer[api-keys][yelp]"
-											value="<?php echo $options["api-keys"]["yelp"] ?>" />
+											value="<?php if (isset($options["api-keys"]["walk-score"])) { echo $options["api-keys"]["walk-score"]; } ?>" />
 									</td>
 								</tr>
 							</table>
@@ -193,7 +179,7 @@ HTML;
 							<ul id="lme-other-options">
 								<li>
 									<input type="text" name="local-market-explorer[zillow-username]"
-										id="local-market-explorer[zillow-username]" value="<?php echo $options["zillow-username"] ?>" />
+										id="local-market-explorer[zillow-username]" value="<?php if (isset($options["zillow-username"])) { echo $options["zillow-username"]; } ?>" />
 									<label for="local-market-explorer[zillow-username]">
 										Your username on Zillow.com (for your branding when clicking through on the links)</label>
 								</li>
@@ -377,7 +363,7 @@ HTML;
 							
 							<p>
 								<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=amattie%40gmail%2ecom&lc=US&item_name=Local%20Market%20Explorer&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest">
-									<img src="https://www.paypal.com/en_US/i/btn/btn_donateCC_LG.gif" alt="PayPal - The safer, easier way to pay online!" />
+									<img src="<?php echo LME_PLUGIN_URL; ?>images/logos/btn_donateCC_LG.gif" alt="PayPal - The safer, easier way to pay online!" />
 								</a>
 							</p>
 						</div>
@@ -425,17 +411,18 @@ HTML;
 		}
 	}
 	static function proxyZillowApiRequest() {
-		$apiBase = "http://www.zillow.com/webservice/" . sanitize_text_field($_GET["api"]) . ".htm?";
+    $theApikey = preg_replace("/[^a-z0-9_\-]+/i", "", esc_js($_GET["api"]));
+    $apiBase = "http://www.zillow.com/webservice/" . urlencode($theApikey) . ".htm";
 		$apiParams = $_GET["apiParams"];
-		
-		$finalApiUrl = $apiBase;
-		foreach ($apiParams as $k => $v)
-			$finalApiUrl .= $k . "=" . urlencode($v) . "&";
+                                             
+    $finalApiUrl = $apiBase;
+    $finalApiUrl = add_query_arg( $apiParams, $finalApiUrl );
 		if (empty($apiParams["zws-id"])) {
 			$options = get_option(LME_OPTION_NAME);
-			$finalApiUrl .= "zws-id=" . urlencode($options["api-keys"]["zillow"]) . "&";
+      $finalApiUrl = add_query_arg( array('zws-id' => urlencode($options["api-keys"]["zillow"])), $finalApiUrl );
 		}
-		
+    $finalApiUrl = add_query_arg( array('output' => 'json'), $finalApiUrl );    
+
 		$apiResponse = wp_remote_get($finalApiUrl);
 		
 		header("Cache-Control: max-age=86400"); // we'll consider responses to be valid for a day

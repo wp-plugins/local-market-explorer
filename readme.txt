@@ -2,10 +2,10 @@
 Contributors: amattie, jmabe
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=10178626
 Feedback page link: http://localmarketexplorer.uservoice.com/
-Tags: zillow, walk score, schools, education.com, real estate, local, city data, yelp, matchcollege, homethinking
+Tags: zillow, walk score, schools, education.com, real estate, local, city data, matchcollege, homethinking
 Requires at least: 2.8
-Tested up to: 3.3
-Stable tag: 3.2.6
+Tested up to: 4.3
+Stable tag: 4.0
 
 This plugin allows WordPress to load data from a number of neighborhood-related APIs to be presented on a single page or within
 your own pages / posts.
@@ -13,16 +13,16 @@ your own pages / posts.
 == Description ==
 
 This plugin allows WordPress to load data from a number of neighborhood-related APIs to be presented on a single page or within
-your own pages / posts. The different modules that this plugin contains are as follows:
+your own pages / posts. 
 
-* Real Estate Market Stats (via [Zillow](http://www.zillow.com))
-* Real Estate Market Activity (via Zillow)
-* Schools (via [Education.com](http://www.education.com))
+Info is recovered by calling the following APIs: 
+
+* Real Estate Market Stats (via [Zillow](http://www.zillow.com/webservice/))
+* Colleges (via [MatchCollege](http://api.matchcollege.com))
+* Realtors (via [Homethinking](http://api.homethinking.com))
+* Google Maps (http://maps.google.com./maps/api)
+* Schools (via [Education.com](http://api.education.com))
 * Walk Score (via [Walk Score](http://www.walkscore.com))
-* Yelp (via [Yelp](http://www.yelp.com))
-* IDX / MLS Real Estate Data (via [dsIDXpress](http://www.dsidxpress.com))
-* Colleges (via [MatchCollege](http://www.matchcollege.com))
-* Realtors (via [Homethinking](http://www.homethinking.com))
 
 To use the modules on the pre-generated Local Market Explorer "virtual pages," you don't need to do anything other than link to
 or visit the specially-crafted URLs that Local Market Explorer intercepts. The formats of these URLs look like this:
@@ -65,6 +65,9 @@ the higher the priority will be for that item as development commences on the pl
 
 == Changelog ==
 
+= 4.0 =
+* Major update to remove bugs and patch security issues
+
 = 3.2.6 =
 * Various bug and security fixes
 
@@ -90,7 +93,6 @@ the higher the priority will be for that item as development commences on the pl
 * Added Realtors module using data from [Homethinking](http://www.homethinking.com)
 * Small styling fixes
 * Fixes for Zillow market activity and market stats modules
-* Fixed maps in Yelp and NileGuide modules
 
 = 3.1.2 =
 * Removing some debugging code that was causing problems during install
@@ -197,7 +199,6 @@ data.
 2. Real Estate Market Activity module
 3. Schools module
 4. Walk Score module
-5. Yelp module
-6. Local Classes module
-7. Local Content from NileGuide module
+5. Local Classes module
+6. Local Content from NileGuide module
 7. Colleges module

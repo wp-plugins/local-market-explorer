@@ -22,7 +22,7 @@ class LmeModulesPage {
 				$wp_query->query["lme-action-swap"] = $wp_query->query["lme-action"];
 				unset($wp_query->query["lme-action"]);
 			} else {
-				$q->query_vars["caller_get_posts"] = true;
+				$q->query_vars["ignore_sticky_posts"] = true;
 			}
 		}
 	}
@@ -133,7 +133,7 @@ class LmeModulesPage {
 				$content .= LmeModuleMarketActivity::getModuleHtml($moduleContent["market-activity"]);
 			if ($module == "schools")
 				$content .= LmeModuleSchools::getModuleHtml($moduleContent["schools"]);
-			if ($module == "yelp")
+			if ($module == "yelp_DISABLED")
 				$content .= LmeModuleYelp::getModuleHtml($moduleContent["yelp"]);
 			if ($module == "walk-score")
 				$content .= LmeModuleWalkScore::getModuleHtml($neighborhood, $city, $state, $zip);
@@ -180,15 +180,30 @@ class LmeModulesPage {
 	}
 	static function getNeighborhood() {
 		global $wp_query;
-		return urldecode(str_replace(array("-", "_"), array(" ", "-"), $wp_query->query["lme-neighborhood"]));
+    if (isset($wp_query->query["lme-neighborhood"])) {
+		  return urldecode(str_replace(array("-", "_"), array(" ", "-"), $wp_query->query["lme-neighborhood"]));
+    }
+    else {
+      return null;
+    }
 	}
 	static function getCity() {
 		global $wp_query;
-		return urldecode(str_replace(array("-", "_"), array(" ", "-"), $wp_query->query["lme-city"]));
+    if (isset($wp_query->query["lme-city"])) {
+		  return urldecode(str_replace(array("-", "_"), array(" ", "-"), $wp_query->query["lme-city"]));
+    }
+    else {
+      return null;
+    }
 	}
 	static function getState() {
 		global $wp_query;
-		return $wp_query->query["lme-state"];
+    if (isset($wp_query->query["lme-state"])) {
+		  return $wp_query->query["lme-state"];
+    }
+    else {
+      return null;
+    }
 	}
 	static function getZip() {
 		global $wp_query;

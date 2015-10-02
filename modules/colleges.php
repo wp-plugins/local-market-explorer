@@ -32,7 +32,7 @@ class LmeModuleColleges {
 		$findMoneUrl = "http://www.matchcollege.com/state/" . str_replace(" ","-",strtolower($state));
 		
 		if (!empty($opt_zip)) {
-			$areaName = htmlspecialchars($zip);
+			$areaName = htmlspecialchars($opt_zip);
 		} else {
 			$areaName = htmlspecialchars(ucwords($opt_city) . ", " . strtoupper($opt_state));
 		}
@@ -112,17 +112,26 @@ HTML;
 						</div>
 HTML;
 		}
-
-		$content .= <<<HTML
+    if (isset($findMoreUrl)) {
+  		$content .= <<<HTML
 					</div>
 				</div>
 				<div style="clear: both;"></div> <!-- IE 6 fix -->
 				<div class="lme-colleges-find-more">
-					Find more <a href="{$findMoreUrl}" rel="nofollow" target="_blank">Colleges in {$state}</a>
+					 Find more <a href="{$findMoreUrl}" rel="nofollow" target="_blank">Colleges in {$state}</a>
 				</div>
 				<div style="clear: both;"></div> <!-- IE 6 fix -->
 			</div>
 HTML;
+    }
+    else {
+  		$content .= <<<HTML
+					</div>
+				</div>
+				<div style="clear: both;"></div>
+			</div>
+HTML;
+    }
 		return $content;
 	}
 }

@@ -3,16 +3,6 @@
 $bootstrapSearchDir = dirname($_SERVER["SCRIPT_FILENAME"]);
 $docRoot = isset($_SERVER["APPL_PHYSICAL_PATH"])?$_SERVER["APPL_PHYSICAL_PATH"]:$_SERVER["DOCUMENT_ROOT"];
 
-while (!file_exists($bootstrapSearchDir . "/wp-load.php")) {
-	$bootstrapSearchDir = dirname($bootstrapSearchDir);
-	if (strpos($bootstrapSearchDir, $docRoot) === false){
-		$bootstrapSearchDir = "../../../../.."; // critical failure in our directory finding, so fall back to relative
-		break;
-	}
-}
-require_once($bootstrapSearchDir . "/wp-load.php");
-require_once($bootstrapSearchDir . "/wp-admin/admin.php");
-
 if (!current_user_can("edit_pages"))
 	wp_die("You can't do anything destructive in here, but you shouldn't be playing around with this anyway.");
 
@@ -133,8 +123,6 @@ $localJsUri = get_option("siteurl") . "/" . WPINC . "/js/";
 	
 	<script> var ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>'; </script>
 	<script src="<?php echo $localJsUri ?>tinymce/tiny_mce_popup.js?ver=<?php echo urlencode($tinymce_version) ?>"></script>
-	<!-- jsonpCallback $.ajax arg didn't seem to work w/ WP's version of jquery... -->
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.0/jquery.min.js"></script>
 	<script src="../../js/admin.js?ver=<?php echo urlencode(LME_PLUGIN_VERSION) ?>"></script>
 	<script src="js/dialog.js?ver=<?php echo urlencode(LME_PLUGIN_VERSION) ?>"></script>
 	

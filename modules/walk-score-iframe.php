@@ -57,7 +57,7 @@
 		</div>
 	</div>
 	<?php
-	$apiKey = preg_replace('/[^a-z0-9_-]/', '', esc_js($_GET['api-key']));
+	$apiKey = preg_replace('/[^a-z0-9_\-]/', '', esc_js($_GET['api-key']));
 	$location = preg_replace('/[^a-z0-9_\-,\']/', '', esc_js(urldecode($_GET['location'])));
 	$location = str_replace("'", "\\'", $location);
 	?>

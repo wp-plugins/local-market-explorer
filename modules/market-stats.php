@@ -70,15 +70,17 @@ class LmeModuleMarketStats {
 		$homeSizeChart = $demographics[0]->xpath("charts/chart[name='Home Size in Square Feet']/url");
 		$ownersRentersChart = $demographics[0]->xpath("charts/chart[name='Owners vs. Renters']/url");
 		$yearBuiltChart = $demographics[0]->xpath("charts/chart[name='Year Built']/url");
-		
+	
+    $noshowarr = ['PERCENT LISTING PRICE REDUCTION', 'MEDIAN LIST PRICE', 'HOMES FOR SALE','HOMES RECENTLY SOLD','MEDIAN VALUE PER SQ FT','HOMES FOR SALE BY OWNER','NEW CONSTRUCTION','FORECLOSURES'];
+  	
 		$content = <<<HTML
 			<h2 class="lme-module-heading">Real Estate Market Stats</h2>
 			<div class="lme-module">
 				{$zhviHtml}
 				<div class="lme-market-charts-container">
-					<img src="{$regionChart->url}{$zillowUrlSuffix}" class="lme-zhvi-chart" />
+					<!--<img src="{$regionChart->url}{$zillowUrlSuffix}" class="lme-zhvi-chart" />
 					<div class="lme-market-charts">
-						<div>
+            <div>
 							<h4>Zillow Home Value Index</h4>
 							<img src="{$zhviDistributionChart[0]}" />
 						</div>
@@ -87,6 +89,7 @@ class LmeModuleMarketStats {
 							<img src="{$ownersRentersChart[0]}" />
 						</div>
 					</div>
+          //-->
 					<div class="lme-market-chart-supplemental" style="clear: both;">
 						<h4>Home Size in Square Feet</h4>
 						<img src="{$homeSizeChart[0]}" />
@@ -109,20 +112,34 @@ HTML;
 				continue;
 			
 			$name = htmlentities($attribute->name);
+      if (in_array(trim(strtoupper($name)), $noshowarr)) {
+        continue;
+      }
 			$value = (array)$attribute->values->{$localNodeName}->value;
 			$nationalValue = (array)$attribute->values->nation->value;
 			
-			if ($value["@attributes"]["type"] == "USD") {
+			if ( (isset($value["@attributes"]["type"])) && ($value["@attributes"]["type"] == "USD") ) {
 				$value = "$" . number_format(intval($value["0"]));
 				$nationalValue = "$" . number_format(intval($nationalValue["0"]));
-			} else if ($value["@attributes"]["type"] == "percent") {
+			} else if ( (isset($value["@attributes"]["type"])) && ($value["@attributes"]["type"] == "percent") ) {
 				$value = ($value["0"] * 100) . "%";
 				$nationalValue = ($nationalValue["0"] * 100) . "%";
 			} else {
-				$value = number_format(intval($value["0"]));
-				$nationalValue = number_format(intval($nationalValue["0"]));
+        if (isset($value["0"])) {
+				  $value = number_format(intval($value["0"]));
+        }
+        else {
+          $value = number_format(intval(0));
+        }
+        if (isset($nationalValue["0"])) {
+				  $nationalValue = number_format(intval($nationalValue["0"]));
+        }
+        else {
+          $nationalValue = number_format(intval(0));
+        }
 			}
-			
+?>
+<?php			
 			$content .= <<<HTML
 					<tr>
 						<th>{$name}</th>
@@ -132,6 +149,7 @@ HTML;
 HTML;
 		}
 		
+    $zillow_logo_provided_a = LME_PLUGIN_URL .  "images/logos/Zillowlogo_150x40.gif";
 		$content .= <<<HTML
 				</table>
 				<div class="lme-market-location-url">
@@ -139,7 +157,7 @@ HTML;
 					{$mortgageUrlHtml}
 				</div>
 				<a href="http://www.zillow.com/{$zillowUrlSuffix}" target="_blank">
-					<img class="lme-market-logo" src="http://www.zillow.com/static/logos/Zillowlogo_150x40.gif" /></a>
+					<img class="lme-market-logo" src="{$zillow_logo_provided_a}" /></a>
 				<div style="clear: both;"></div> <!-- IE 6 fix -->
 			</div>
 HTML;

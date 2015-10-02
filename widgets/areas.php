@@ -1,10 +1,14 @@
 <?php
 class LmeAreasWidget extends WP_Widget {
 	function LmeAreasWidget() {
-		$this->WP_Widget("LmeAreas", "Local Market Explorer Areas", array(
-			"classname" => "lme-areas",
-			"description" => "Lists of Local Market Explorer areas with descriptions"
-		));
+		parent::__construct( 
+      "LmeAreas", 
+      "Local Market Explorer Areas", 
+      array(
+			 "classname" => "lme-areas",
+			 "description" => "Lists of Local Market Explorer areas with descriptions"
+		  )
+    );
 	}
 	function widget($args, $instance) {
 		global $wpdb;

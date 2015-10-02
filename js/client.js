@@ -29,7 +29,7 @@
 		
 		for (var i = data.length; i--;) {
 			marker = new google.maps.Marker({
-				icon: 'http://media3.px.yelpcdn.com/static/200911304213451137/i/map/marker_star.png',
+				icon: '',
 				map: map,
 				position: new google.maps.LatLng(data[i].latitude, data[i].longitude)
 			});
