@@ -317,7 +317,6 @@ HTML;
 									<li>photos</li>
 									<li>schools</li>
 									<li>walk-score</li>
-									<li>yelp</li>
 									<li>colleges</li>
 									<li>homethinking</li>
 								</ul>
@@ -334,7 +333,6 @@ HTML;
 									<li>[lme-module module="market-stats" city="Laguna Beach" state="CA"]</li>
 									<li>[lme-module module="market-activity" neighborhood="Downtown" city="Los Angeles" state="CA"]</li>
 									<li>[lme-module module="schools" city="Irvine" state="CA"]</li>
-									<li>[lme-module module="yelp" city="San Francisco" state="CA" neighborhood="Mission"]</li>
 									<li>[lme-module module="walk-score" zip="92651"]</li>
 								</ul>
 							</div>

@@ -167,8 +167,6 @@ class LmeModulesPage {
 				$modules[$module] = LmeModuleMarketActivity::getApiUrls($neighborhood, $city, $state, $zip);
 			if ($module == "schools")
 				$modules[$module] = LmeModuleSchools::getApiUrls($neighborhood, $city, $state, $zip);
-			if ($module == "yelp")
-				$modules[$module] = LmeModuleYelp::getApiUrls($neighborhood, $city, $state, $zip);
 			if ($module == "neighborhoods")
 				$modules[$module] = LmeModuleNeighborhoods::getApiUrls($neighborhood, $city, $state, $zip);
 			if ($module == "colleges")
@@ -207,7 +205,12 @@ class LmeModulesPage {
 	}
 	static function getZip() {
 		global $wp_query;
-		return $wp_query->query["lme-zip"];
+    if (isset($wp_query->query["lme-zip"])) {
+		  return $wp_query->query["lme-zip"];
+    }
+    else {
+      return null;
+    }
 	}
 }
 ?>

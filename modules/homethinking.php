@@ -28,15 +28,16 @@ class LmeModuleHomethinking {
 		if (!$results)
 			return ''; // if API returned an error string instead of xml
 		$ns = $results->getNamespaces(true);
-		$results->registerXPathNamespace("ns", $ns["ns"]);
-		
-		if (!empty($opt_zip))
-			$realtorResults = $results->xpath("//ns:getRealtorListByZipResponse/ns:return");
-		else
-			$realtorResults = $results->xpath("//ns:getRealtorListByCityStateResponse/ns:return");
+    if (isset($ns["ns"])) {
+		  $results->registerXPathNamespace("ns", $ns["ns"]);
+  		if (!empty($opt_zip))
+	   		$realtorResults = $results->xpath("//ns:getRealtorListByZipResponse/ns:return");
+		  else
+			 $realtorResults = $results->xpath("//ns:getRealtorListByCityStateResponse/ns:return");
+    }
 		
 		if (!empty($opt_zip)) {
-			$areaName = $zip;
+			$areaName = $opt_zip;
 			$brandingLink = sprintf("http://www.homethinking.com/z%s-Realtors.html", $areaName);
 		} else {
 			$fullState = LmeStates::$translations[strtoupper($opt_state)];
@@ -54,22 +55,23 @@ class LmeModuleHomethinking {
 			<div class="lme-module lme-homethinking">
 HTML;
 
-		foreach ($realtorResults as $realtor) {
-			$realtor->registerXPathNamespace("ht1", $ns["ht1"]);
+		if (isset($realtorResults)) {
+      foreach ($realtorResults as $realtor) {
+			 $realtor->registerXPathNamespace("ht1", $ns["ht1"]);
 			
-			$averageSale = htmlentities(array_shift($realtor->xpath("ht1:averageSale")));
-			$brokerage = htmlentities(array_shift($realtor->xpath("ht1:brokerage")));
-			$medianBedroom = htmlentities(array_shift($realtor->xpath("ht1:medianBedroom")));
-			$name = htmlentities(array_shift($realtor->xpath("ht1:name")));
-			$phone = htmlentities(array_shift($realtor->xpath("ht1:phone")));
-			$photoLink = htmlentities(array_shift($realtor->xpath("ht1:photoLink")));
-			$profileLink = htmlentities(array_shift($realtor->xpath("ht1:profileLink")));
-			$realtorId = htmlentities(array_shift($realtor->xpath("ht1:realtorId")));
+			 $averageSale = htmlentities(array_shift($realtor->xpath("ht1:averageSale")));
+			 $brokerage = htmlentities(array_shift($realtor->xpath("ht1:brokerage")));
+			 $medianBedroom = htmlentities(array_shift($realtor->xpath("ht1:medianBedroom")));
+			 $name = htmlentities(array_shift($realtor->xpath("ht1:name")));
+			 $phone = htmlentities(array_shift($realtor->xpath("ht1:phone")));
+			 $photoLink = htmlentities(array_shift($realtor->xpath("ht1:photoLink")));
+			 $profileLink = htmlentities(array_shift($realtor->xpath("ht1:profileLink")));
+			 $realtorId = htmlentities(array_shift($realtor->xpath("ht1:realtorId")));
 			
-			$content .= <<<HTML
+			 $content .= <<<HTML
 				<div class="lme-realtor">
 HTML;
-			if (!empty($photoLink))
+			 if (!empty($photoLink))
 				$content .= <<<HTML
 
 					<a href="{$profileLink}"><img class="lme-photo" src="{$photoLink}"/></a>
@@ -87,7 +89,7 @@ HTML;
 HTML;
 		}
 
-		$content .= <<<HTML
+		  $content .= <<<HTML
 				<div style="clear: both;"></div>
 				<div class="lme-homethinking-find-more">
 					Find more <a href="{$brandingLink}" target="_blank">{$brandingText}</a>
@@ -95,8 +97,9 @@ HTML;
 			</div>
 			<div style="clear: both;"></div>
 HTML;
-		return $content;
-	}
+		  return $content;
+	 }
+  }
 }
 
 ?>
