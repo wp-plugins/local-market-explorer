@@ -65,6 +65,9 @@ the higher the priority will be for that item as development commences on the pl
 
 == Changelog ==
 
+= 4.1 =
+Reported issue was fixed. Also, some CSS issues in the admin were fixed.
+
 = 4.0 =
 * Major update to remove bugs and patch security issues
 
