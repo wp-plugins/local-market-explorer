@@ -71,7 +71,7 @@ class LmeModuleMarketStats {
 		$ownersRentersChart = $demographics[0]->xpath("charts/chart[name='Owners vs. Renters']/url");
 		$yearBuiltChart = $demographics[0]->xpath("charts/chart[name='Year Built']/url");
 	
-    $noshowarr = ['PERCENT LISTING PRICE REDUCTION', 'MEDIAN LIST PRICE', 'HOMES FOR SALE','HOMES RECENTLY SOLD','MEDIAN VALUE PER SQ FT','HOMES FOR SALE BY OWNER','NEW CONSTRUCTION','FORECLOSURES'];
+    $noshowarr = array('PERCENT LISTING PRICE REDUCTION', 'MEDIAN LIST PRICE', 'HOMES FOR SALE','HOMES RECENTLY SOLD','MEDIAN VALUE PER SQ FT','HOMES FOR SALE BY OWNER','NEW CONSTRUCTION','FORECLOSURES');
   	
 		$content = <<<HTML
 			<h2 class="lme-module-heading">Real Estate Market Stats</h2>
