@@ -4,8 +4,8 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Feedback page link: http://localmarketexplorer.uservoice.com/
 Tags: zillow, walk score, schools, education.com, real estate, local, city data, matchcollege, homethinking
 Requires at least: 2.8
-Tested up to: 4.3
-Stable tag: 4.0
+Tested up to: 4.3.1
+Stable tag: 4.1.1
 
 This plugin allows WordPress to load data from a number of neighborhood-related APIs to be presented on a single page or within
 your own pages / posts.
@@ -64,6 +64,12 @@ the higher the priority will be for that item as development commences on the pl
 5. Visit each of the API key links and get your API keys. After you put in each API key, the data will load for the corresponding modules.
 
 == Changelog ==
+
+= 4.1.1 =
+Fix some additional CSS issues.
+
+= 4.1 =
+Reported issue was fixed. Also, some CSS issues in the admin were fixed.
 
 = 4.0 =
 * Major update to remove bugs and patch security issues

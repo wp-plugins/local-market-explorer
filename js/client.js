@@ -1,5 +1,4 @@
 
-// init yelp map(s)
 (function() {
 	var $ = jQuery;
 	
