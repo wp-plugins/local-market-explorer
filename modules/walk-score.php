@@ -30,7 +30,7 @@ class LmeModuleWalkScore {
             <form id="ws-form">
               <a id="ws-a" href="http://www.walkscore.com/" target="_blank">Find out your home's Walk Score: </a>
 				      <input type="text" id="ws-street" />
-				      <input type="image" id="ws-go" src="{LME_PLUGIN_URL}images/go-button.gif" height="15" width="22" border="0" alt="get my Walk Score" />
+				      <input type="image" id="ws-go" src="{$lme_plugin_url}images/go-button.gif" height="15" width="22" border="0" alt="get my Walk Score" />
 			     </form>
 		      </div>
         </div>

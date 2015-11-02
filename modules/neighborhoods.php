@@ -44,10 +44,11 @@ HTML;
 		foreach ($sortedNeighborhoods as $neighborhood) {
 			$encLmeUrl = htmlentities(LmeModulesPageRewrite::getCanonicalLink(null, $city, $neighborhood, $state));
 			$encNeighborhood = htmlentities($neighborhood);
+      $siteURL = get_site_url();
 			
 			$content .= <<<HTML
 				<div class="lme-neighborhood">
-					<a href="{$encLmeUrl}">{$encNeighborhood}</a>
+					<a href="{$siteURL}{$encLmeUrl}">{$encNeighborhood}</a>
 				</div>
 HTML;
 		}
