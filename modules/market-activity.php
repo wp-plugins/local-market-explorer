@@ -69,7 +69,7 @@ HTML;
 			if ($resultsShown > 10)
 				continue;
 				
-			$soldPrice = number_format((string)$soldProperty->lastSoldPrice);
+			$soldPrice = number_format((double)$soldProperty->lastSoldPrice);
 			$finishedSqFt = number_format((string)$soldProperty->finishedSqFt);
 			
 			$content .= <<<HTML

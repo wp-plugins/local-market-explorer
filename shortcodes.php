@@ -17,10 +17,6 @@ class LmeShortcodes {
 			$modules[] = LmeModuleYelp::getApiUrls($neighborhood, $city, $state, $zip);
 		} else if ($atts["module"] == "neighborhoods") {
 			$modules[] = LmeModuleNeighborhoods::getApiUrls($neighborhood, $city, $state, $zip);
-		} else if ($atts["module"] == "colleges") {
-			$modules[] = LmeModuleColleges::getApiUrls($neighborhood, $city, $state, $zip);
-		} else if ($atts["module"] == "homethinking") {
-			$modules[] = LmeModuleHomethinking::getApiUrls($neighborhood, $city, $state, $zip);
 		}
 		
 		$moduleContent = LmeApiRequester::gatherContent($modules);
@@ -35,15 +31,13 @@ class LmeShortcodes {
 			return LmeModuleYelp::getModuleHtml($moduleContent[0]);
 		} else if ($atts["module"] == "walk-score") {
 			return LmeModuleWalkScore::getModuleHtml($neighborhood, $city, $state, $zip);
+		} else if ($atts["module"] == "streetadvisor") {
+			return LmeModuleStreetAdvisor::getModuleHtml($neighborhood, $city, $state, $zip);
 		} else if ($atts["module"] == "about") {
 			return LmeModuleAboutArea::getModuleHtml($neighborhood, $city, $state, $zip);
 		} else if ($atts["module"] == "neighborhoods") {
 			return LmeModuleNeighborhoods::getModuleHtml($moduleContent[0], $neighborhood, $city, $state, $zip);
-		} else if ($atts["module"] == "colleges") {
-			return LmeModuleColleges::getModuleHtml($moduleContent[0], $city, $state, $zip);
-		} else if ($atts["module"] == "homethinking") {
-			return LmeModuleHomethinking::getModuleHtml($moduleContent[0], $city, $state, $zip);
-		}
+		} 
 	}
 }
 

@@ -1,11 +1,11 @@
 === Local Market Explorer ===
-Contributors: amattie, jmabe
+Contributors: amattie, jmabe, dustin999
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=10178626
 Feedback page link: http://localmarketexplorer.uservoice.com/
-Tags: zillow, walk score, schools, education.com, real estate, local, city data, matchcollege, homethinking
-Requires at least: 2.8
-Tested up to: 4.3
-Stable tag: 4.0
+Tags: zillow, walk score, streetadvisor, schools, education.com, real estate, local, city data, neighborhood data
+Requires at least: 3.0
+Tested up to: 4.3.1
+Stable tag: 4.3
 
 This plugin allows WordPress to load data from a number of neighborhood-related APIs to be presented on a single page or within
 your own pages / posts.
@@ -18,11 +18,10 @@ your own pages / posts.
 Info is recovered by calling the following APIs: 
 
 * Real Estate Market Stats (via [Zillow](http://www.zillow.com/webservice/))
-* Colleges (via [MatchCollege](http://api.matchcollege.com))
-* Realtors (via [Homethinking](http://api.homethinking.com))
-* Google Maps (http://maps.google.com./maps/api)
+* StreetAdvisor (via [StreetAdvisor](http://www.streetadvisor.com))
 * Schools (via [Education.com](http://api.education.com))
 * Walk Score (via [Walk Score](http://www.walkscore.com))
+* Google Maps (http://maps.google.com./maps/api) 
 
 To use the modules on the pre-generated Local Market Explorer "virtual pages," you don't need to do anything other than link to
 or visit the specially-crafted URLs that Local Market Explorer intercepts. The formats of these URLs look like this:
@@ -41,14 +40,10 @@ page / post editor. There's a small map icon in the toolbar editor that can help
 
 More information and help can be found in the "Help" tab in the admin once the plugin is installed.
 
-This plugin is open-source donationware. I'm willing to accept and integrate well-written patches into the code, but the
+This plugin is open-source donationware. We’re willing to accept and integrate well-written patches into the code, but the
 continued development of the plugin (new features, bug fixes, etc) by the plugin author is funded by either donations or
-companies willing to pay a nominal fee to have their data integrated. You can thank Zillow and Education.com for funding the
-vast majority of the development thus far. If you'd like to donate towards a particular feature however, please
-[donate via PayPal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=10178626). Getting me something sweet
-on [my Amazon wishlist](http://www.amazon.com/wishlist/7EQB35SN16H9/ref=cm_wl_rlist_go) would certainly help grease the wheels
-for new features as well. I'm happily employed at [Diverse Solutions](http://www.diversesolutions.com) though and so some
-feature ideas you may have are off-limits for me to work on.
+companies willing to pay a fee to have their data integrated. You can thank Zillow, [Education.com](http://education.com/), and [StreetAdvisor](http://www.streetadvisor.com/) for funding the
+vast majority of the development thus far. This plugin is currently funded by [StreetAdvisor](http://www.streetadvisor.com/), and being developed by [Caffeine Interactive](http://caffeineinteractive.com/).
 
 If you'd like to contribute a feature suggestion or need to document a bug, please use the
 [User Voice forum](http://localmarketexplorer.uservoice.com/) set up specifically for that purpose. With User Voice, each user
@@ -64,6 +59,21 @@ the higher the priority will be for that item as development commences on the pl
 5. Visit each of the API key links and get your API keys. After you put in each API key, the data will load for the corresponding modules.
 
 == Changelog ==
+
+= 4.3 =
+* Added StreetAdvisor module
+
+= 4.2 =
+* Optimization of the plugin
+
+= 4.1.1 =
+* Fix some additional CSS issues.
+
+= 4.1.1 =
+* Fix some additional CSS issues.
+
+= 4.1 =
+* Reported issue was fixed. Also, some CSS issues in the admin were fixed.
 
 = 4.0 =
 * Major update to remove bugs and patch security issues
@@ -199,6 +209,3 @@ data.
 2. Real Estate Market Activity module
 3. Schools module
 4. Walk Score module
-5. Local Classes module
-6. Local Content from NileGuide module
-7. Colleges module
