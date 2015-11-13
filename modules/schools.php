@@ -34,9 +34,14 @@ class LmeModuleSchools {
 HTML;
 
 		foreach ($schoolSearch as $school) {
-			$school = $school["school"];
-			$hyphenizedDistrict = str_replace(" ", "-", strtolower($school["schooldistrictname"]));
-			
+
+      if ( !isset($school["school"]) ) {
+        continue;
+      } 
+
+			$school = $school["school"] ;
+			$hyphenizedDistrict = isset($school["school"]) ?  str_replace(" ", "-", strtolower($school["schooldistrictname"])) : '';
+		
 			$content .= <<<HTML
 
 					<div class="lme-school" data-grade="{$school["gradelevel"]}" data-type="{$school["schooltype"]}">
