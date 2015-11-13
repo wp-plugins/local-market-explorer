@@ -61,17 +61,27 @@ class LmeModuleMarketStats {
 		
 		$affordabilityData = $demographics[0]->xpath("pages/page[name='Affordability']/tables/table[name='Affordability Data']/data");
 		$zhvi = $affordabilityData[0]->xpath("attribute[name='Zillow Home Value Index']/values/{$localNodeName}/value");
-		$zhvi = number_format((string)$zhvi[0]);
+    if (isset($zhvi[0])) {
+		  $zhvi = number_format((double)$zhvi[0]);
+    }
+    else {
+      $zhvi = "0";
+    }
 		
-		if ($zhvi != "0")
+		if ($zhvi != "0") {
 			$zhviHtml = "<h3 class=\"lme-zhvi\"><a href=\"{$demographics->links->main}{$zillowUrlSuffix}\">Zillow Home Value Index: \${$zhvi}</a></h3>";
+    }
+    else {
+      $zhviHtml = "";
+    }
+    
 		
 		$zhviDistributionChart = $demographics[0]->xpath("charts/chart[name='Zillow Home Value Index Distribution']/url");
 		$homeSizeChart = $demographics[0]->xpath("charts/chart[name='Home Size in Square Feet']/url");
 		$ownersRentersChart = $demographics[0]->xpath("charts/chart[name='Owners vs. Renters']/url");
 		$yearBuiltChart = $demographics[0]->xpath("charts/chart[name='Year Built']/url");
 	
-    $noshowarr = ['PERCENT LISTING PRICE REDUCTION', 'MEDIAN LIST PRICE', 'HOMES FOR SALE','HOMES RECENTLY SOLD','MEDIAN VALUE PER SQ FT','HOMES FOR SALE BY OWNER','NEW CONSTRUCTION','FORECLOSURES'];
+    $noshowarr = array('PERCENT LISTING PRICE REDUCTION', 'MEDIAN LIST PRICE', 'HOMES FOR SALE','HOMES RECENTLY SOLD','MEDIAN VALUE PER SQ FT','HOMES FOR SALE BY OWNER','NEW CONSTRUCTION','FORECLOSURES');
   	
 		$content = <<<HTML
 			<h2 class="lme-module-heading">Real Estate Market Stats</h2>

@@ -1,5 +1,4 @@
 
-// init yelp map(s)
 (function() {
 	var $ = jQuery;
 	
@@ -99,3 +98,20 @@
 		});
 	});
 })();
+
+//Manage StreetAdvisor operations
+(function() {
+	var $ = jQuery;
+
+  $( "#ask_button" ).click(function() {
+    var bnURL = $( "#ask_url" ).val() + '?title=' + $( "#sa_title" ).val(); 
+    window.open(bnURL);
+  });
+
+  $( "#leave_review" ).click(function() {
+    var bnURL = $( "#leave_review_url" ).val(); 
+    window.open(bnURL);
+  });
+
+
+})();  
