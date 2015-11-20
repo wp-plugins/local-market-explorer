@@ -99,6 +99,10 @@ class LmeModuleStreetAdvisor {
         $notReviews = True;
       }
     }
+    else {
+      $reviewsData['TotalItems'] = 0;
+      $notReviews = True;
+    }
     
     $reviewsHTML = '';
     if ($notReviews) {
@@ -116,7 +120,7 @@ class LmeModuleStreetAdvisor {
                             </div>
                             <div class="reviewAvatar">
                               <strong>by '.$reviewsData['Items'][$i]['User']['DisplayName'].'</strong>
-                              <img width-"34" height="34" src="'.$avatarURL.'" align="right">
+                              <img width="34" height="34" src="'.$avatarURL.'" align="right">
                             </div>
                           </div>'; 
         $reviewsHTML .= '<br clear="all"/><br clear="all"/>';                                              
@@ -143,11 +147,9 @@ class LmeModuleStreetAdvisor {
         </div>
         <div class="nameheader">
           <a href="{$locationData['Location']['Url']}" target="_blank">{$locationData['Location']['Name']}</a>
-          <i class="rankingdescription">Score: {$locationData['Location']['Score']} out of 10</i>
-          <i class="rankingdescription">{$locationData['Location']['RankingDescription']}</i>
+          <i class="rankingdescription">Score: {$locationData['Location']['Score']} out of 10<br/>{$locationData['Location']['RankingDescription']}</i>
         </div>
         <br clear="all"/>
-        <br/>
         <div class="sa-body">
           <span class="textred">Reviews</span>
           <div>
@@ -167,11 +169,9 @@ class LmeModuleStreetAdvisor {
           <br clear="all"/>
           <div>
             <span>Have a burning question? Why not ask the locals?</span>
-            <form>
-              <input type="text" name="sa_title" id="sa_title" class="ask_question" placeholder="Your question here...">
-              <input type="button" value="Ask It" id="ask_button" class="button">
-              <input type="hidden" id="ask_url" value="{$locationData['Location']['Url']}/questions/ask">
-            </form>
+            <input type="text" name="sa_title" id="sa_title" class="ask_question" placeholder="Your question here...">
+            <input type="button" value="Ask It" id="ask_button" class="button">
+            <input type="hidden" id="ask_url" value="{$locationData['Location']['Url']}/questions/ask">
           </div>
           <br clear="all"/>
           <div>

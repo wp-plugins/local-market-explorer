@@ -19,9 +19,12 @@ class LmeModuleSchools {
 	}
 	static function getModuleHtml($apiResponses) {
 		$schoolSearch = @unserialize($apiResponses["school-search"]);
-		
+    
 		if (empty($schoolSearch))
 			return;
+      
+    if (empty($schoolSearch[0]))
+      return;      
 		
 		$location = $schoolSearch[0]["school"]["city"];
 		preg_match("/^(.+?)[^\/]+\/$/", $schoolSearch[0]["school"]["url"], $locationUrlMatches);

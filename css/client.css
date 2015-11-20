@@ -1,7 +1,5 @@
 .lme-module-heading {
-	background-color: #eee;
 	display: block;
-	padding-left: 10px;
 	margin-bottom: 0 !important;
 }
 .lme-module {
@@ -10,6 +8,7 @@
 	overflow: auto;
 	margin-bottom: 30px;
 	position: relative;
+	box-sizing: border-box;
 }
 .lme-module th {
 	text-align: left;
@@ -20,7 +19,6 @@
 .lme-module label {
 	cursor: pointer;
 }
-
 .lme-zhvi {
 	text-align: center;
 }
@@ -54,12 +52,10 @@
 .lme-market-logo {
 	float: right;
 }
-
 .lme-neighborhoods .lme-neighborhood {
 	width: 33%;
 	float: left;
 }
-
 .lme-recently-sold {
 	clear: both;
 	overflow: auto;
@@ -71,8 +67,11 @@
 }
 .lme-recently-sold .lme-data {
 	float: left;
+	padding-top: 5px;
 }
-
+.lme-recently-sold .lme-data div {
+	margin-bottom: 5px;
+}
 .lme-schools .lme-left, .lme-schools .lme-right {
 	height: 400px;
 	overflow: auto;
@@ -105,11 +104,10 @@
 	width: 160px;
 }
 .lme-schools .lme-right input {
-	margin: 0 0 0 15px;
+	margin: 0;
 	padding: 0;
 	width: auto;
 }
-
 .lme-yelp-logo {
 	vertical-align: middle !important;
 	margin: 3px 0 !important;
@@ -138,13 +136,10 @@
 .lme-yelp img.lme-rating {
 	vertical-align: middle !important;
 }
-
 .lme-walk-score {
 	width: 100%;
 	height: 310px;
-	border-style: none;
 }
-
 .lme-colleges .lme-left, .lme-colleges .lme-right {
 	height: 400px;
 	overflow: auto;
@@ -199,7 +194,6 @@
 	margin: 100px auto 0 auto;
 	width: 120px;
 }
-
 .lme-homethinking .lme-realtor {
 	border-bottom: 1px solid #EEE;
 	clear: both;
@@ -217,128 +211,200 @@
 .lme-homethinking-find-more {
 	padding: 15px 2px 10px;
 }
-
-  #ws-walkscore-tile {  
-			position: relative;
-			text-align: left;
-			margin: 0 auto;
-	}
-	#ws-walkscore-tile * {
-			float:none;
-	}
-	#ws-footer {
-			position: absolute;
-			top:268px;
-			left:8px;
-			width: 588px;
-	}
-	#ws-footer a, #ws-footer a:link {
-			font:11px Verdana,Arial,Helvetica,sans-serif;
-			margin-right:6px;
-			white-space:nowrap;
-			padding:0;
-			color:#000;
-			font-weight:bold;
-			text-decoration:none;
-	}
-	#ws-footer a:hover{
-			color:#777;
-			text-decoration:none;
-	}
-	#ws-footer a:active{
-			color:#b14900;
-	}
-	#ws-street {
-			position:absolute;
-			top:0px;
-			left:225px;
-			width:331px;
-	}
-	#ws-go {
-			position:absolute;
-			top:0px;
-			right:0px;
-	}
-       
-  .lme-streetadvisor .sa-body span {
-    color:#000000;
-  }       
-        
-  .lme-streetadvisor .circle {
-    overflow: hidden;
-    text-align: center;
-    width: 62px;
-    height: 62px;
-    color: #FFF;
-    border: 2px solid #FFF;
-    border-radius: 33px;
-    box-shadow: 0px -2px 8px rgba(0, 0, 0, 0.3) inset, 0px 1px 3px rgba(0, 0, 0, 0.2) inset;
-    background-color:#C50000;
-    float:left;    
-  }
-  
-  .lme-streetadvisor .value {
-    display: block;
-    padding: 15px 0px 1px;
-    font-family: adelle-1,adelle-2,Arial,Helvetica,sans-serif;
-    font-size: 24px;
-    font-weight: 700;
-    color: #FFF;
-  }
-  
-  .lme-streetadvisor .nameheader {
-    padding-top:9px;
-    float:left;
-    margin-left:27px;
-  }
-  
-	.lme-streetadvisor .rankingdescription{
-			text-transform: uppercase;
-      font-size:11px;
-      font-weight:bold;
-	}
-  
-  .lme-streetadvisor .textred {
-      color:#C50000 !important;
-      font-size:27px;
-  }
-  .lme-streetadvisor .ask_question {
-    width:100%;
-  }
-  .lme-streetadvisor .button {
-    float:right;
-    margin-top:9px;
-    background-color:#C50000;
-    color:#FFFFFF;
-    font-weight:bold;
-    box-shadow: 2px 2px 2px #000000;
-  }
-  .lme-streetadvisor .button2 {
-    float:right;
-    background-color:#C50000;
-    color:#FFFFFF;
-    font-weight:bold;
-    box-shadow: 2px 2px 2px #000000;
-  }
-  .lme-streetadvisor .reviewTitle {
-    float:left;
-    width:70%;
-  }
-  .lme-streetadvisor .reviewAvatar {
-    text-align:right;
-    float:right;
-    width:25%;
-  }
-  .lme_streetadvisor h3 {
-    color:#C50000 !important;
-    font-weight:bold;
-  }
-  .sa_see_reviews {     
-    float:left;
-    width:50%;
-  }
-  .sa_button_reviews {
-    float:right;
-    width:35%;
-  }
-   
+#ws-walkscore-tile {
+	position: relative;
+	text-align: left;
+	margin: 0 auto;
+}
+#ws-walkscore-tile * {
+	float: none;
+}
+#ws-footer {
+	position: absolute;
+	top: 268px;
+	left: 8px;
+	width: 588px;
+}
+#ws-footer a, #ws-footer a:link {
+	font: 11px Verdana, Arial, Helvetica, sans-serif;
+	margin-right: 6px;
+	white-space: nowrap;
+	padding: 0;
+	color: #000;
+	font-weight: bold;
+	text-decoration: none;
+}
+#ws-footer a:hover {
+	color: #777;
+	text-decoration: none;
+}
+#ws-footer a:active {
+	color: #b14900;
+}
+#ws-street {
+	position: absolute;
+	top: 0px;
+	left: 225px;
+	width: 331px;
+}
+#ws-go {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+}
+.lme-streetadvisor .circle {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	overflow: hidden;
+	text-align: center;
+	width: 66px;
+	height: 66px;
+	color: #FFF;
+	border: 2px solid #971414;
+	border-radius: 35px;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.6);
+	background: #d00 url(http://www.streetadvisor.com/content/shared/images/bg-texture-red.png);
+	box-sizing: border-box;
+}
+.lme-streetadvisor .value {
+	display: block;
+	width: 62px;
+	height: 62px;
+	padding: 15px 0px 1px;
+	font-family: adelle-1, adelle-2, Arial, Helvetica, sans-serif;
+	font-size: 24px;
+	font-weight: 700;
+	text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+	color: #FFF;
+	background: -moz-linear-gradient(top, rgba(255,127,127,0.4) 0%, rgba(255,127,127,0) 50%, rgba(0,0,0,0.2) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(255,127,127,0.4)), color-stop(50%, rgba(255,127,127,0)), color-stop(100%, rgba(0,0,0,0.2)));
+	background: -webkit-linear-gradient(top, rgba(255,127,127,0.4) 0%, rgba(255,127,127,0) 50%, rgba(0,0,0,0.2) 100%);
+	background: -o-linear-gradient(top, rgba(255,127,127,0.4) 0%, rgba(255,127,127,0) 50%, rgba(0,0,0,0.2) 100%);
+	background: -ms-linear-gradient(top, rgba(255,127,127,0.4) 0%, rgba(255,127,127,0) 50%, rgba(0,0,0,0.2) 100%);
+	background: linear-gradient(top, rgba(255,127,127,0.4) 0%, rgba(255,127,127,0) 50%, rgba(0,0,0,0.2) 100%);
+	border: 2px solid #fff;
+	border-radius: 33px;
+	box-shadow: inset 0 -2px 8px rgba(0,0,0,0.3), inset 0 1px 3px rgba(0,0,0,0.2);
+	box-sizing: border-box;
+}
+.lme-streetadvisor .nameheader {
+	margin-left: 80px;
+	line-height: 1.4;
+	min-height: 70px;
+}
+.lme-streetadvisor .nameheader a {
+	font-size: 26px;
+	text-decoration: none;
+}
+.lme-streetadvisor .rankingdescription {
+	text-transform: uppercase;
+	font-size: 11px;
+	font-weight: bold;
+	display: block;
+	color: #666;
+	font-style: normal;
+	margin-bottom: 2px;
+}
+.lme-streetadvisor .sa-body span {
+	color: #111;
+	font-weight: 700;
+	display: block;
+	margin-top: 10px;
+	margin-bottom: 5px;
+}
+.lme-streetadvisor .sa-body span.textred {
+	color: #C50000 !important;
+	font-size: 20px;
+	display: block;
+	margin-bottom: 10px;
+}
+.lme-streetadvisor .ask_question {
+	width: 100%;
+	padding: 4px 10px;
+	font-size: 14px;
+	line-height: 18px;
+	border-radius: 4px;
+	border: 1px solid #ccc;
+	box-shadow: 1px 1px 2px #e3e3e3 inset;
+	box-sizing: border-box;
+}
+.lme-streetadvisor .button, .lme-streetadvisor .button2 {
+	padding: 6px 10px;
+	line-height: 18px;
+	font-family: adelle-1, adelle-2, Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	font-weight: bold;
+	text-align: center;
+	text-decoration: none!important;
+	border-radius: 3px;
+	outline: none;
+	cursor: pointer;
+	color: #fff!important;
+	border: solid 1px #900;
+	text-shadow: 0 1px 0 rgba(0,0,0,.4);
+	background: #c00;
+	background: -webkit-gradient(linear, left top, left bottom, from(#c00), to(#900));
+	background: -moz-linear-gradient(top, #c00, #900);
+ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#cc0000', endColorstr='#990000');
+	box-shadow: 1px 1px 1px rgba(0,0,0,.6), inset 1px 1px 1px rgba(255,255,255,.3);
+}
+.lme-streetadvisor .button {
+	float: right;
+	margin-top: 9px;
+}
+.lme-streetadvisor .button2 {
+	float: right;
+}
+#ask_button {
+	margin-bottom: 20px;
+}
+.lme-streetadvisor .button:focus, .lme-streetadvisor .button2:hover {
+	background: #b50000;
+	background: -webkit-gradient(linear, left top, left bottom, from(#b50000), to(#890000));
+	background: -moz-linear-gradient(top, #b50000, #890000);
+ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#b50000', endColorstr='#890000');
+}
+.lme-streetadvisor .button:active, .lme-streetadvisor .button2:active {
+	color: #eee0e0!important;
+	background: -webkit-gradient(linear, left top, left bottom, from(#900), to(#c00));
+	background: -moz-linear-gradient(top, #900, #c00);
+ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#990000', endColorstr='#cc0000');
+}
+.lme-streetadvisor .reviewTitle {
+	float: left;
+	width: 70%;
+}
+.lme-streetadvisor .reviewTitle strong {
+	display: block;
+	margin-bottom: 5px;
+	font-style: italic;
+	color: #111;
+}
+.lme-streetadvisor .reviewAvatar {
+	text-align: right;
+	float: right;
+	width: 25%;
+}
+.lme-streetadvisor .reviewAvatar strong {
+	font-size: 12px;
+	display: block;
+	color: #666;
+	margin-bottom: 5px;
+}
+.lme-streetadvisor .reviewAvatar img {
+	box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+	border-radius: 2px;
+}
+.lme_streetadvisor h3 {
+	color: #C50000 !important;
+	font-weight: bold;
+}
+.sa_see_reviews {
+	float: left;
+	width: 50%;
+}
+.sa_button_reviews {
+	float: right;
+	width: 35%;
+}

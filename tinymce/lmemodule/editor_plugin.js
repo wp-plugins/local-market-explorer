@@ -2,9 +2,9 @@ tinymce.create('tinymce.plugins.lmeModule', {
 	init : function(ed, url) {
 		ed.addCommand('lme-module', function() {
 			ed.windowManager.open({
-				file : url + '/dialog.php',
-				width : 405,
-				height : 210,
+				file : url + '/dialog.php?ajaxurl='+ajaxurl,
+				width : 600,
+				height : 400,
 				inline : 1
 			}, {
 				plugin_url : url

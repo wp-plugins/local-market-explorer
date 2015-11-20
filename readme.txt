@@ -5,7 +5,7 @@ Feedback page link: http://localmarketexplorer.uservoice.com/
 Tags: zillow, walk score, streetadvisor, schools, education.com, real estate, local, city data, neighborhood data
 Requires at least: 3.0
 Tested up to: 4.3.1
-Stable tag: 4.4
+Stable tag: 4.5
 
 This plugin allows WordPress to load data from a number of neighborhood-related APIs to be presented on a single page or within
 your own pages / posts.
@@ -59,6 +59,9 @@ the higher the priority will be for that item as development commences on the pl
 5. Visit each of the API key links and get your API keys. After you put in each API key, the data will load for the corresponding modules.
 
 == Changelog ==
+
+= 4.5 =
+* Fixes for tiny Editor in posts and Pages 
 
 = 4.4 =
 * Update for StreetAdvisor module 

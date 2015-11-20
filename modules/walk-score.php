@@ -17,7 +17,7 @@ class LmeModuleWalkScore {
 		}
 		
     $apiKey = preg_replace('/[^a-z0-9_\-]/', '', esc_js(urlencode($apiKey)));
-    $location = preg_replace('/[^a-z0-9_\-,\']/', '', esc_js(urldecode(urlencode($locationParams))));
+    $location = preg_replace('/[^a-zA-Z0-9_\-,\']/', '', esc_js(urldecode(urlencode($locationParams))));
     $location = str_replace("'", "\\'", $location);
     $lme_plugin_url = LME_PLUGIN_URL;
 		
