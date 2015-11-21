@@ -1,20 +1,18 @@
-<?php
-// bootstrap our wordpress instance
-$bootstrapSearchDir = dirname($_SERVER["SCRIPT_FILENAME"]);
-$docRoot = isset($_SERVER["APPL_PHYSICAL_PATH"])?$_SERVER["APPL_PHYSICAL_PATH"]:$_SERVER["DOCUMENT_ROOT"];
-
-if (!current_user_can("edit_pages"))
-	wp_die("You can't do anything destructive in here, but you shouldn't be playing around with this anyway.");
-
-global $wp_version, $tinymce_version;
-$localJsUri = get_option("siteurl") . "/" . WPINC . "/js/";
-?>
-
 <!DOCTYPE html>
 <html>
 <head>
 	<title>Local Market Explorer: Insert Module</title>
-
+  
+  <SCRIPT>
+    function getUrlVars() {
+      var vars = {};
+      var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+        vars[key] = value;
+      });
+      return vars;
+    }
+  </SCRIPT>
+  
 	<style type="text/css">
 		label {
 			cursor: pointer;
@@ -71,14 +69,13 @@ $localJsUri = get_option("siteurl") . "/" . WPINC . "/js/";
 			<th style="width: 70px; padding-top: 2px;"><label for="module">Module</label></th>
 			<td>
 				<select id="module">
-					<option value="about-area">About Area</option>
-					<option value="colleges">Colleges</option>
+					<option value="about">About Area</option>
 					<option value="market-activity">Market Activity</option>
 					<option value="market-stats">Market Statistics</option>
 					<option value="neighborhoods">Neighborhoods</option>
 					<option value="schools">Schools</option>
 					<option value="walk-score">Walk Score</option>
-					<option value="yelp">Yelp</option>
+          <option value="streetadvisor">StreetAdvisor</option>
 				</select>
 			</td>
 		</tr>
@@ -121,10 +118,13 @@ $localJsUri = get_option("siteurl") . "/" . WPINC . "/js/";
 		</div>
 	</div>
 	
-	<script> var ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>'; </script>
-	<script src="<?php echo $localJsUri ?>tinymce/tiny_mce_popup.js?ver=<?php echo urlencode($tinymce_version) ?>"></script>
-	<script src="../../js/admin.js?ver=<?php echo urlencode(LME_PLUGIN_VERSION) ?>"></script>
-	<script src="js/dialog.js?ver=<?php echo urlencode(LME_PLUGIN_VERSION) ?>"></script>
+	<script> 
+    var ajaxurl = getUrlVars()["ajaxurl"];
+  </script>
+  <script src="../../../../../wp-includes/js/tinymce/tiny_mce_popup.js"></script>  
+	<script src="../../../../../wp-includes/js/jquery/jquery.js"></script>
+	<script src="../../js/admin.js"></script>
+	<script src="js/dialog.js"></script>
 	
 </body>
 </html>

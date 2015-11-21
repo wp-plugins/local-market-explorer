@@ -65,7 +65,7 @@ lmeadmin.loadNeighborhoods = function(neighborhoodDropDown, city, state) {
 	apiParams['state'] = state;
 	apiParams['childtype'] = 'neighborhood';
 	
-	neighborhoodDropDown.html('<option>Loading, please wait...</option>');
+	neighborhoodDropDown.html('<option value="">Loading, please wait...</option>');
 	jQuery.get(ajaxurl, {
 		'action': 'lme-proxyZillowApiRequest',
 		'api': 'GetRegionChildren',
