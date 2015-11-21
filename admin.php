@@ -334,27 +334,16 @@ HTML;
 							</div>
 						</div>
 						<div>
-							<p>This plugin is open-source donationware. I'm willing to accept and integrate well-written patches into the code, but the
-							continued development of the plugin (new features, bug fixes, etc) by the plugin author is funded by either donations or
-							companies willing to pay a nominal fee to have their data integrated. You can thank Zillow and Education.com for funding the
-							vast majority of the development thus far, although other companies have contributed as well. If you'd like to donate towards
-							a particular feature or just to say thanks, feel free to
-							<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=10178626"> donate via PayPal</a>. Getting me
-							something sweet on <a href="http://www.amazon.com/wishlist/7EQB35SN16H9/ref=cm_wl_rlist_go">my Amazon wishlist</a> would
-							certainly be a great thank-you gift as well and would grease the wheels for new features. I'm happily employed at
-							<a href="http://www.diversesolutions.com">Diverse Solutions</a> though and so some feature ideas you may have are off-limits
-							for me to work on.</p>
-							
-							<p>If you'd like to contribute a feature suggestion or need to document a bug, please use the
-							<a href="http://localmarketexplorer.uservoice.com/">User Voice feedback forum</a> set up specifically for that purpose. With
-							User Voice, each user gets a fixed number of votes that they can cast for any particular bug or feature. The higher the number
-							of votes for an item, the higher the priority will be for that item as development commences on the plugin itself.</p>
-							
-							<p>If you'd like to contact me, please use the contact link on the
-							<a href="http://localmarketexplorer.uservoice.com/">User Voice forum</a></p>
-							
-							<p>- Andrew Mattie, plugin author</p>
-							
+              <p>This plugin is open-source donationware. We’re willing to accept and integrate well-written patches into the code, but the continued development of the plugin 
+              (new features, bug fixes, etc) by the plugin author is funded by either donations or companies willing to pay a fee to have their data integrated. You can thank 
+              Zillow, <a href="http://education.com/" target="_blank">Education.com</a>, and <a href="http://www.streetadvisor.com/" target="_blank">StreetAdvisor</a> for funding the vast majority of the 
+              development thus far. This plugin is currently funded by <a href="http://www.streetadvisor.com/" target="_blank">StreetAdvisor</a>, and being developed by 
+              <a href="http://caffeineinteractive.com/" target="_blank">Caffeine Interactive</a>.</p>
+
+              <p>If you'd like to contribute a feature suggestion or need to document a bug, please use the <a href="http://localmarketexplorer.uservoice.com/" target="_blank">User Voice forum</a> 
+              set up specifically for that purpose. With User Voice, each user gets a fixed number of votes that they can cast for any particular bug or feature. The higher the 
+              number of votes for an item, the higher the priority will be for that item as development commences on the plugin itself.</p>
+            
 							<p>
 								<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=dustin.devries%40caffeineconsulting%2ecom&lc=US&item_name=Local%20Market%20Explorer&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest">
 									<img src="<?php echo LME_PLUGIN_URL; ?>images/logos/btn_donateCC_LG.gif" alt="PayPal - The safer, easier way to pay online!" />
